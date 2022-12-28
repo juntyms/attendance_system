@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\FingerprintController;
 
 /*
@@ -15,3 +16,4 @@ use App\Http\Controllers\FingerprintController;
 */
 
 Route::get('/connect',[FingerprintController::class,'connect'])->name('connect');
+Route::get('/users',[UserController::class,'user'])->name('users');
