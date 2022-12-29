@@ -21,4 +21,28 @@ Route::Get('/getfp',[FingerprintController::class,'getfp']);
 */
 Route::get('/users',[UserController::class,'user'])->name('users');
 
-Route::get('/devices', [DeviceController::class, 'index']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Route::resources(['devices'=> DeviceController::class]);

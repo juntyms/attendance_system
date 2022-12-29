@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFingerprintsTable extends Migration
+class CreateBuildingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,9 @@ class CreateFingerprintsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fingerprints', function (Blueprint $table) {
+        Schema::create('buildings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id');
-            $table->integer('fingerid');
-            $table->integer('size');
-            $table->integer('valid');
-            $table->text('template');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreateFingerprintsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fingerprints');
+        Schema::dropIfExists('buildings');
     }
 }
