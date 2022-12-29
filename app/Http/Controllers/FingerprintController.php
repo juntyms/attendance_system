@@ -11,7 +11,7 @@ class FingerprintController extends Controller
 {
     public function connect()
     {
-        $zk = new ZKTeco('10.153.82.110');
+        $zk = new ZKTeco(env('device_ip'));
 
             if ($zk->connect()){
 

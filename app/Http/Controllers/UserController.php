@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function user()
     {
-        $zk = new ZKTeco('10.153.82.110');
+        $zk = new ZKTeco(env('device_ip'));
 
             if ($zk->connect()){
                 $user = $zk->getFingerprint(1); 
