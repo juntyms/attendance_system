@@ -21,7 +21,7 @@ class FingerprintController extends Controller
                 foreach($attendances as $attendance) {
                     Attendance::create([
                         'uid'=>$attendance['uid'],
-                        'user_id'=>$attendance['id'],
+                        'student_id'=>$attendance['id'],
                         'state_id'=>$attendance['state'],
                         'punchtime'=>$attendance['timestamp'],
                         'type'=>$attendance['type']
