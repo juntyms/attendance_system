@@ -2,6 +2,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
 <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{asset('assets/css/bootstrap-grid.min.css')}}" rel="stylesheet">
+<link href="{{asset('assets/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet">
 <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+@livewireStyles
 
 @yield('customcss')

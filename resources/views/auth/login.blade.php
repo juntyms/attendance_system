@@ -1,24 +1,8 @@
 @extends('layouts.base2')
 
 @section('content')
-<section class="background-radial-gradient overflow-hidden">
+<section class="overflow-hidden">
     <style>
-    .background-radial-gradient {
-        background-color: hsl(260, 41%, 15%);
-        background-image: radial-gradient(650px circle at 0% 0%,
-                hsl(260, 41%, 35%) 15%,
-                hsl(260, 41%, 30%) 35%,
-                hsl(260, 41%, 20%) 75%,
-                hsl(260, 41%, 19%) 80%,
-                transparent 100%),
-            radial-gradient(1250px circle at 100% 100%,
-                hsl(260, 41%, 45%) 15%,
-                hsl(260, 41%, 30%) 35%,
-                hsl(260, 41%, 20%) 75%,
-                hsl(260, 41%, 19%) 80%,
-                transparent 100%);
-    }
-
     .bg-glass {
         background-color: hsla(0, 0%, 100%, 0.9) !important;
         backdrop-filter: saturate(200%) blur(25px);

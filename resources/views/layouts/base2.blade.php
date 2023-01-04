@@ -9,24 +9,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <style>
-    .rounded-t-5 {
-        border-top-left-radius: 0.5rem;
-        border-top-right-radius: 0.5rem;
-    }
-
-    @media (min-width: 992px) {
-        .rounded-tr-lg-0 {
-            border-top-right-radius: 0;
-        }
-
-        .rounded-bl-lg-5 {
-            border-bottom-left-radius: 0.5rem;
-        }
+    .background-radial-gradient {
+        background-color: hsl(260, 41%, 15%);
+        background-image: radial-gradient(1300px circle at 0% 0%,
+                hsl(260, 41%, 35%) 15%,
+                hsl(260, 41%, 30%) 35%,
+                hsl(260, 41%, 20%) 75%,
+                hsl(260, 41%, 19%) 80%,
+                transparent 100%),
+            radial-gradient(2500px circle at 100% 100%,
+                hsl(260, 41%, 45%) 15%,
+                hsl(260, 41%, 30%) 35%,
+                hsl(260, 41%, 20%) 75%,
+                hsl(260, 41%, 19%) 80%,
+                transparent 100%);
     }
     </style>
 </head>
 
-<body>
+<body class="background-radial-gradient overflow-hidden">
     @yield('content')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
