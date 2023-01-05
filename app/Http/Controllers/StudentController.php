@@ -50,15 +50,22 @@ class StudentController extends Controller
         $tad = $tad_factory->get_instance();
         $template1_vx9="";
 
-        $template1_data = [
+        /* $template1_data = [
             'pin' => $student->student_id,
             'finger_id' => 0, // First fingerprint has 0 as index.
+            'name' => $student->student_name,
             'size' => 760,    // Be careful, this is not string length of $template1_vx9 var.
             'valid' => 1,
             'template' => $template1_vx9
           ];
+           */
+        $template1_data = [
+        'pin' => $student->student_id,
+        'name' => $student->student_name,
+        ];
           
-        $tad->set_user_template( $template1_data ); 
+        //$tad->set_user_template( $template1_data ); 
+        $tad->set_user_info( $template1_data ); 
 
         return redirect()->route('student.list')->with('success','User created successfully');
     }

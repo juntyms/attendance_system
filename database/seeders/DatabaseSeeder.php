@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Database\Seeders\AdminSeed;
 use Illuminate\Database\Seeder;
+use Database\Seeders\BuildingSeed;
+use Database\Seeders\DepartmentSeed;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,5 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(StatesTableSeeder::class);
         $this->call(TypesTableSeeder::class);
         $this->call(AdminSeed::class);
+        $this->call(BuildingSeed::class);
+        $this->call(DepartmentSeed::class);
     }
 }
