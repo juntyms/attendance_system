@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 
     Route::get('/students/allattendance',[StudentController::class,'allattendance'])->name('attendance.all');
+    Route::get('/students/updateattendance',[StudentController::class,'updateattendance'])->name('attendance.update');
 });
 
 

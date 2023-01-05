@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use TADPHP\TADFactory;
 use App\Models\Student;
 use App\Models\Building;
+use App\Models\Attendance;
 use App\Models\Department;
+use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -42,7 +45,7 @@ class StudentController extends Controller
         $input = $request->all();
         $student = Student::create($input);
 
-       $tad_factory = new TADFactory(['ip'=>'10.153.82.157']);
+       $tad_factory = new TADFactory(['ip'=>env('device_ip')]);
 
         $tad = $tad_factory->get_instance();
         $template1_vx9="";
@@ -63,8 +66,56 @@ class StudentController extends Controller
 
     public function allattendance()
     {
+        
+       $attendance=[];
 
-        return view('attendance.all');
+       $attendance=Attendance::get();
+
+
+        return view('attendance.all')->with('attendance',$attendance);
+    }
+    
+    public function updateattendance()
+    {
+        
+        $last=Attendance::max('uid');
+        
+       
+            try
+            {
+                $zk = new ZKTeco(env('device_ip'));
+                $last=Attendance::max('uid');
+
+                if ($zk->connect())
+                {
+                
+                    $attendances = $zk->getAttendance();
+                
+                    //dd($attendances);
+                    foreach($attendances as $attendance)
+                    {
+                        if($attendance['uid'] > $last)
+                        {
+                            Attendance::create([
+                                'uid'=>$attendance['uid'],
+                                'student_id'=>$attendance['id'],
+                                'state_id'=>$attendance['state'],
+                                'punchtime'=>$attendance['timestamp'],
+                                'type'=>$attendance['type']
+                            ]);
+                        }
+                    }
+                }
+            }
+            catch(Exception $e){
+                return redirect()->route('attendance.all');
+            
+                
+            }
+            
+            return redirect()->route('attendance.all');
+     
+        
     }
     
 }

@@ -5,6 +5,6 @@
 <link href="{{asset('assets/css/bootstrap-grid.min.css')}}" rel="stylesheet">
 <link href="{{asset('assets/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet">
 <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
-@livewireStyles
+
 
 @yield('customcss')

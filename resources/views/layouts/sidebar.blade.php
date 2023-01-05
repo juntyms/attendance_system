@@ -26,7 +26,9 @@
                             <a href="{{route('attendance.all')}}">Attendances</a>
                         </div>
                         <div class="selected sideLink ms-3 my-3">Devices</div>
-                        <div class="sideLink ms-3 my-3">Home</div>
+                        <div class="sideLink ms-3 my-3">
+                            <a href="{{route('home')}}">Home</a>
+                        </div>
                     </div>
                 </div>
             </div>

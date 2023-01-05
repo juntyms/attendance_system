@@ -11,7 +11,7 @@ class Allattendance extends Component
     public $attendance;
     public function mount()
     {
-        $zk = new ZKTeco(env('device_ip'));
+       /*  $zk = new ZKTeco(env('device_ip'));
        
 
             if ($zk->connect()){
@@ -29,17 +29,23 @@ class Allattendance extends Component
                     ]);
                 }
             }
-       
+        */
 
        $this->attendance=Attendance::get();
 
 
         //dd($this->attendance);
     }
-
-    public function connecting()
+    
+    public function render()
     {
-        echo("hhh");
+        return view('livewire.allattendance')->with('attendance',$this->attendance);
+    }
+
+
+    public function submit($FormData)
+    {
+        dd("hhh");
         $zk = new ZKTeco(env('device_ip'));
        
 
@@ -59,9 +65,5 @@ class Allattendance extends Component
                 }
             }
          
-    }
-    public function render()
-    {
-        return view('livewire.allattendance')->with('attendance',$this->attendance)->extends('layouts.base');
     }
 }
