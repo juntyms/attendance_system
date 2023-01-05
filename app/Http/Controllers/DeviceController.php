@@ -38,15 +38,28 @@ class DeviceController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         //* Connect to device and get record
         $zk = new ZKTeco($request->ip);
 
         if ($zk->connect()){
-            dd($zk->version());
-        } else {
-            echo 'can not find device';
+
+            $dev = [
+                'ip' => $request->ip,
+                'name' => $request->name,
+                'device_version' => $zk->version(),
+                'os_version' => $zk->osVersion(),
+                'fmversion' => $zk->fmVersion(),
+                'serialnumber' => $zk->serialNumber(),
+                'status' => 'Active'
+            ];
+            
+            Device::create($dev);
+
+            
         }
+
+        return redirect()->route('devices.index');
     }
 
     /**
