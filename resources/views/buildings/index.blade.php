@@ -31,7 +31,3 @@
     </div>
 </div>
 @endsection
-
-@section('jscript')
-
-@endsection

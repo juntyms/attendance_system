@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
+    <livewire:styles />
 </head>
 
 <body>
@@ -48,6 +49,7 @@
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <!-- End custom js for this page-->
     @yield('jscript')
+    <livewire:scripts />
 </body>
 
 </html>
