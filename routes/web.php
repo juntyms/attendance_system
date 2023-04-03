@@ -31,10 +31,8 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/students/addstudent',[StudentController::class,'create'])->name('student.add');
     Route::post('/students/addstudent',[StudentController::class,'store'])->name('student.store');
 
-
-
     Route::get('/students/allattendance',[StudentController::class,'allattendance'])->name('attendance.all');
-
+    Route::get('/students/updateattendance',[StudentController::class,'updateattendance'])->name('attendance.update');
 
     Route::get('/devices',[DeviceController::class,'index'])->name('devices.index');
     Route::get('/devices/create',[DeviceController::class,'create'])->name('devices.create');

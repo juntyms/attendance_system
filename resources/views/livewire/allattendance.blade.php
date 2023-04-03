@@ -1,5 +1,4 @@
-<div class="container" style="background-color: #eee;">
-
+<section style="background-color: #eee;">
     <div class="container py-5">
         <div class="row">
             <center>
@@ -10,12 +9,18 @@
 
             <div class="row text-end">
 
+                <form class="form-horizontal"
+                    wire:submit.prevent="submit(Object.fromEntries(new FormData($event.target)))">
+                    @csrf
+                    <h5>
 
-                <h5>
-                    <button class="btn btn-info" wire:click="connecting()">
-                        Update</button>
-                </h5>
+                        <button class="btn btn-info mt-2" type="submit" name="view_type" value="1">
+                            Update
+                        </button>
+                    </h5>
+                </form>
             </div>
+
         </div>
         <div class="row">
 
@@ -23,7 +28,7 @@
                 <div class="card mb-12">
                     <div class="card-body">
                         <div class=" table-responsive " style=" margin-left:20px; margin-right:20px">
-                            <table id="example" class="table table-striped" style="width:100%">
+                            <table id="" class="table table-striped" style="width:100%">
                                 <thead>
 
                                     <tr>
@@ -60,6 +65,4 @@
         </div>
 
     </div>
-
-
-</div>
+</section>
