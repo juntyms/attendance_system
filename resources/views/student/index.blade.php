@@ -1,12 +1,7 @@
-@extends('layouts.base')
+@extends('layouts.content')
 
-@section('title')
-Home Page
-@endsection
-
-@section('content')
-
-<div class="container">
+@section('main')
+<div class="content-wrapper">
     <section style="background-color: #eee;">
         <div class="container py-5">
             <div class="row">
@@ -56,8 +51,7 @@ Home Page
                                             <td>{{$user->building->name}}</td>
                                             <td>{{$user->email}}</td>
                                             <td>{{$user->mobile_no}}</td>
-                                            <td class="text-center"><a href=" #"
-                                                    class="btn btn-sm btn-info text-center text-white">view</a>
+                                            <td class="text-center"><a href=" #" class="btn btn-sm btn-info text-center text-white">view</a>
                                             </td>
 
                                         </tr>
