@@ -24261,16 +24261,18 @@ dl li {
 
 .sidebar .nav.sub-menu .nav-item .nav-link:hover {
     color: #b10dbf;
-    background: transparent;
+    /*background: transparent;*/
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link:hover::before {
     border: 1px solid #b10dbf;
+
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link.active {
-    color: #b10dbf;
-    /*color: #ffffff;*/
+    /*color: #b10dbf;*/
+    color: #ffffff;
     background: rgba(255, 255, 255, 0.4);
 }
 

@@ -23,6 +23,10 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('building_id');
             $table->foreign('building_id')->references('id')->on('buildings');
             $table->string('room_no');
+            $table->string('civilno');
+            $table->timestamp('date_of_joining')->useCurrent();
+            $table->string('emergency_contact_person');
+            $table->string('emergency_no');
             $table->timestamps();
         });
     }

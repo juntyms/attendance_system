@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use TADPHP\TADFactory;
 use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Http\Request;
 
@@ -53,11 +54,12 @@ class DeviceController extends Controller
                 'serialnumber' => $zk->serialNumber(),
                 'status' => 'Active'
             ];
-            
-            Device::create($dev);
 
-            
+            Device::create($dev);
+        } else {
+            toast('Unable to Connect to Device','error');
         }
+
 
         return redirect()->route('devices.index');
     }
@@ -105,5 +107,35 @@ class DeviceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function resetdevice()
+    {
+/*
+        $zk = new ZKTeco('192.168.1.201');
+        $zk->clearAdmin();
+*/
+
+        $tad_factory = new TADFactory(['ip'=>'192.168.6.209']);
+
+        $tad = $tad_factory->get_instance();
+        echo '<pre>';
+        var_dump($tad->get_all_user_info());
+        echo '<pre>';
+        echo "<hr />";
+
+        //Delete template
+        //$tad->delete_template(['pin'=>1]);
+
+        // Getting attendance logs from all users.
+//        $logs = $tad->get_user_template()->to_array();
+
+//        dd($logs);
+
+        //$tad = (new TADFactory(['ip'=>'192.168.1.201']))->get_instance();
+
+        //dd($tad);
+        //$tad->delete_admin();
+
     }
 }

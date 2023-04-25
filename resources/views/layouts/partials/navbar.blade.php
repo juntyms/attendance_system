@@ -21,7 +21,10 @@
                         <i class="icon-head"></i> Profile
                     </a>
                     <a class="dropdown-item preview-item">
-                        <i class="icon-inbox"></i> Logout
+                        <i class="icon-inbox"></i>
+                        {{ Form::open(['route'=>'logout']) }}
+                        <button class="btn-menu-link">Logout</button>
+                        {{ Form::close() }}
                     </a>
                 </div>
             </li>

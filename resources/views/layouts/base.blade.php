@@ -21,7 +21,37 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
-    <livewire:styles />
+    <style>
+        .sidebar .nav.sub-menu .nav-item {
+            margin: 0px;
+        }
+
+        .sidebar .nav.sub-menu {
+            margin: 0px;
+        }
+
+        .btn-menu-link {
+            border: none;
+            outline: none;
+            background: none;
+            cursor: pointer;
+            color: #666666;
+            padding: 0;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        .btn-menu-link:hover {
+            color: #666666;
+            text-decoration: none;
+        }
+
+        .btn-outline-primary:hover {
+            color: #ffffff;
+        }
+    </style>
+    @livewireStyles
 </head>
 
 <body>
@@ -49,7 +79,7 @@
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <!-- End custom js for this page-->
     @yield('jscript')
-    <livewire:scripts />
+    @livewireScripts
 </body>
 
 </html>
