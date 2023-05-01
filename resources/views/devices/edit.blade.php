@@ -4,10 +4,8 @@
 <div class="content-wrapper">
     <div class="card">
         <div class="card-body">
-
-
-            {{ Form::open(['route'=>'devices.store']) }}
-            @include('devices._form',['buttonText'=>'Save'])
+            {{ Form::model($device,['route'=>['devices.update',$device->id]]) }}
+            @include('devices._form',['buttonText'=>' Update'])
             {{ Form::close() }}
         </div>
     </div>

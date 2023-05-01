@@ -40,6 +40,12 @@ class DeviceController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
+        $is_master = 0;
+
+        if ($request->has('is_master')) {
+            $is_master = 1;
+        }
+
         //* Connect to device and get record
         $zk = new ZKTeco($request->ip);
 
@@ -52,6 +58,7 @@ class DeviceController extends Controller
                 'os_version' => $zk->osVersion(),
                 'fmversion' => $zk->fmVersion(),
                 'serialnumber' => $zk->serialNumber(),
+                'is_master' => $is_master,
                 'status' => 'Active'
             ];
 
@@ -83,7 +90,9 @@ class DeviceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $device = Device::findOrFail($id);
+
+        return view('devices.edit')->with('device',$device);
     }
 
     /**
@@ -98,16 +107,6 @@ class DeviceController extends Controller
         //
     }
 
-    /**
-     * ! Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
     public function resetdevice()
     {
@@ -137,5 +136,12 @@ class DeviceController extends Controller
         //dd($tad);
         //$tad->delete_admin();
 
+    }
+
+    public function delete($device)
+    {
+        Device::destroy($device);
+
+        return redirect()->route('devices.index');
     }
 }

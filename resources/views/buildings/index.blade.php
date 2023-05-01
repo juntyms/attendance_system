@@ -4,7 +4,9 @@
 <div class="content-wrapper">
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('buildings.create') }}" class="btn btn-primary"> <i class="icon-file-add"></i> New</a>
+            <h5>Buildings</h5>
+            <hr />
+            <a href="{{ route('buildings.create') }}" class="btn btn-outline-primary"> <i class="icon-file-add"></i> New</a>
             <table class="table table-bordered table-striped mt-2">
                 <tr>
                     <th>SN</th>

@@ -5,11 +5,11 @@
     <div class="card">
 
         <div class="card-body">
-            <h4 class="card-title">Devices</h4>
-
+            <h5>Devices</h5>
+            <hr />
 
             <a href="{{ route('devices.create') }}" class="btn btn-outline-primary btn-icon-text">
-                <i class="mdi mdi-file-check btn-icon-prepend"></i>
+                <i class="icon-file-add"></i>
                 New Device
             </a>
 
@@ -25,6 +25,7 @@
                         <th>Firmware</th>
                         <th>Serial Number</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                     @php $sn=1 @endphp
                     @foreach ($devices as $device)
@@ -37,6 +38,14 @@
                         <td>{{ $device->fmversion }}</td>
                         <td>{{ $device->serialnumber }}</td>
                         <td>{{ $device->status }}</td>
+                        <td>
+                            <div class="row">
+                                <a href="{{ route('devices.edit', $device->id) }}" class="btn btn-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="{{ route('devices.delete',$device->id) }}" class="btn btn-danger">
+                                    <i class="icon-trash"></i>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </table>

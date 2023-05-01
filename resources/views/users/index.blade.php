@@ -6,7 +6,7 @@
         <div class="card-body">
             <h5> Users </h5>
             <hr />
-            <a href="{{ route('users.create') }}" class="btn btn-primary"> <i class="icon-file-add"></i> New</a>
+            <a href="{{ route('users.create') }}" class="btn btn-outline-primary"> <i class="icon-file-add"></i> New</a>
             <table class="table table-bordered table-hover mt-2">
                 <tr class="bg-secondary">
                     <th class=" col-1">SN</th>
@@ -41,7 +41,7 @@
                         </ul>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-info btn-sm"> Privileges / Roles </a>
+                        <a href="{{ route('users.addrole',$user->id) }}" class="btn btn-info btn-sm"> Privileges / Roles </a>
                     </td>
                 </tr>
                 @endforeach

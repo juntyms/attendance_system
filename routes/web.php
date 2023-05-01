@@ -31,6 +31,8 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/users', [UserController::class,'index'])->name('users.index');
     Route::get('/users/create',[UserController::class,'create'])->name('users.create');
     Route::post('/users/create',[UserController::class,'store'])->name('users.store');
+    Route::get('/users/{userid}/addrole',[UserController::class,'addrole'])->name('users.addrole');
+    Route::post('/users/{userid}/addrole',[UserController::class,'saverole'])->name('users.saverole');
     Route::get('/users/{userId}/role/{role}/revoke',[UserController::class,'revokeRole'])->name('users.revokerole');
 
     Route::get('/users/getfingerprint',[UserController::class,'getfingerprint'])->name('users.getfingerprint');
@@ -49,6 +51,9 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/devices',[DeviceController::class,'index'])->name('devices.index');
     Route::get('/devices/create',[DeviceController::class,'create'])->name('devices.create');
     Route::post('/devices/create',[DeviceController::class,'store'])->name('devices.store');
+    Route::get('/devices/{device}/edit', [DeviceController::class,'edit'])->name('devices.edit');
+    Route::post('/devices/{device}/edit', [DeviceController::class,'update'])->name('devices.update');
+    Route::get('/devices/{device}/delete', [DeviceController::class,'delete'])->name('devices.delete');
     Route::get('/devices/reset',[DeviceController::class,'resetdevice'])->name('devices.reset');
 
     Route::resources(['departments'=>DepartmentController::class]);
