@@ -2,15 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\CoordinatorController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\FingerprintController;
-use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,9 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/roles',[RoleController::class,'index'])->name('roles.index');
     Route::get('/roles/create',[RoleController::class,'create'])->name('roles.create');
     Route::post('/roles/create',[RoleController::class,'store'])->name('roles.store');
+
+    Route::get('/report/schedule', [ReportController::class,'schedule'])->name('report.schedule');
+    Route::post('/report/schedule', [ReportController::class,'saveschedule'])->name('report.saveschedule');
 });
 
 
