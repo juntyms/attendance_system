@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/students/{id}/edit',[StudentController::class,'edit'])->name('student.edit');
     Route::post('/students/{id}/edit',[StudentController::class,'update'])->name('student.update');
     Route::get('/students/buildingassignment', [StudentController::class,'buildings'])->name('student.building');
+    Route::get('/students/{student}/push',[StudentController::class,'push'])->name('student.push');
 
 
     Route::get('/students/allattendance',[StudentController::class,'allattendance'])->name('attendance.all');
@@ -56,6 +57,7 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/devices/{device}/edit', [DeviceController::class,'update'])->name('devices.update');
     Route::get('/devices/{device}/delete', [DeviceController::class,'delete'])->name('devices.delete');
     Route::get('/devices/{id}/fetch',[DeviceController::class,'fetch'])->name('devices.fetch');
+    Route::get('/devices/{id}/push',[DeviceController::class,'push'])->name('devices.push');
     Route::get('/devices/reset',[DeviceController::class,'resetdevice'])->name('devices.reset');
 
     Route::resources(['departments'=>DepartmentController::class]);

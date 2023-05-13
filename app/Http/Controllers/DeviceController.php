@@ -148,6 +148,45 @@ class DeviceController extends Controller
 
     public function fetch($id)
     {
+        $device = Device::findOrFail($id);
+
+        $tad_factory = new TADFactory(['ip'=>$device->ip]);
+
+        $tad = $tad_factory->get_instance();
+
+        $att_logs = $tad->get_att_log()->to_array(); // Getting attendance log from all users.
+
+        //dd(reset($att_logs));
+        foreach($att_logs['Row'] as $x => $attendance) {
+            $db_attendance = Attendance::where('punchtime',$attendance['DateTime'])->where('device_id',$device->id)->first();
+                if ($db_attendance) { //Record Already Found Update Record
+                    $db_attendance->update(
+                        [
+
+                            'student_id'=>$attendance['PIN'],
+                            'state_id'=>$attendance['Status'],
+                            'punchtime'=>$attendance['DateTime'],
+                            'type'=>$attendance['WorkCode'],
+                            'device_id'=>$device->id
+                        ]
+                    );
+                } else { // No Record Found add Record
+                    Attendance::create(
+                        [
+                            'student_id'=>$attendance['PIN'],
+                            'state_id'=>$attendance['Status'],
+                            'punchtime'=>$attendance['DateTime'],
+                            'type'=>$attendance['WorkCode'],
+                            'device_id'=>$device->id
+                        ]
+                    );
+                }
+        }
+
+    }
+
+    public function fetch1($id)
+    {
         //$last_student_record=Attendance::max('uid');
         $device = Device::findOrFail($id);
 
@@ -162,7 +201,7 @@ class DeviceController extends Controller
 
                 $attendances = $zk->getAttendance();
 
-                //dd($attendances);
+                dd($attendances);
                 foreach($attendances as $attendance)
                 {
                     $db_attendance = Attendance::where('uid',$attendance['uid'])->where('device_id',$device->id)->first();

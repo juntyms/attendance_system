@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Device;
 use App\Models\Status;
 use TADPHP\TADFactory;
 use App\Models\Student;
@@ -55,14 +56,18 @@ class StudentController extends Controller
         return redirect()->route('student.list');
     }
 
-    public function pushstudent(Student $student)
+    public function push(Student $student)
     {
-        $tad_factory = new TADFactory(['ip'=>env('device_ip')]);
+        //find master device
+        $device = Device::where('is_master',1)->first();
+
+        $tad_factory = new TADFactory(['ip'=>$device->ip]);
 
         $tad = $tad_factory->get_instance();
         $template1_vx9="";
 
-        /* $template1_data = [
+        /*
+         $template1_data = [
             'pin' => $student->student_id,
             'finger_id' => 0, // First fingerprint has 0 as index.
             'name' => $student->student_name,
@@ -70,7 +75,8 @@ class StudentController extends Controller
             'valid' => 1,
             'template' => $template1_vx9
           ];
-           */
+        */
+
         $template1_data = [
         'pin' => $student->student_id,
         'name' => $student->student_name,
@@ -78,6 +84,12 @@ class StudentController extends Controller
 
         //$tad->set_user_template( $template1_data );
         $tad->set_user_info( $template1_data );
+
+        $student->update(['is_pushed'=>1]);
+
+        toast('Student pushed to master device!','success');
+
+        return redirect()->route('student.list');
     }
 
     public function allattendance()

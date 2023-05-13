@@ -40,11 +40,14 @@
                         <td>{{ $device->status }}</td>
                         <td>
                             <div class="row">
-                                <a href="{{ route('devices.edit', $device->id) }}" class="btn btn-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                <a href="{{ route('devices.delete',$device->id) }}" class="btn btn-danger">
+                                <a href="{{ route('devices.edit', $device->id) }}" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Edit Device"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="{{ route('devices.delete',$device->id) }}" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Delete Device">
                                     <i class="icon-trash"></i>
                                 </a>
-                                <a href="{{ route('devices.fetch',$device->id) }}" class="btn btn-success"><i class="fa fa-link" aria-hidden="true"></i></a>
+                                <a href="{{ route('devices.fetch',$device->id) }}" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Fetch Attendance"><i class="icon-inbox"></i></a>
+                                @if ($device->is_master == 0)
+                                <a href="#" class="btn btn-sm btn-warning"><i class="icon-link"></i></a>
+                                @endif
                             </div>
                         </td>
                     </tr>

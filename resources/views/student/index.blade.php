@@ -37,6 +37,9 @@
                             <td class="text-center">
                                 <a href="{{ route('student.edit',$student->id) }}" class="btn btn-sm btn-info text-center text-white btn-block">Edit</a>
                                 <a href="#" class="btn btn-sm btn-success text-center text-white btn-block">Attendance</a>
+                                @if ($student->is_pushed == false)
+                                <a href="{{ route('student.push',$student) }}" class="btn btn-sm btn-warning text-center text-white btn-block">Push</a>
+                                @endif
                             </td>
 
                         </tr>
