@@ -9,7 +9,7 @@
             <a class="btn btn-info" href="{{route('student.add')}}"> <i class="icon-file-add"></i> New Student</a>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover mt-1">
-                    <thead class="bg-secondary">
+                    <thead class="bg-info">
                         <tr>
                             <th class="text-white">No</th>
                             <th class="text-white">Student ID</th>

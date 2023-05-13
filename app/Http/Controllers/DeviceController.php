@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use TADPHP\TADFactory;
+use App\Models\Attendance;
 use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Http\Request;
 
@@ -142,6 +143,64 @@ class DeviceController extends Controller
     {
         Device::destroy($device);
 
+        return redirect()->route('devices.index');
+    }
+
+    public function fetch($id)
+    {
+        //$last_student_record=Attendance::max('uid');
+        $device = Device::findOrFail($id);
+
+        try
+        {
+            $zk = new ZKTeco($device->ip);
+
+            //$last_student_record=Attendance::max('uid');
+
+            if ($zk->connect())
+            {
+
+                $attendances = $zk->getAttendance();
+
+                //dd($attendances);
+                foreach($attendances as $attendance)
+                {
+                    $db_attendance = Attendance::where('uid',$attendance['uid'])->where('device_id',$device->id)->first();
+
+                    if ($db_attendance) { //Record Already Found Update Record
+                        $db_attendance->update(
+                            [
+                                'uid'=>$attendance['uid'],
+                                'student_id'=>$attendance['id'],
+                                'state_id'=>$attendance['state'],
+                                'punchtime'=>$attendance['timestamp'],
+                                'type'=>$attendance['type'],
+                                'device_id'=>$device->id
+                            ]
+                        );
+                    } else { // No Record Found add Record
+                        Attendance::create(
+                            [
+                                'uid'=>$attendance['uid'],
+                                'student_id'=>$attendance['id'],
+                                'state_id'=>$attendance['state'],
+                                'punchtime'=>$attendance['timestamp'],
+                                'type'=>$attendance['type'],
+                                'device_id'=>$device->id
+                            ]
+                        );
+                    }
+
+
+                }
+            }
+        }
+        catch(Exception $e){
+            toast('Unable to Connect to Device','error');
+            return redirect()->route('devices.index');
+
+        }
+        toast('Attendance Downloaded Successfully!','success');
         return redirect()->route('devices.index');
     }
 }

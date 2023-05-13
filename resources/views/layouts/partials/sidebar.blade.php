@@ -1,4 +1,4 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
+<nav class="sidebar sidebar-offcanvas d-print-none" id="sidebar">
     <ul class="nav">
         <li class="nav-item">
             <a class="nav-link" href="{{ route('home') }}">
@@ -27,9 +27,7 @@
             </a>
             <div class="collapse" id="reports">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('student.inout') }}"> Check-in/Check-out </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#"> Absent </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#"> Late </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('report.inout') }}"> Attendance </a></li>
                 </ul>
             </div>
         </li>
@@ -41,7 +39,6 @@
             </a>
             <div class="collapse" id="settings">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="#"> Attendance Fetch </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('devices.index') }}"> Devices </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('departments.index') }}"> Departments </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('buildings.index') }}"> Buildings </a></li>

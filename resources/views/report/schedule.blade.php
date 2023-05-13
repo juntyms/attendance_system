@@ -9,10 +9,10 @@
                 <div class="form-group">
                     <label for="schedule">Schedule</label>
                     <select name="frequency_method" id="" class="form-control" required>
-                        <option value="everyMinute">everyMinute</option>
-                        <option value="hourly">hourly</option>
-                        <option value="daily">daily</option>
-                        <option value="weekly">weekly</option>
+                        <option value="everyMinute()">everyMinute</option>
+                        <option value="hourly()">hourly</option>
+                        <option value="daily()">daily</option>
+                        <option value="weekly()">weekly</option>
                     </select>
                 </div>
                 <button class="btn btn-primary">

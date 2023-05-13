@@ -44,6 +44,7 @@
                                 <a href="{{ route('devices.delete',$device->id) }}" class="btn btn-danger">
                                     <i class="icon-trash"></i>
                                 </a>
+                                <a href="{{ route('devices.fetch',$device->id) }}" class="btn btn-success"><i class="fa fa-link" aria-hidden="true"></i></a>
                             </div>
                         </td>
                     </tr>

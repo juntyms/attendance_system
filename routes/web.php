@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/students/{id}/edit',[StudentController::class,'edit'])->name('student.edit');
     Route::post('/students/{id}/edit',[StudentController::class,'update'])->name('student.update');
     Route::get('/students/buildingassignment', [StudentController::class,'buildings'])->name('student.building');
-    Route::get('/students/inout', [StudentController::class,'inout'])->name('student.inout');
+
 
     Route::get('/students/allattendance',[StudentController::class,'allattendance'])->name('attendance.all');
     Route::get('/students/updateattendance',[StudentController::class,'updateattendance'])->name('attendance.update');
@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/devices/{device}/edit', [DeviceController::class,'edit'])->name('devices.edit');
     Route::post('/devices/{device}/edit', [DeviceController::class,'update'])->name('devices.update');
     Route::get('/devices/{device}/delete', [DeviceController::class,'delete'])->name('devices.delete');
+    Route::get('/devices/{id}/fetch',[DeviceController::class,'fetch'])->name('devices.fetch');
     Route::get('/devices/reset',[DeviceController::class,'resetdevice'])->name('devices.reset');
 
     Route::resources(['departments'=>DepartmentController::class]);
@@ -72,6 +73,8 @@ Route::middleware(['auth'])->group( function() {
 
     Route::get('/report/schedule', [ReportController::class,'schedule'])->name('report.schedule');
     Route::post('/report/schedule', [ReportController::class,'saveschedule'])->name('report.saveschedule');
+    Route::get('/report/inout', [ReportController::class,'inout'])->name('report.inout');
+    Route::post('/report/inout', [ReportController::class,'postinout'])->name('report.postinout');
 });
 
 
