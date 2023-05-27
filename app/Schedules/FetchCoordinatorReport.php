@@ -2,7 +2,8 @@
 
 namespace App\Schedules;
 
-class fetchCoordinatorReport{
+class fetchCoordinatorReport
+{
 
     public function __invoke()
     {
