@@ -7,6 +7,10 @@
     {{ Form::text('name',null, ['class'=>'form-control']) }}
 </div>
 <div class="form-group">
+    <label for="devicetype">Device Type</label>
+    {{ Form::select('device_type_id',$device_types, null, ['class'=>'form-control'] )}}
+</div>
+<div class="form-group">
     <div class="form-check form-check-primary">
         <label class="form-check-label">
             {{ Form::checkbox('is_master',1, null , ['class'=>'form-check-input']) }}

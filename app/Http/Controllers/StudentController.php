@@ -61,33 +61,31 @@ class StudentController extends Controller
         //find master device
         $device = Device::where('is_master',1)->first();
 
-        $tad_factory = new TADFactory(['ip'=>$device->ip]);
+        if ($device) {
 
-        $tad = $tad_factory->get_instance();
-        $template1_vx9="";
+            $tad_factory = new TADFactory(['ip'=>$device->ip]);
 
-        /*
-         $template1_data = [
-            'pin' => $student->student_id,
-            'finger_id' => 0, // First fingerprint has 0 as index.
-            'name' => $student->student_name,
-            'size' => 760,    // Be careful, this is not string length of $template1_vx9 var.
-            'valid' => 1,
-            'template' => $template1_vx9
-          ];
-        */
+            $tad = $tad_factory->get_instance();
 
-        $template1_data = [
-        'pin' => $student->student_id,
-        'name' => $student->student_name,
-        ];
+            if ($tad->is_alive())
+            {
+                $template1_data = [
+                    'pin' => $student->student_id,
+                    'name' => $student->student_name,
+                    ];
 
-        //$tad->set_user_template( $template1_data );
-        $tad->set_user_info( $template1_data );
+                $tad->set_user_info( $template1_data );
 
-        $student->update(['is_pushed'=>1]);
+                $student->update(['is_pushed'=>1]);
 
-        toast('Student pushed to master device!','success');
+                toast('Student pushed to master device!','success');
+            } else {
+                toast('Device Not Found or No Active Master Device','error');
+            }
+
+        } else {
+            toast('No Master Device Found, Please Set Master Device','error');
+        }
 
         return redirect()->route('student.list');
     }

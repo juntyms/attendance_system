@@ -27,7 +27,10 @@ Route::middleware(['auth'])->group( function() {
 
     Route::get('/',[HomeController::class,'index'])->name('home');
     Route::get('/connect',[FingerprintController::class,'connect'])->name('connect');
-    Route::Get('/getfp',[FingerprintController::class,'getfp']);
+
+    //Route::Get('/getfp',[FingerprintController::class,'getfp']);
+    Route::Get('/deployfp',[FingerprintController::class,'deployfp']);
+
 
     Route::get('/users', [UserController::class,'index'])->name('users.index');
     Route::get('/users/create',[UserController::class,'create'])->name('users.create');

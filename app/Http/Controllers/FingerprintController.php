@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Device;
 use TADPHP\TADFactory;
 use App\Models\Attendance;
+use App\Models\Fingerprint;
 use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Http\Request;
 
@@ -59,5 +61,39 @@ class FingerprintController extends Controller
         */
 
         //https://www.phpclasses.org/package/9026-PHP-Communicate-with-ZK-time-and-attendance-devices.html
+    }
+
+    public function deployfp()
+    {
+        $devices = Device::where('is_master',0)->get();
+
+        foreach($devices as $device)
+        {
+            $tad_factory = new TADFactory(['ip'=>$device->ip]);
+            //$tad_factory = new TADFactory(['ip'=>'192.168.100.22']);
+            $tad = $tad_factory->get_instance();
+            if ($tad->is_alive())
+            {
+                $fingerprints = Fingerprint::all();
+
+                foreach($fingerprints as $fingerprint)
+                {
+                    $user_template_data = [
+                        'pin' => $fingerprint->student_id,
+                        'finger_id' => $fingerprint->fingerid, // First fingerprint has 0 as index.
+                        'size' => $fingerprint->size,    // Be careful, this is not string length of $template1_vx9 var.
+                        'valid' => $fingerprint->valid,
+                        'template' => $fingerprint->template
+                    ];
+
+                    $tad->set_user_template($user_template_data);
+                }
+            }
+
+
+        }
+
+
+
     }
 }

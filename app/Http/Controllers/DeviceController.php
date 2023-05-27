@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Device;
 use TADPHP\TADFactory;
 use App\Models\Attendance;
+use App\Models\DeviceType;
 use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,9 @@ class DeviceController extends Controller
      */
     public function create()
     {
-        return view('devices.create');
+        $device_types = DeviceType::pluck('name','id');
+
+        return view('devices.create')->with('device_types',$device_types);
     }
 
     /**
@@ -60,10 +63,12 @@ class DeviceController extends Controller
                 'fmversion' => $zk->fmVersion(),
                 'serialnumber' => $zk->serialNumber(),
                 'is_master' => $is_master,
+                'device_type_id' => $request->device_type_id,
                 'status' => 'Active'
             ];
 
             Device::create($dev);
+            toast('Device Added','success');
         } else {
             toast('Unable to Connect to Device','error');
         }
@@ -72,16 +77,6 @@ class DeviceController extends Controller
         return redirect()->route('devices.index');
     }
 
-    /**
-     * ! Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * ! Show the form for editing the specified resource.
@@ -93,7 +88,11 @@ class DeviceController extends Controller
     {
         $device = Device::findOrFail($id);
 
-        return view('devices.edit')->with('device',$device);
+        $device_types = DeviceType::pluck('name','id');
+
+        return view('devices.edit')
+            ->with('device',$device)
+            ->with('device_types',$device_types);
     }
 
     /**
@@ -105,7 +104,20 @@ class DeviceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($request->has('is_master')) {
+            $request['is_master'] = 1;
+        } else {
+            $request['is_master'] = 0;
+        }
+
+        $device = Device::findOrFail($id);
+
+        $device->update($request->all());
+
+        toast('Device Updated','success');
+
+        return redirect()->route('devices.index');
+
     }
 
 
