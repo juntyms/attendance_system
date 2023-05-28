@@ -30,9 +30,9 @@
                             <td>{{ $student->student_id}}</td>
                             <td>{{ $student->student_name }}</td>
                             <td>{{ $student->email}}</td>
-                            <td>{{ $student->mobile_no}}</td>
-                            <td>{{ $student->department->name }}</td>
-                            <td>{{ $student->building->name}}</td>
+                            <td>{{ $student->mobile_no ?? ""}}</td>
+                            <td>{{ $student->department->name ?? "" }}</td>
+                            <td>{{ $student->building->name ?? ""}}</td>
                             <td>{{ $student->room_no }}</td>
                             <td class="text-center">
                                 <a href="{{ route('student.edit',$student->id) }}" class="btn btn-sm btn-info text-center text-white btn-block">Edit</a>

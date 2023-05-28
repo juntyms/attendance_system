@@ -26,10 +26,12 @@ use App\Http\Controllers\FingerprintController;
 Route::middleware(['auth'])->group( function() {
 
     Route::get('/',[HomeController::class,'index'])->name('home');
-    Route::get('/connect',[FingerprintController::class,'connect'])->name('connect');
 
+    Route::get('/fetchattendance',[FingerprintController::class,'fetchattendance'])->name('fetchattendance');
+
+    Route::get('/fetchstudents',[FingerprintController::class,'fetchstudents'])->name('fetchstudents');
     //Route::Get('/getfp',[FingerprintController::class,'getfp']);
-    Route::Get('/deployfp',[FingerprintController::class,'deployfp']);
+
 
 
     Route::get('/users', [UserController::class,'index'])->name('users.index');
@@ -39,7 +41,7 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/users/{userid}/addrole',[UserController::class,'saverole'])->name('users.saverole');
     Route::get('/users/{userId}/role/{role}/revoke',[UserController::class,'revokeRole'])->name('users.revokerole');
 
-    Route::get('/users/getfingerprint',[UserController::class,'getfingerprint'])->name('users.getfingerprint');
+    //Route::get('/users/getfingerprint',[UserController::class,'getfingerprint'])->name('users.getfingerprint');
 
     Route::get('/students',[StudentController::class,'index'])->name('student.list');
     Route::get('/students/addstudent',[StudentController::class,'create'])->name('student.add');
