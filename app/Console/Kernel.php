@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Schedules\FetchAttendance;
 use App\Schedules\FetchFingerprints;
 use App\Schedules\DeployFingerprints;
 use App\Http\Controllers\UserController;
@@ -26,12 +27,13 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(new fetchCoordinatorReport)->$myfrequency();
 
-
         // Fetch Record From Master Device
         $schedule->call(FetchFingerprints::class)->everyMinute();
 
         // Send Fingerprint to other devices
         $schedule->call(DeployFingerprints::class)->everyMinute();
+
+        $schedule->call(FetchAttendance::class)->hourly();
     }
 
     /**

@@ -14,10 +14,10 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('uid');
-            $table->unsignedBigInteger('student_id');           
+            $table->integer('uid')->nullable();
+            $table->unsignedBigInteger('student_id');
             $table->integer('state_id');
-            $table->timestamp('punchtime');
+            $table->timestamp('punchtime')->nullable();
             $table->integer('type');
             $table->integer('device_id')->nullable();
             $table->timestamps();
