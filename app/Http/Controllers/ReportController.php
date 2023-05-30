@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\StudentLeave;
 use Illuminate\Http\Request;
 use App\Models\ReportSchedule;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -90,6 +91,7 @@ class ReportController extends Controller
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
                         ->get();
+                        //dd($attendances);
         }
 
         if ($request->report_type == Self::absent) {
@@ -118,46 +120,52 @@ class ReportController extends Controller
 
         if ($request->report_type == Self::late) {
             $report_type = "Late";
-dd('under construction');
-            $attendances = \DB::table('date_ranges')
-                        ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
-                         ->joinSub($students, 'studs', function ($join) {
-                            $join->on('studs.id','=','studs.id');
-                        })
-                        ->leftJoinSub($attendance_ins, 'punchin', function($join) {
-                            $join->on('punchin.student_id','=','studs.student_id')
-                                    ->on('dt','=','punchin.datein');
-                        })
-                        ->leftJoinSub($attendance_outs, 'punchout', function($join) {
-                            $join->on('punchout.student_id','=','studs.student_id')
-                                ->on('dt','=','punchout.dateout');
-                        })
-                        ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
-                        ->orderBy('date_ranges.dt')
-                        ->orderBy('studs.student_name')
+
+            $student_leaves = StudentLeave::select('student_id',\DB::RAW("DATE_FORMAT(leave_date,'%Y-%m-%d') as leavedate"))
+                        ->whereBetween('leave_date',[$startDay, $endDay])
+                        ->whereNull('return_date')
                         ->get();
+
+                        if ($request->has('ptype')) { //PDF Report Type
+                            $pdf = Pdf::loadView('report._latepdf',[
+                            'report_type' => $report_type,
+                            'student_leaves'=>$student_leaves,
+                            'start_date'=> $request->start_date,
+                            'end_date'=>$request->end_date
+                        ]);
+
+                        return $pdf->download($report_type.'.pdf');
+
+                        } else {
+                            return view('report.latereport')
+                                    ->with('start_date',$request->start_date)
+                                    ->with('end_date',$request->end_date)
+                                    ->with('report_type', $report_type)
+                                    ->with('student_leaves',$student_leaves);
+                        }
         }
 
-        if ($request->has('ptype')) {
-
-            $pdf = Pdf::loadView('report._pdf',[
-                        'report_type' => $report_type,
-                        'attendances'=>$attendances,
-                        'start_date'=> $request->start_date,
-                        'end_date'=>$request->end_date
-                    ]);
+        if (($request->report_type == Self::attendance) || ($request->report_type == Self::absent)) {
+            if ($request->has('ptype')) {
 
 
-            return $pdf->download($report_type.'.pdf');
+                $pdf = Pdf::loadView('report._attendacepdf',[
+                            'report_type' => $report_type,
+                            'attendances'=>$attendances,
+                            'start_date'=> $request->start_date,
+                            'end_date'=>$request->end_date
+                        ]);
 
-        } else {
-            return view('report.inoutreport')
-            ->with('attendances',$attendances)
-            ->with('start_date',$request->start_date )
-            ->with('end_date',$request->end_date )
-            ->with('report_type', $report_type);
+                return $pdf->download($report_type.'.pdf');
+
+            } else {
+                return view('report.inoutreport')
+                ->with('attendances',$attendances)
+                ->with('start_date',$request->start_date )
+                ->with('end_date',$request->end_date )
+                ->with('report_type', $report_type);
+            }
         }
-
 
     }
 

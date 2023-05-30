@@ -14,8 +14,9 @@
             </a>
             <div class="collapse" id="students">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('student.list') }}"> Student List </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('student.building') }}"> Bldg Assignment </a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('studentleave.index') }}">Student Leave</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('student.list') }}"> Student List </a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('student.building') }}"> Bldg Assignment </a></li>
                 </ul>
             </div>
         </li>

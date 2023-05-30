@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\FingerprintController;
+use App\Http\Controllers\StudentLeaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +83,12 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/report/schedule', [ReportController::class,'saveschedule'])->name('report.saveschedule');
     Route::get('/report/inout', [ReportController::class,'inout'])->name('report.inout');
     Route::post('/report/inout', [ReportController::class,'postinout'])->name('report.postinout');
+
+    Route::get('/studentleave',[StudentLeaveController::class,'index'])->name('studentleave.index');
+    Route::get('/studentleave/create',[StudentLeaveController::class,'create'])->name('studentleave.create');
+    Route::post('/studentleave/create',[StudentLeaveController::class,'store'])->name('studentleave.store');
+    Route::get('/studentleave/{id}/return', [StudentLeaveController::class,'return'])->name('studentleave.return');
+    Route::post('/studentleave/{id}/return', [StudentLeaveController::class,'storereturn'])->name('studentleave.storereturn');
 });
 
 
