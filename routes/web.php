@@ -84,6 +84,8 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/report/inout', [ReportController::class,'inout'])->name('report.inout');
     Route::post('/report/inout', [ReportController::class,'postinout'])->name('report.postinout');
 
+    Route::get('/reporttest',[ReportController::class,'reporttest'])->name('reportest');
+
     Route::get('/studentleave',[StudentLeaveController::class,'index'])->name('studentleave.index');
     Route::get('/studentleave/create',[StudentLeaveController::class,'create'])->name('studentleave.create');
     Route::post('/studentleave/create',[StudentLeaveController::class,'store'])->name('studentleave.store');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coordinator;
 use Carbon\Carbon;
 use App\Models\StudentLeave;
 use Illuminate\Http\Request;
@@ -166,6 +167,18 @@ class ReportController extends Controller
                 ->with('report_type', $report_type);
             }
         }
+
+    }
+
+    public function reporttest()
+    {
+        $coordinators = \DB::table('coordinators')
+                            ->join('users','users.id','=','coordinators.user_id')
+                            ->select('users.email')
+                            ->pluck('users.email');
+
+
+        dd($coordinators);
 
     }
 

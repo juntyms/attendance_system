@@ -33,6 +33,7 @@ class Kernel extends ConsoleKernel
         // Send Fingerprint to other devices
         $schedule->call(DeployFingerprints::class)->everyMinute();
 
+        // Fetch Attendance
         $schedule->call(FetchAttendance::class)->hourly();
     }
 
