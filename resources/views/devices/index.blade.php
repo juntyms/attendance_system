@@ -71,9 +71,7 @@
                                     <i class="icon-trash"></i>
                                 </a>
                                 <a href="{{ route('devices.fetch',$device->id) }}" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Fetch Attendance"><i class="icon-inbox"></i></a>
-                                @if ($device->is_master == 0)
-                                <a href="#" class="btn btn-sm btn-warning"><i class="icon-link"></i></a>
-                                @endif
+
                             </div>
                         </td>
                     </tr>
