@@ -29,9 +29,8 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/',[HomeController::class,'index'])->name('home');
 
     Route::get('/fetchattendance',[FingerprintController::class,'fetchattendance'])->name('fetchattendance');
-
     Route::get('/fetchstudents',[FingerprintController::class,'fetchstudents'])->name('fetchstudents');
-    //Route::Get('/getfp',[FingerprintController::class,'getfp']);
+    Route::Get('/fetchfp',[FingerprintController::class,'fetchfp']);
 
 
 

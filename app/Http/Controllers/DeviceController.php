@@ -166,34 +166,42 @@ class DeviceController extends Controller
 
         $tad = $tad_factory->get_instance();
 
-        $att_logs = $tad->get_att_log()->to_array(); // Getting attendance log from all users.
+        if ($tad->is_alive())
+        {
 
-        //dd(reset($att_logs));
-        foreach($att_logs['Row'] as $x => $attendance) {
-            $db_attendance = Attendance::where('punchtime',$attendance['DateTime'])->where('device_id',$device->id)->first();
-                if ($db_attendance) { //Record Already Found Update Record
-                    $db_attendance->update(
-                        [
+            $att_logs = $tad->get_att_log()->to_array(); // Getting attendance log from all users.
 
-                            'student_id'=>$attendance['PIN'],
-                            'state_id'=>$attendance['Status'],
-                            'punchtime'=>$attendance['DateTime'],
-                            'type'=>$attendance['WorkCode'],
-                            'device_id'=>$device->id
-                        ]
-                    );
-                } else { // No Record Found add Record
-                    Attendance::create(
-                        [
-                            'student_id'=>$attendance['PIN'],
-                            'state_id'=>$attendance['Status'],
-                            'punchtime'=>$attendance['DateTime'],
-                            'type'=>$attendance['WorkCode'],
-                            'device_id'=>$device->id
-                        ]
-                    );
-                }
+            //dd(reset($att_logs));
+            foreach($att_logs['Row'] as $x => $attendance) {
+                $db_attendance = Attendance::where('punchtime',$attendance['DateTime'])->where('device_id',$device->id)->first();
+                    if ($db_attendance) { //Record Already Found Update Record
+                        $db_attendance->update(
+                            [
+
+                                'student_id'=>$attendance['PIN'],
+                                'state_id'=>$attendance['Status'],
+                                'punchtime'=>$attendance['DateTime'],
+                                'type'=>$attendance['WorkCode'],
+                                'device_id'=>$device->id
+                            ]
+                        );
+                    } else { // No Record Found add Record
+                        Attendance::create(
+                            [
+                                'student_id'=>$attendance['PIN'],
+                                'state_id'=>$attendance['Status'],
+                                'punchtime'=>$attendance['DateTime'],
+                                'type'=>$attendance['WorkCode'],
+                                'device_id'=>$device->id
+                            ]
+                        );
+                    }
+            }
+
         }
+        toast('Attendance Downloaded Successfully!','success');
+
+        return redirect()->route('devices.index');
 
     }
 

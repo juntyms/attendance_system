@@ -6,6 +6,7 @@ use App\Schedules\FetchAttendance;
 use App\Schedules\FetchFingerprints;
 use App\Schedules\DeployFingerprints;
 use App\Http\Controllers\UserController;
+use App\Schedules\DeviceStatus;
 use App\Schedules\fetchCoordinatorReport;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -27,13 +28,16 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(new fetchCoordinatorReport)->$myfrequency();
 
-        // Fetch Record From Master Device
+        //! Check device Status
+        $schedule->call(DeviceStatus::class)->everyFiveMinutes();
+
+        //! Fetch Record From Master Device
         $schedule->call(FetchFingerprints::class)->everyMinute();
 
-        // Send Fingerprint to other devices
+        //! Send Fingerprint to other devices
         $schedule->call(DeployFingerprints::class)->everyMinute();
 
-        // Fetch Attendance
+        //! Fetch Attendance
         $schedule->call(FetchAttendance::class)->hourly();
     }
 

@@ -57,7 +57,13 @@
                         <td>{{ $device->os_version }}</td>
                         <td>{{ $device->fmversion }}</td>
                         <td>{{ $device->serialnumber }}</td>
-                        <td>{{ $device->status }}</td>
+                        <td>
+                            @if ($device->status == 'Active')
+                            <span class="badge bg-success text-white">{{ $device->status }}</span>
+                            @else
+                            <span class="badge bg-danger text-white">{{ $device->status }}</span>
+                            @endif
+                        </td>
                         <td>
                             <div class="row">
                                 <a href="{{ route('devices.edit', $device->id) }}" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Edit Device"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
