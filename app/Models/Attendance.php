@@ -10,7 +10,7 @@ class Attendance extends Model
     use HasFactory;
 
     protected $guarded = [];
-    
+
     public function student()
     {
         return $this->hasOne('App\Models\Student','student_id','student_id');
@@ -24,5 +24,9 @@ class Attendance extends Model
         return $this->hasOne('App\Models\State','id','state_id');
     }
 
+    public function device()
+    {
+        return $this->hasOne('App\Models\Device','id','device_id');
+    }
 
 }

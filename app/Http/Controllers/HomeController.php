@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\MonthlyStudentAttendanceChart;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -21,8 +23,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(MonthlyStudentAttendanceChart $studentAttendance)
     {
-        return view('home');
+
+        $att = Attendance::with('device:name')
+                    ->get()
+                    ->toArray();
+        dd($att);
+
+
+        return view('home')->with('studentAttendancechart',$studentAttendance->build());
     }
 }
