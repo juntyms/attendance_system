@@ -29,7 +29,7 @@ class HomeController extends Controller
         $att = Attendance::with('device:name')
                     ->get()
                     ->toArray();
-        dd($att);
+        //dd($att);
 
 
         return view('home')->with('studentAttendancechart',$studentAttendance->build());
