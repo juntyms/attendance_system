@@ -2,6 +2,7 @@
 
 namespace App\Charts;
 
+use DB;
 use App\Models\Attendance;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
@@ -16,13 +17,18 @@ class MonthlyStudentAttendanceChart
 
     public function build()
     {
-        return $this->chart->pieChart()
-            ->setTitle('Building Attendance')
-            ->addData(['device',
-                Attendance::select(\DB::raw('device_id,count(id) as totalcount'))
-                    ->groupBy('device_id')
-                    ->get()->toArray()
-            ])
-            ->setLabels(['January', 'February', 'March', 'April', 'May', 'June','july','August','September','October','November','December']);
+        return $this->chart->barChart()
+            ->setTitle('Monthly Attendance')
+            ->addData('Students',
+                Attendance::select(DB::raw("count(id) as totalcount"), DB::raw("Year(punchtime) Year"), DB::raw("Month(punchtime) Month"))
+                ->groupBy('Year','Month')
+                ->pluck('totalcount')->toArray()
+            )
+            ->setLabels(
+                Attendance::select(DB::raw("DATE_FORMAT(punchtime,'%m-%Y') as YM"), DB::raw('YEAR(punchtime) year, MONTH(punchtime) month'))
+                ->groupBy('year','month','YM')
+                ->pluck('YM')->toArray()
+            );
     }
 }
+

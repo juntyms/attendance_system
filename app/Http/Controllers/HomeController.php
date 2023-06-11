@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\MonthlyStudentAttendanceChart;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Charts\MonthlyStudentAttendanceChart;
 
 class HomeController extends Controller
 {
@@ -25,10 +26,16 @@ class HomeController extends Controller
      */
     public function index(MonthlyStudentAttendanceChart $studentAttendance)
     {
-
-        $att = Attendance::with('device:name')
-                    ->get()
-                    ->toArray();
+/*
+        $att = Attendance::select(DB::raw("count(id) as totalcount"), DB::raw("DATE_FORMAT(punchtime,'%Y') Year"))
+                ->groupBy('Year')
+                ->pluck('totalcount'); */
+        
+        /*
+        $att = Attendance::select(DB::raw("DATE_FORMAT(punchtime,'%Y') Year"))
+                ->groupBy('Year')
+                ->pluck('Year');*/
+                
         //dd($att);
 
 
