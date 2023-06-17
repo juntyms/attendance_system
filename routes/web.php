@@ -70,7 +70,8 @@ Route::middleware(['auth'])->group( function() {
     Route::resources(['buildings'=>BuildingController::class]);
 
     /** Temporary coordinator might be deleted */
-    Route::get('/coordinator/{id}',[CoordinatorController::class,'delete'])->name('coordinator.delete');
+    Route::get('/coordinator/{id}/delete',[CoordinatorController::class,'delete'])->name('coordinator.delete');
+    //Route::get('/coordinators/{id}/delete', [CoordinatorController::class,'delete'])->name('coordinators.delete');
     Route::get('/coordinators/assign/{buildings}',[CoordinatorController::class,'assign'])->name('coordinators.assign');
     Route::post('/coordinators/assign/{buildings}',[CoordinatorController::class,'saveassign'])->name('coordinators.saveassign');
 

@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(new fetchCoordinatorReport)->$myfrequency();
 
         //! Check device Status
-        $schedule->call(DeviceStatus::class)->everyFiveMinutes();
+        $schedule->call(DeviceStatus::class)->everyMinute();
 
         //! Fetch Record From Master Device
         $schedule->call(FetchFingerprints::class)->everyMinute();

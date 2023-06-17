@@ -16,7 +16,9 @@
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"><a class="nav-link" href="{{ route('studentleave.index') }}">Student Leave</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('student.list') }}"> Student List </a></li>
+                    @role('super-admin')
                     <li class="nav-item"><a class="nav-link" href="{{ route('student.building') }}"> Bldg Assignment </a></li>
+                    @endrole
                 </ul>
             </div>
         </li>
@@ -40,10 +42,10 @@
             </a>
             <div class="collapse" id="settings">
                 <ul class="nav flex-column sub-menu">
+                    @role('super-admin')
                     <li class="nav-item"> <a class="nav-link" href="{{ route('devices.index') }}"> Devices </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('departments.index') }}"> Departments </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('buildings.index') }}"> Buildings </a></li>
-                    @role('super-admin')
                     <li class="nav-item"> <a class="nav-link" href="{{ route('report.schedule') }}"> Report Schedule </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('users.index') }}"> Users </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('roles.index')}}"> Roles</a></li>

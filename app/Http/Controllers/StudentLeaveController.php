@@ -5,12 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\StudentLeave;
 use Illuminate\Http\Request;
+use Auth;
 
 class StudentLeaveController extends Controller
 {
+    //const coordinator = 1;
+    const admin = 2;
+
     public function index()
     {
-        $studentleaves = StudentLeave::all();
+        $studentleaves = [];
+        //dd(Auth::user()->coordinator);
+
+        //if (Auth::user()->roles[0]->id == Self::coordinator) {
+        if (Auth::user()->coordinator) {
+/*
+            $studentleaves = StudentLeave::with(['student' => function(Builder $query) {
+                $query->where('building_id','=', Auth::user()->coordinator->building_id);
+            }])->get();
+*/
+            $studentleaves = StudentLeave::whereRelation('student','building_id',Auth::user()->coordinator->building_id)->get();
+
+
+        } else {
+            // check if admin
+            if (Auth::user()->roles[0]->id == Self::admin) {
+
+                $studentleaves = StudentLeave::all();
+            }
+
+
+        }
+//dd($studentleaves);
 
         return view('studentleave.index')
                 ->with('studentleaves',$studentleaves);

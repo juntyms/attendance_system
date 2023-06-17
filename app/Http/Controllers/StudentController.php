@@ -14,12 +14,26 @@ use App\Models\Nationality;
 use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Http\Request;
 use App\Http\Requests\StudentRequest;
+use Auth;
 
 class StudentController extends Controller
 {
+    const admin = 2;
+
     public function index(Request $request)
     {
-        $students = Student::orderBy('id','DESC')->get();
+        $students = [];
+
+        if (Auth::user()->coordinator) {
+            $students = Student::where('building_id', Auth::user()->coordinator->building_id)
+                ->orderBy('id','DESC')->get();
+        } else {
+            if (Auth::user()->roles[0]->id == Self::admin) {
+
+                $students = Student::orderBy('id','DESC')->get();
+            }
+        }
+
 
         return view('student.index',compact('students'));
     }

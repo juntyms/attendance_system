@@ -31,7 +31,7 @@
                         <th>SN</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Action</th>
+
                     </tr>
                     @php $sn=1 @endphp
                     @foreach($users as $user)
@@ -39,7 +39,6 @@
                         <td>{{ $sn++ }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td></td>
                     </tr>
                     @endforeach
                 </table>
