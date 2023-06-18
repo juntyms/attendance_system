@@ -1,6 +1,8 @@
 @extends('layouts.content')
 
 @section('main')
+
+
 <div class="content-wrapper">
     <div class="row">
         <div class="col-sm-12 mb-4 mb-xl-0">
@@ -13,9 +15,8 @@
         <div class="col-xl-12 d-flex grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Student Attendance</h4>
-                    {!! $studentAttendancechart->container() !!}
-
+                    <h4 class="card-title">Students Per Building</h4>
+                    <div id="main" style="width: 300px;height:300px;"></div>
                 </div>
             </div>
         </div>
@@ -26,8 +27,44 @@
 
 @endsection
 
-@section('jscript')
+@section('chartjsscript')
+<script type="text/javascript">
+    $(function () {
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+        var students = @json($students);
 
-<script src="{{ @asset('vendor/larapex-charts/apexcharts.js') }}"></script>
-{{ $studentAttendancechart->script() }}
+        option = {
+        title: {
+
+            left: 'center'
+            },
+        tooltip: {
+            trigger: 'item'
+            },
+        legend: {
+            orient: 'vertical',
+            left: 'left'
+            },
+        series: [
+            {
+            name: 'Access From',
+            type: 'pie',
+            radius: '50%',
+            data: students,
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+        };
+
+        option && myChart.setOption(option);
+    });
+</script>
 @endsection

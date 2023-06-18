@@ -34,6 +34,7 @@
                 </ul>
             </div>
         </li>
+        @role('super-admin')
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#settings" aria-expanded="false" aria-controls="settings">
                 <i class="icon-cog menu-icon"></i>
@@ -54,5 +55,6 @@
                 </ul>
             </div>
         </li>
+        @endrole
     </ul>
 </nav>

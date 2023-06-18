@@ -24,21 +24,28 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(MonthlyStudentAttendanceChart $studentAttendance)
+    public function index()
     {
 /*
         $att = Attendance::select(DB::raw("count(id) as totalcount"), DB::raw("DATE_FORMAT(punchtime,'%Y') Year"))
                 ->groupBy('Year')
                 ->pluck('totalcount'); */
-        
+
         /*
         $att = Attendance::select(DB::raw("DATE_FORMAT(punchtime,'%Y') Year"))
                 ->groupBy('Year')
                 ->pluck('Year');*/
-                
+
         //dd($att);
+        $students = DB::table('students')
+                    ->join('buildings','buildings.id','=','students.building_id')
+                    ->select(DB::raw("count(students.id) value"),'buildings.name')
+                    ->groupBy('buildings.name')
+                    ->get();
 
+//dd($students);
 
-        return view('home')->with('studentAttendancechart',$studentAttendance->build());
+        return view('home')
+            ->with('students',$students);
     }
 }

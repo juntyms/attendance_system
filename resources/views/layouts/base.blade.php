@@ -51,7 +51,11 @@
             color: #ffffff;
         }
     </style>
+
     @livewireStyles
+    <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
+    <script src="{{ asset('vendor/echarts.js') }}"></script>
+    @yield('chartjsscript')
 </head>
 
 <body>
@@ -77,6 +81,8 @@
     <!-- End plugin js for this page -->
     <!-- Custom js for this page-->
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    <!-- Chart -->
+
     <!-- End custom js for this page-->
     @yield('jscript')
     @livewireScripts

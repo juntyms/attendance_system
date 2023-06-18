@@ -8,6 +8,7 @@ use App\Models\StudentLeave;
 use Illuminate\Http\Request;
 use App\Models\ReportSchedule;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Auth;
 
 class ReportController extends Controller
 {
@@ -52,7 +53,7 @@ class ReportController extends Controller
         $endDay = Carbon::parse($end_date)->endOfDay();
 
         $students = \DB::table('students')
-                        ->select('id','student_id','student_name','email');
+                        ->select('id','student_id','student_name','email','building_id');
 
 
         $date_range = "WITH RECURSIVE date_ranges AS (
@@ -73,8 +74,64 @@ class ReportController extends Controller
                         ->whereBetween('punchtime',[$startDay, $endDay])
                         ->where('type',1);
 
+        $attendances = [];
+
         if ($request->report_type == Self::attendance) {
             $report_type = "Full Attendance";
+
+            if (Auth::user()->coordinator) {
+
+                $attendances = \DB::table('date_ranges')
+                            ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
+                            ->joinSub($students, 'studs', function ($join) {
+                                $join->on('studs.id','=','studs.id');
+                            })
+                            ->leftJoinSub($attendance_ins, 'punchin', function($join) {
+                                $join->on('punchin.student_id','=','studs.student_id')
+                                        ->on('dt','=','punchin.datein');
+                            })
+                            ->leftJoinSub($attendance_outs, 'punchout', function($join) {
+                                $join->on('punchout.student_id','=','studs.student_id')
+                                    ->on('dt','=','punchout.dateout');
+                            })
+                            ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
+                            ->where('studs.building_id','=',Auth::user()->coordinator->building_id)
+                            ->orderBy('date_ranges.dt')
+                            ->orderBy('studs.student_name')
+                            ->get();
+
+            } else {
+
+                if (Auth::user()->hasRole('super-admin')) {
+
+                $attendances = \DB::table('date_ranges')
+                            ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
+                            ->joinSub($students, 'studs', function ($join) {
+                                $join->on('studs.id','=','studs.id');
+                            })
+                            ->leftJoinSub($attendance_ins, 'punchin', function($join) {
+                                $join->on('punchin.student_id','=','studs.student_id')
+                                        ->on('dt','=','punchin.datein');
+                            })
+                            ->leftJoinSub($attendance_outs, 'punchout', function($join) {
+                                $join->on('punchout.student_id','=','studs.student_id')
+                                    ->on('dt','=','punchout.dateout');
+                            })
+                            ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
+                            ->orderBy('date_ranges.dt')
+                            ->orderBy('studs.student_name')
+                            ->get();
+
+                }
+
+            }
+        }
+
+        if ($request->report_type == Self::absent) {
+            $report_type = "Absences";
+
+            if (Auth::user()->coordinator) {
+
             $attendances = \DB::table('date_ranges')
                         ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
                          ->joinSub($students, 'studs', function ($join) {
@@ -89,16 +146,16 @@ class ReportController extends Controller
                                 ->on('dt','=','punchout.dateout');
                         })
                         ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
+                        ->whereNull('punchin.pin')
+                        ->whereNull('punchout.pout')
+                        ->where('studs.building_id','=',Auth::user()->coordinator->building_id)
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
                         ->get();
-                        //dd($attendances);
-        }
 
-        if ($request->report_type == Self::absent) {
-            $report_type = "Absences";
-
-            $attendances = \DB::table('date_ranges')
+            }  else {
+                if (Auth::user()->hasRole('super-admin')) {
+                    $attendances = \DB::table('date_ranges')
                         ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
                          ->joinSub($students, 'studs', function ($join) {
                             $join->on('studs.id','=','studs.id');
@@ -117,6 +174,9 @@ class ReportController extends Controller
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
                         ->get();
+                }
+
+            }
         }
 
         if ($request->report_type == Self::late) {
