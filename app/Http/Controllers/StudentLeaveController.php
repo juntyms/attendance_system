@@ -24,7 +24,10 @@ class StudentLeaveController extends Controller
                 $query->where('building_id','=', Auth::user()->coordinator->building_id);
             }])->get();
 */
-            $studentleaves = StudentLeave::whereRelation('student','building_id',Auth::user()->coordinator->building_id)->get();
+            //$studentleaves = StudentLeave::whereRelation('student','building_id',Auth::user()->coordinator->building_id)->get();
+            $studentleaves =  StudentLeave::whereRelation('building','building_id',Auth::user()->coordinator->building_id)->get();
+
+            //dd( $studentleaves);
 
 
         } else {

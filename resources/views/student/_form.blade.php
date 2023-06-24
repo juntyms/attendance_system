@@ -31,33 +31,10 @@
         </div>
         <div class="card mb-2">
             <div class="card-body">
-                <p class="mb-2"><span class="text-primary">Addtional information</span></p>
+                <p class="mb-2"><span class="text-primary">Addtional Emergency Contact</span></p>
                 <hr>
 
-                <div class="row">
-                    <label for="studentId" class="col-sm-4 col-form-label">Civil ID</label>
-                    <div class="col-sm-8">
-                        {{ Form::text('civilno',null, ['class'=>'form-control']) }}
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <label for="nationality" class="col-sm-4 col-form-label">Nationality</label>
-                    <div class="col-sm-8">
-                        {{ Form::select('nationality_id',$nationalities,null, ['class'=>'form-control']) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <label for="joiningDate" class="col-sm-4 col-form-label">Joining Date</label>
-                    <div class="col-sm-8">
-                        {{ Form::date('date_of_joining',null, ['class'=>'form-control']) }}
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <label for="status" class="col-sm-4 col-form-label">Status</label>
-                    <div class="col-sm-8">
-                        {{ Form::select('status_id',$status,null, ['class'=>'form-control']) }}
-                    </div>
-                </div>
+
 
             </div>
         </div>
@@ -66,45 +43,51 @@
         <div class="card mb-1">
             <div class="card-body">
                 <div class="row mt-2">
-                    <label for="studentId" class="col-sm-3 col-form-label">Student ID</label>
-                    <div class="col-sm-9">
+                    <label for="studentId" class="col-sm-2 col-form-label">Student ID</label>
+                    <div class="col-sm-10">
                         {{ Form::text('student_id', null, ['placeholder'=> 'User Name','class' => 'form-control']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label for="fullName" class="col-sm-3 col-form-label">Fullname</label>
-                    <div class="col-sm-9">
+                    <label for="fullName" class="col-sm-2 col-form-label">Fullname</label>
+                    <div class="col-sm-10">
                         {{ Form::text('student_name', null, ['placeholder'=> 'Name','class' => 'form-control '])}}
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label for="email" class="col-sm-3 col-form-label">Email</label>
-                    <div class="col-sm-9">
+                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
                         {{ Form::text('email', null, ['placeholder' =>'Email','class' => 'form-control ']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label for="mobile" class="col-sm-3 col-form-label">Mobile</label>
-                    <div class="col-sm-9">
+                    <label for="mobile" class="col-sm-2 col-form-label">Mobile</label>
+                    <div class="col-sm-10">
                         {{ Form::text('mobile_no', null, ['placeholder' =>'User Name','class' => 'form-control']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label for="department" class="col-sm-3 col-form-label">Department</label>
-                    <div class="col-sm-9">
-                        {{ Form::select('department_id', $depts,null,['class' =>'form-control ','placeholder'=>'Please select Department ...']) }}
+                    <label for="civilId" class="col-sm-2 col-form-label">Civil ID</label>
+                    <div class="col-sm-10">
+                        {{ Form::text('civilno',null, ['class'=>'form-control']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label for="building" class="col-sm-3 col-form-label">Building</label>
-                    <div class="col-sm-9">
-                        {{ Form::select('building_id', $buildings,null,['class' =>'form-control ','placeholder'=>'Please select Department ...']) }}
+                    <label for="nationality" class="col-sm-2 col-form-label">Nationality</label>
+                    <div class="col-sm-3">
+                        {{ Form::select('nationality_id',$nationalities,null, ['class'=>'form-control']) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="joiningDate" class="col-sm-2 col-form-label">Joining Date</label>
+                    <div class="col-sm-3">
+                        {{ Form::date('date_of_joining',null, ['class'=>'form-control']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label for="roomNo" class="col-sm-3 col-form-label">Room No</label>
-                    <div class="col-sm-9">
-                        {{ Form::text('room_no', null, ['placeholder' =>'Room Number','class' => 'form-control']) }}
+                    <label for="status" class="col-sm-2 col-form-label">Status</label>
+                    <div class="col-sm-3">
+                        {{ Form::select('status_id',$status,null, ['class'=>'form-control']) }}
                     </div>
                 </div>
             </div>

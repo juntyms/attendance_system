@@ -11,13 +11,13 @@ class Building extends Model
 
     protected $guarded = [];
 
-    public function students()
-    {
-        return $this->hasMany(Student::class);
-    }
-
     public function coordinators()
     {
         return $this->hasMany(Coordinator::class);
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class,'id','building_id');
     }
 }

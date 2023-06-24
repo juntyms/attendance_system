@@ -18,15 +18,11 @@ class CreateStudentsTable extends Migration
             $table->string('student_name');
             $table->string('email');
             $table->string('mobile_no');
-            $table->unsignedBigInteger('department_id');
-            $table->foreign('department_id')->references('id')->on('departments');
-            $table->unsignedBigInteger('building_id');
-            $table->foreign('building_id')->references('id')->on('buildings');
-            $table->string('room_no');
             $table->string('civilno');
+            $table->unsignedBigInteger('building_id')->nullable();
             $table->timestamp('date_of_joining')->useCurrent();
-            $table->string('emergency_contact_person');
-            $table->string('emergency_no');
+            $table->string('emergency_contact_person')->nullable();
+            $table->string('emergency_no')->nullable();
             $table->timestamps();
         });
     }

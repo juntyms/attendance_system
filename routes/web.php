@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ReportController;
@@ -32,8 +33,6 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/fetchstudents',[FingerprintController::class,'fetchstudents'])->name('fetchstudents');
     Route::Get('/fetchfp',[FingerprintController::class,'fetchfp']);
 
-
-
     Route::get('/users', [UserController::class,'index'])->name('users.index');
     Route::get('/users/create',[UserController::class,'create'])->name('users.create');
     Route::post('/users/create',[UserController::class,'store'])->name('users.store');
@@ -46,9 +45,11 @@ Route::middleware(['auth'])->group( function() {
     Route::get('/students',[StudentController::class,'index'])->name('student.list');
     Route::get('/students/addstudent',[StudentController::class,'create'])->name('student.add');
     Route::post('/students/addstudent',[StudentController::class,'store'])->name('student.store');
+    Route::get('/students/roomassignment',[StudentController::class,'roomassignment'])->name('student.roomassignment');
+    Route::post('/students/roomassignment',[StudentController::class,'saveroomassignment'])->name('student.saveroomassignment');
+    Route::get('/students/roomassignment/{id}',[StudentController::class,'deleteroomassignment'])->name('student.deleteroomassignment');
     Route::get('/students/{id}/edit',[StudentController::class,'edit'])->name('student.edit');
     Route::post('/students/{id}/edit',[StudentController::class,'update'])->name('student.update');
-    Route::get('/students/buildingassignment', [StudentController::class,'buildings'])->name('student.building');
     Route::get('/students/{student}/push',[StudentController::class,'push'])->name('student.push');
 
 
@@ -91,6 +92,13 @@ Route::middleware(['auth'])->group( function() {
     Route::post('/studentleave/create',[StudentLeaveController::class,'store'])->name('studentleave.store');
     Route::get('/studentleave/{id}/return', [StudentLeaveController::class,'return'])->name('studentleave.return');
     Route::post('/studentleave/{id}/return', [StudentLeaveController::class,'storereturn'])->name('studentleave.storereturn');
+
+    Route::get('/rooms',[RoomController::class, 'index'])->name('rooms.index');
+    Route::get('/rooms/create',[RoomController::class, 'create'])->name('rooms.create');
+    Route::post('/rooms/create',[RoomController::class,'store'])->name('rooms.store');
+    Route::get('/rooms/{id}/edit', [RoomController::class, 'edit'])->name('rooms.edit');
+    Route::post('/rooms/{id}/edit',[RoomController::Class,'update'])->name('rooms.update');
+    Route::get('/rooms/{id}/delete',[RoomController::class,'delete'])->name('rooms.delete');
 });
 
 

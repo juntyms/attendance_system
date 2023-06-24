@@ -18,4 +18,18 @@ class StudentLeave extends Model
     {
         return $this->hasOne(Student::class,'id','student_id');
     }
+
+    public function studentroom()
+    {
+        return $this->hasOne(StudentRoom::class, 'student_id','student_id');
+    }
+
+    public function building()
+    {
+        return $this->hasOneThrough(Room::class,
+        StudentRoom::class,
+        'student_id',
+        'id',
+        'student_id','room_id');
+    }
 }

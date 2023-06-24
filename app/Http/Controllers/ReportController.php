@@ -53,7 +53,7 @@ class ReportController extends Controller
         $endDay = Carbon::parse($end_date)->endOfDay();
 
         $students = \DB::table('students')
-                        ->select('id','student_id','student_name','email','building_id');
+                        ->select('id','student_id','student_name','email','building_id','mobile_no');
 
 
         $date_range = "WITH RECURSIVE date_ranges AS (
@@ -94,7 +94,12 @@ class ReportController extends Controller
                                 $join->on('punchout.student_id','=','studs.student_id')
                                     ->on('dt','=','punchout.dateout');
                             })
-                            ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
+                            ->leftjoin('student_rooms','student_rooms.student_id','=','studs.id')
+                            ->leftjoin('rooms','rooms.id','=','student_rooms.room_id')
+                            ->leftjoin('buildings','buildings.id','=','rooms.building_id')
+                            ->select('buildings.name as buildingname','rooms.name as roomname',
+                            'studs.id','studs.student_id','studs.student_name','studs.email','studs.mobile_no',
+                            'date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
                             ->where('studs.building_id','=',Auth::user()->coordinator->building_id)
                             ->orderBy('date_ranges.dt')
                             ->orderBy('studs.student_name')
@@ -117,7 +122,12 @@ class ReportController extends Controller
                                 $join->on('punchout.student_id','=','studs.student_id')
                                     ->on('dt','=','punchout.dateout');
                             })
-                            ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
+                            ->leftjoin('student_rooms','student_rooms.student_id','=','studs.id')
+                            ->leftjoin('rooms','rooms.id','=','student_rooms.room_id')
+                            ->leftjoin('buildings','buildings.id','=','rooms.building_id')
+                            ->select('buildings.name as buildingname','rooms.name as roomname',
+                                'studs.id','studs.student_id','studs.student_name','studs.email','studs.mobile_no',
+                                'date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
                             ->orderBy('date_ranges.dt')
                             ->orderBy('studs.student_name')
                             ->get();
@@ -145,7 +155,12 @@ class ReportController extends Controller
                             $join->on('punchout.student_id','=','studs.student_id')
                                 ->on('dt','=','punchout.dateout');
                         })
-                        ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
+                        ->leftjoin('student_rooms','student_rooms.student_id','=','studs.id')
+                        ->leftjoin('rooms','rooms.id','=','student_rooms.room_id')
+                        ->leftjoin('buildings','buildings.id','=','rooms.building_id')
+                        ->select('buildings.name as buildingname','rooms.name as roomname',
+                        'studs.id','studs.student_id','studs.student_name','studs.email','studs.mobile_no',
+                        'date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
                         ->whereNull('punchin.pin')
                         ->whereNull('punchout.pout')
                         ->where('studs.building_id','=',Auth::user()->coordinator->building_id)
@@ -168,7 +183,12 @@ class ReportController extends Controller
                             $join->on('punchout.student_id','=','studs.student_id')
                                 ->on('dt','=','punchout.dateout');
                         })
-                        ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
+                        ->leftjoin('student_rooms','student_rooms.student_id','=','studs.id')
+                        ->leftjoin('rooms','rooms.id','=','student_rooms.room_id')
+                        ->leftjoin('buildings','buildings.id','=','rooms.building_id')
+                        ->select('buildings.name as buildingname','rooms.name as roomname',
+                        'studs.id','studs.student_id','studs.student_name','studs.email','studs.mobile_no',
+                        'date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
                         ->whereNull('punchin.pin')
                         ->whereNull('punchout.pout')
                         ->orderBy('date_ranges.dt')
@@ -210,7 +230,7 @@ class ReportController extends Controller
             if ($request->has('ptype')) {
 
 
-                $pdf = Pdf::loadView('report._attendacepdf',[
+                $pdf = Pdf::loadView('report._attendancepdf',[
                             'report_type' => $report_type,
                             'attendances'=>$attendances,
                             'start_date'=> $request->start_date,

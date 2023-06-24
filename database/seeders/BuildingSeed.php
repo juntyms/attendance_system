@@ -17,9 +17,6 @@ class BuildingSeed extends Seeder
     public function run()
     {
         DB::table('buildings')->delete();
-        Building::create(['name'=>'Block 1']);
-        Building::create(['name'=>'Block 2']);
-        Building::create(['name'=>'Block 3']);
-       
+        Building::create(['name'=>'B1']);
     }
 }
