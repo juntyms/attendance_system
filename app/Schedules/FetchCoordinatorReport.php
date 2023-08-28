@@ -7,9 +7,8 @@ use App\Mail\CoordinatorReport;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
-class fetchCoordinatorReport
+class FetchCoordinatorReport
 {
-
     public function __invoke()
     {
         $startDay = Carbon::today()->subMonth()->startOfDay();
@@ -20,16 +19,16 @@ class fetchCoordinatorReport
 
 
         $coordinators = \DB::table('coordinators')
-                            ->join('users','users.id','=','coordinators.user_id')
-                            ->select('users.name','users.email','coordinators.building_id')
+                            ->join('users', 'users.id', '=', 'coordinators.user_id')
+                            ->select('users.name', 'users.email', 'coordinators.building_id')
                             ->get();
 
         foreach($coordinators as $coordinator) {
 
             // Generate report and send to Coordinators
             $students = \DB::table('students')
-                            ->select('id','student_id','student_name','email')
-                            ->where('building_id',$coordinator->building_id);
+                            ->select('id', 'student_id', 'student_name', 'email')
+                            ->where('building_id', $coordinator->building_id);
 
 
             $date_range = "WITH RECURSIVE date_ranges AS (
@@ -40,42 +39,36 @@ class fetchCoordinatorReport
 
 
             $attendance_ins = \DB::table('attendances')
-                            ->select('student_id','type','punchtime as pin',\DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as datein"))
-                            ->whereBetween('punchtime',[$startDay, $endDay])
-                            ->where('type',0);
+                            ->select('student_id', 'type', 'punchtime as pin', \DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as datein"))
+                            ->whereBetween('punchtime', [$startDay, $endDay])
+                            ->where('type', 0);
 
 
             $attendance_outs = \DB::table('attendances')
-                            ->select('student_id','type','punchtime as pout',\DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as dateout"))
-                            ->whereBetween('punchtime',[$startDay, $endDay])
-                            ->where('type',1);
+                            ->select('student_id', 'type', 'punchtime as pout', \DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as dateout"))
+                            ->whereBetween('punchtime', [$startDay, $endDay])
+                            ->where('type', 1);
 
             $attendances = \DB::table('date_ranges')
                             ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
                             ->joinSub($students, 'studs', function ($join) {
-                                $join->on('studs.id','=','studs.id');
+                                $join->on('studs.id', '=', 'studs.id');
                             })
-                            ->leftJoinSub($attendance_ins, 'punchin', function($join) {
-                                $join->on('punchin.student_id','=','studs.student_id')
-                                        ->on('dt','=','punchin.datein');
+                            ->leftJoinSub($attendance_ins, 'punchin', function ($join) {
+                                $join->on('punchin.student_id', '=', 'studs.student_id')
+                                        ->on('dt', '=', 'punchin.datein');
                             })
-                            ->leftJoinSub($attendance_outs, 'punchout', function($join) {
-                                $join->on('punchout.student_id','=','studs.student_id')
-                                    ->on('dt','=','punchout.dateout');
+                            ->leftJoinSub($attendance_outs, 'punchout', function ($join) {
+                                $join->on('punchout.student_id', '=', 'studs.student_id')
+                                    ->on('dt', '=', 'punchout.dateout');
                             })
-                            ->select('studs.id','studs.student_id','studs.student_name','studs.email','date_ranges.dt','punchin.pin','punchout.pout','punchin.datein','punchout.dateout')
+                            ->select('studs.id', 'studs.student_id', 'studs.student_name', 'studs.email', 'date_ranges.dt', 'punchin.pin', 'punchout.pout', 'punchin.datein', 'punchout.dateout')
                             ->orderBy('date_ranges.dt')
                             ->orderBy('studs.student_name')
                             ->get();
 
-
             Mail::to($coordinator->email)->send(new CoordinatorReport($attendances));
         }
-
-
-
-
-
 
     }
 }

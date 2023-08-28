@@ -3,29 +3,24 @@
 namespace App\Schedules;
 
 use App\Models\Device;
-use TADPHP\TADFactory;
 use App\Models\Fingerprint;
+use TADPHP\TADFactory;
 
-
-class deployFingerprints
+class DeployFingerprints
 {
-
     public function __invoke()
     {
-        $devices = Device::where('is_master',0)->get();
+        $devices = Device::where('is_master', 0)->get();
 
-        foreach($devices as $device)
-        {
-            $tad_factory = new TADFactory(['ip'=>$device->ip]);
+        foreach($devices as $device) {
+            $tad_factory = new TADFactory(['ip' => $device->ip]);
 
             $tad = $tad_factory->get_instance();
 
-            if ($tad->is_alive())
-            {
+            if ($tad->is_alive()) {
                 $fingerprints = Fingerprint::all();
 
-                foreach($fingerprints as $fingerprint)
-                {
+                foreach($fingerprints as $fingerprint) {
                     $user_template_data = [
                         'pin' => $fingerprint->student_id,
                         'finger_id' => $fingerprint->fingerid, // First fingerprint has 0 as index.
@@ -39,5 +34,4 @@ class deployFingerprints
             }
         }
     }
-
 }
