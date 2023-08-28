@@ -5,26 +5,22 @@ namespace App\Schedules;
 use App\Models\Device;
 use TADPHP\TADFactory;
 
-class deviceStatus
+class DeviceStatus
 {
-
     public function __invoke()
     {
         $devices = Device::get();
 
-        foreach($devices as $device)
-        {
-            $tad_factory = new TADFactory(['ip'=>$device->ip]);
+        foreach($devices as $device) {
+            $tad_factory = new TADFactory(['ip' => $device->ip]);
 
             $tad = $tad_factory->get_instance();
 
-            if ($tad->is_alive())
-            {
-                $device->update(['status'=>'Active']);
+            if ($tad->is_alive()) {
+                $device->update(['status' => 'Active']);
             } else {
-                $device->update(['status'=>'In-Active']);
+                $device->update(['status' => 'In-Active']);
             }
         }
     }
-
 }
