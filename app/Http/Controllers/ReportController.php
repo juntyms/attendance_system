@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coordinator;
+use Auth;
 use Carbon\Carbon;
+use App\Exports\LateExport;
+use App\Models\Coordinator;
 use App\Models\StudentLeave;
 use Illuminate\Http\Request;
+
 use App\Models\ReportSchedule;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Auth;
+use App\Exports\AttendanceExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -18,6 +22,7 @@ class ReportController extends Controller
 
     const rview = 1;
     const rpdf = 2;
+    const rexcel = 3;
 
     public function schedule()
     {
@@ -207,29 +212,42 @@ class ReportController extends Controller
                         ->whereNull('return_date')
                         ->get();
 
-                        if ($request->has('ptype')) { //PDF Report Type
-                            $pdf = Pdf::loadView('report._latepdf',[
+            if ($request->ptype == Self::rview) {
+                return view('report.latereport')
+                                ->with('report_type', $report_type)
+                                ->with('student_leaves',$student_leaves)
+                                ->with('start_date',$request->start_date)
+                                ->with('end_date',$request->end_date);
+            }
+
+            if ($request->ptype == Self::rpdf) {
+                $pdf = Pdf::loadView('report._latepdf',[
                             'report_type' => $report_type,
                             'student_leaves'=>$student_leaves,
                             'start_date'=> $request->start_date,
                             'end_date'=>$request->end_date
                         ]);
 
-                        return $pdf->download($report_type.'.pdf');
+                return $pdf->download($report_type.'.pdf');
+            }
 
-                        } else {
-                            return view('report.latereport')
-                                    ->with('start_date',$request->start_date)
-                                    ->with('end_date',$request->end_date)
-                                    ->with('report_type', $report_type)
-                                    ->with('student_leaves',$student_leaves);
-                        }
+
+            if ($request->ptype == Self::rexcel) {
+                return Excel::download(new LateExport($student_leaves),'Late.xlsx');
+            }
+
         }
 
         if (($request->report_type == Self::attendance) || ($request->report_type == Self::absent)) {
-            if ($request->has('ptype')) {
+            if ($request->ptype == Self::rview) {
+                return view('report.inoutreport')
+                ->with('attendances',$attendances)
+                ->with('start_date',$request->start_date )
+                ->with('end_date',$request->end_date )
+                ->with('report_type', $report_type);
+            }
 
-
+            if ($request->ptype == Self::rpdf) {
                 $pdf = Pdf::loadView('report._attendancepdf',[
                             'report_type' => $report_type,
                             'attendances'=>$attendances,
@@ -238,13 +256,10 @@ class ReportController extends Controller
                         ]);
 
                 return $pdf->download($report_type.'.pdf');
+            }
 
-            } else {
-                return view('report.inoutreport')
-                ->with('attendances',$attendances)
-                ->with('start_date',$request->start_date )
-                ->with('end_date',$request->end_date )
-                ->with('report_type', $report_type);
+            if ($request->ptype == Self::rexcel) {
+                return Excel::download(new AttendanceExport($attendances),'attendance.xlsx');
             }
         }
 
