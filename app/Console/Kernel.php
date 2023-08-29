@@ -7,7 +7,7 @@ use App\Schedules\FetchFingerprints;
 use App\Schedules\DeployFingerprints;
 use App\Http\Controllers\UserController;
 use App\Schedules\DeviceStatus;
-use App\Schedules\fetchCoordinatorReport;
+use App\Schedules\FetchCoordinatorReport;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
