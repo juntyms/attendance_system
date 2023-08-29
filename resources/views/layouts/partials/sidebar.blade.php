@@ -45,6 +45,7 @@
                     @role('super-admin')
                     <li class="nav-item"> <a class="nav-link" href="{{ route('devices.index') }}"> Devices </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('departments.index') }}"> Departments </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('rooms.index') }}"> Rooms </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('buildings.index') }}"> Buildings </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('report.schedule') }}"> Report Schedule </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('users.index') }}"> Users </a></li>
