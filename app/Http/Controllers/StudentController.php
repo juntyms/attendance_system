@@ -22,7 +22,7 @@ use App\Http\Requests\StudentRequest;
 
 class StudentController extends Controller
 {
-    const admin = 2;
+    public const admin = 2;
 
     public function index(Request $request)
     {
@@ -30,45 +30,67 @@ class StudentController extends Controller
 
         if (Auth::user()->coordinator) {
 
-            $is_building = \DB::table('coordinators')->where('user_id',Auth::user()->id)->first();
+            $is_building = \DB::table('coordinators')->where('user_id', Auth::user()->id)->first();
 
             if($is_building) {
-                $building_rooms = \DB::table('rooms')->select('id')->where('building_id',$is_building->id)->pluck('id');
+                $building_rooms = \DB::table('rooms')->select('id')->where('building_id', $is_building->id)->pluck('id');
 
                 $students = DB::table('student_rooms')
-                                ->join('rooms','rooms.id','=','student_rooms.room_id')
-                                ->join('buildings','buildings.id','=','rooms.building_id')
-                                ->join('students','students.id','=','student_rooms.student_id')
-                                ->whereIn('rooms.id',$building_rooms)
-                                ->select('students.id','students.student_id','students.student_name','students.email',
-                                    'students.mobile_no','students.is_pushed',
-                                    'buildings.name as buildingname','rooms.name as roomname','student_rooms.id as studentroomid')
-                                ->orderBy('students.id','DESC')
+                                ->join('rooms', 'rooms.id', '=', 'student_rooms.room_id')
+                                ->join('buildings', 'buildings.id', '=', 'rooms.building_id')
+                                ->join('students', 'students.id', '=', 'student_rooms.student_id')
+                                ->whereIn('rooms.id', $building_rooms)
+                                ->select(
+                                    'students.id',
+                                    'students.student_id',
+                                    'students.student_name',
+                                    'students.email',
+                                    'students.emergency_no',
+                                    'students.emergency2_no',
+                                    'students.emergency3_no',
+                                    'students.mobile_no',
+                                    'students.is_pushed',
+                                    'buildings.name as buildingname',
+                                    'rooms.name as roomname',
+                                    'student_rooms.id as studentroomid'
+                                )
+                                ->orderBy('students.id', 'DESC')
                                 ->get();
             }
 
 
         } else {
-            if (Auth::user()->roles[0]->id == Self::admin) {
-/*
-                $students = DB::table('student_rooms')
-                                ->join('rooms','rooms.id','=','student_rooms.room_id')
-                                ->join('buildings','buildings.id','=','rooms.building_id')
-                                ->join('students','students.id','=','student_rooms.student_id')
-                                ->select('students.id','students.student_id','students.student_name','students.email',
-                                    'students.mobile_no','students.is_pushed',
-                                    'buildings.name as buildingname','rooms.name as roomname','student_rooms.id as studentroomid')
-                                ->orderBy('students.id','DESC')
-                                ->get();
-*/
+            if (Auth::user()->roles[0]->id == self::admin) {
+                /*
+                                $students = DB::table('student_rooms')
+                                                ->join('rooms','rooms.id','=','student_rooms.room_id')
+                                                ->join('buildings','buildings.id','=','rooms.building_id')
+                                                ->join('students','students.id','=','student_rooms.student_id')
+                                                ->select('students.id','students.student_id','students.student_name','students.email',
+                                                    'students.mobile_no','students.is_pushed',
+                                                    'buildings.name as buildingname','rooms.name as roomname','student_rooms.id as studentroomid')
+                                                ->orderBy('students.id','DESC')
+                                                ->get();
+                */
                 $students = DB::table('students')
-                            ->leftjoin('buildings','buildings.id','=','students.building_id')
-                            ->leftjoin('student_rooms','student_rooms.student_id','=','students.id')
-                            ->leftjoin('rooms','rooms.id','=','student_rooms.room_id')
-                            ->select('students.id','students.student_id','students.student_name','students.email',
-                                    'students.mobile_no','students.is_pushed',
-                                    'buildings.name as buildingname','rooms.name as roomname','student_rooms.id as studentroomid')
-                            ->orderBy('students.id','DESC')
+                            ->leftjoin('buildings', 'buildings.id', '=', 'students.building_id')
+                            ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'students.id')
+                            ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
+                            ->select(
+                                'students.id',
+                                'students.student_id',
+                                'students.student_name',
+                                'students.email',
+                                'students.emergency_no',
+                                'students.emergency2_no',
+                                'students.emergency3_no',
+                                'students.mobile_no',
+                                'students.is_pushed',
+                                'buildings.name as buildingname',
+                                'rooms.name as roomname',
+                                'student_rooms.id as studentroomid'
+                            )
+                            ->orderBy('students.id', 'DESC')
                             ->get();
 
 
@@ -76,7 +98,7 @@ class StudentController extends Controller
         }
 
 
-        return view('student.index',compact('students'));
+        return view('student.index', compact('students'));
     }
 
     public function roomassignment()
@@ -89,7 +111,7 @@ class StudentController extends Controller
         // Check room capacity
         $room = Room::findOrFail($request->room_id);
 
-        $room_occupancy = StudentRoom::where('room_id',$request->room_id)->count();
+        $room_occupancy = StudentRoom::where('room_id', $request->room_id)->count();
 
         if($room->capacity > $room_occupancy) {
             //Save Student
@@ -97,11 +119,11 @@ class StudentController extends Controller
 
             $student = Student::findOrFail($request->student_id);
 
-            $student->update(['building_id'=> $room->building_id]);
+            $student->update(['building_id' => $room->building_id]);
 
-            Alert::success('Room Assignment','Student Assigned');
+            Alert::success('Room Assignment', 'Student Assigned');
         } else {
-            Alert::error('Error','Room Capacity Full');
+            Alert::error('Error', 'Room Capacity Full');
         }
 
 
@@ -114,11 +136,11 @@ class StudentController extends Controller
 
         $student = Student::findOrFail($student_room->student_id);
 
-        $student->update(['building_id'=> NULL]);
+        $student->update(['building_id' => null]);
 
         StudentRoom::destroy($id);
 
-        Alert::error('Deleted','Room Assignment');
+        Alert::error('Deleted', 'Room Assignment');
 
         return redirect()->route('student.list');
     }
@@ -126,29 +148,29 @@ class StudentController extends Controller
     public function create()
     {
         $depts = Department::pluck('name', 'id');
-        $buildings= Building::pluck('name','id');
-        $nationalities = Nationality::pluck('name','id');
-        $status = Status::pluck('name','id');
+        $buildings = Building::pluck('name', 'id');
+        $nationalities = Nationality::pluck('name', 'id');
+        $status = Status::pluck('name', 'id');
 
-        return view('student.create',compact('depts','buildings','nationalities','status'));
+        return view('student.create', compact('depts', 'buildings', 'nationalities', 'status'));
     }
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'student_id'=>'required',
+            'student_id' => 'required',
             'student_name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'mobile_no'=>'required',
+            'mobile_no' => 'required',
             'nationality_id' => 'required',
             'status_id' => 'required',
             'civilno' => 'required',
             'date_of_joining' => 'required',
-            'emergency_contact_person'=>'required',
+            'emergency_contact_person' => 'required',
             'emergency_no' => 'required'
         ]);
 
         Student::create($validated);
-        toast('Student Created Successfully!','success');
+        toast('Student Created Successfully!', 'success');
 
         return redirect()->route('student.list');
     }
@@ -157,32 +179,31 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
 
-        $device = Device::where('is_master',1)->first();
+        $device = Device::where('is_master', 1)->first();
 
         if ($device) {
 
-            $tad_factory = new TADFactory(['ip'=>$device->ip]);
+            $tad_factory = new TADFactory(['ip' => $device->ip]);
 
             $tad = $tad_factory->get_instance();
 
-            if ($tad->is_alive())
-            {
+            if ($tad->is_alive()) {
                 $template1_data = [
                     'pin' => $student->student_id,
                     'name' => $student->student_name,
                     ];
 
-                $tad->set_user_info( $template1_data );
+                $tad->set_user_info($template1_data);
 
-                $student->update(['is_pushed'=>1]);
+                $student->update(['is_pushed' => 1]);
 
-                toast('Student pushed to master device!','success');
+                toast('Student pushed to master device!', 'success');
             } else {
-                toast('Device Not Found or No Active Master Device','error');
+                toast('Device Not Found or No Active Master Device', 'error');
             }
 
         } else {
-            toast('No Master Device Found, Please Set Master Device','error');
+            toast('No Master Device Found, Please Set Master Device', 'error');
         }
 
         return redirect()->route('student.list');
@@ -191,65 +212,56 @@ class StudentController extends Controller
     public function allattendance()
     {
 
-       $attendance=Attendance::get();
+        $attendance = Attendance::get();
 
-
-       return view('attendance.all', compact('attendance'));
+        return view('attendance.all', compact('attendance'));
     }
 
     public function updateattendance()
     {
 
-        $last=Attendance::max('uid');
+        $last = Attendance::max('uid');
 
+        try {
+            $zk = new ZKTeco(env('device_ip'));
+            $last = Attendance::max('uid');
 
-            try
-            {
-                $zk = new ZKTeco(env('device_ip'));
-                $last=Attendance::max('uid');
+            if ($zk->connect()) {
 
-                if ($zk->connect())
-                {
+                $attendances = $zk->getAttendance();
 
-                    $attendances = $zk->getAttendance();
-
-                    //dd($attendances);
-                    foreach($attendances as $attendance)
-                    {
-                        if($attendance['uid'] > $last)
-                        {
-                            Attendance::create([
-                                'uid'=>$attendance['uid'],
-                                'student_id'=>$attendance['id'],
-                                'state_id'=>$attendance['state'],
-                                'punchtime'=>$attendance['timestamp'],
-                                'type'=>$attendance['type']
-                            ]);
-                        }
+                //dd($attendances);
+                foreach($attendances as $attendance) {
+                    if($attendance['uid'] > $last) {
+                        Attendance::create([
+                            'uid' => $attendance['uid'],
+                            'student_id' => $attendance['id'],
+                            'state_id' => $attendance['state'],
+                            'punchtime' => $attendance['timestamp'],
+                            'type' => $attendance['type']
+                        ]);
                     }
                 }
             }
-            catch(Exception $e){
-                return redirect()->route('attendance.all');
-
-
-            }
-
+        } catch(Exception $e) {
             return redirect()->route('attendance.all');
 
+        }
+
+        return redirect()->route('attendance.all');
 
     }
 
     public function edit($id)
     {
         $depts = Department::pluck('name', 'id');
-        $buildings= Building::pluck('name','id');
-        $nationalities = Nationality::pluck('name','id');
-        $status = Status::pluck('name','id');
+        $buildings = Building::pluck('name', 'id');
+        $nationalities = Nationality::pluck('name', 'id');
+        $status = Status::pluck('name', 'id');
 
         $student = Student::findOrFail($id);
 
-        return view('student.edit', compact('student','depts','buildings','nationalities','status'));
+        return view('student.edit', compact('student', 'depts', 'buildings', 'nationalities', 'status'));
     }
 
     public function update(StudentRequest $request, $id)
@@ -258,12 +270,9 @@ class StudentController extends Controller
 
         $student->update($request->all());
 
-        toast('User Updated Successfully!','success');
+        toast('User Updated Successfully!', 'success');
 
         return redirect()->route('student.list');
     }
-
-
-
 
 }

@@ -16,6 +16,7 @@ class CreateStudentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('student_id');
             $table->string('student_name');
+            $table->string('student_name_ar')->nullable();
             $table->string('email');
             $table->string('mobile_no');
             $table->string('civilno');
@@ -23,6 +24,8 @@ class CreateStudentsTable extends Migration
             $table->timestamp('date_of_joining')->useCurrent();
             $table->string('emergency_contact_person')->nullable();
             $table->string('emergency_no')->nullable();
+            $table->string('emergency2_no')->nullable();
+            $table->string('emergency3_no')->nullable();
             $table->timestamps();
         });
     }

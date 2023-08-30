@@ -15,6 +15,7 @@
                         <th class="text-white">Student ID</th>
                         <th class="text-white">Student Name</th>
                         <th class="text-white">Email</th>
+                        <th class="text-white">Emergency No.</th>
                         <th class="text-white">Mobile Number</th>
                         <th class="text-white">Building</th>
                         <th class="text-white">Room No</th>
@@ -29,6 +30,14 @@
                         <td>{{ $student->student_id}}</td>
                         <td>{{ $student->student_name }}</td>
                         <td>{{ $student->email }}</td>
+                        <td>
+                            <ul>
+                                <li>{{ $student->emergency_no ?? ""}}</li>
+                                <li>{{ $student->emergency2_no ?? ""}}</li>
+                                <li>{{ $student->emergency3_no ?? ""}}</li>
+                            </ul>
+
+                        </td>
                         <td>{{ $student->mobile_no ?? ""}}</td>
                         <td>{{ $student->buildingname ?? ""}}</td>
                         <td>{{ $student->roomname ?? "" }}</td>

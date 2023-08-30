@@ -4,10 +4,10 @@
 <div class="content-wrapper">
     <div class="card">
         <div class="card-body">
-            <h5> Create New User </h5>
+            <h5> Update User </h5>
             <hr />
-            {{ Form::open(['route'=>'users.store']) }}
-            @include('users._form',['submitText'=>' Save'])
+            {{ Form::model($user, ['route'=>['users.update', $user->id]]) }}
+            @include('users._form',['submitText'=>' Update'])
             {{ Form::close() }}
         </div>
     </div>

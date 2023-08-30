@@ -7,7 +7,7 @@
             <div class="card-body">
                 {{ Form::open(['route'=>'report.saveschedule']) }}
                 <div class="form-group">
-                    <label for="schedule">Schedule</label>
+                    <label for="schedule">Schedule of Sending Email Report</label>
                     <select name="frequency_method" id="" class="form-control" required>
                         <option value="everyMinute">everyMinute</option>
                         <option value="hourly">hourly</option>

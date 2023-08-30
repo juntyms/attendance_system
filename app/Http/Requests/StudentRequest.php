@@ -24,18 +24,15 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'student_id'=>'required',
+            'student_id' => 'required',
             'student_name' => 'required',
-            'email' => 'required|email|unique:students,email',
-            'mobile_no'=>'required',
+            'email' => 'required|email',
+            'mobile_no' => 'required',
             'nationality_id' => 'required',
             'status_id' => 'required',
-            'department_id'=>'required',
-            'building_id' => 'required',
-            'room_no'=> 'required',
             'civilno' => 'required',
             'date_of_joining' => 'required',
-            'emergency_contact_person'=>'required',
+            'emergency_contact_person' => 'required',
             'emergency_no' => 'required'
         ];
     }

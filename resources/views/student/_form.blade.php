@@ -16,17 +16,7 @@
             <div class="card-body text-center">
                 <img src="{{ URL::asset('assets/img/profile.jpg') }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
 
-                <div class="d-flex justify-content-center mb-2">
-                    <div class="form-group">
-                        <label>File upload</label>
-                        <div class="input-group col-xs-12">
-                            <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
-                            <span class="input-group-append">
-                                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="card mb-2">
@@ -34,8 +24,14 @@
                 <p class="mb-2"><span class="text-primary">Addtional Emergency Contact</span></p>
                 <hr>
 
-
-
+                <div class="row">
+                    <label for="emergency2">Emergency No</label>
+                    {{ Form::text('emergency2_no',null,['class'=>'form-control'] ) }}
+                </div>
+                <div class="row">
+                    <label for="emergency3">Emergency No</label>
+                    {{ Form::text('emergency3_no',null,['class'=>'form-control'] ) }}
+                </div>
             </div>
         </div>
     </div>
@@ -45,31 +41,37 @@
                 <div class="row mt-2">
                     <label for="studentId" class="col-sm-2 col-form-label">Student ID</label>
                     <div class="col-sm-10">
-                        {{ Form::text('student_id', null, ['placeholder'=> 'User Name','class' => 'form-control']) }}
+                        {{ Form::text('student_id', null, ['placeholder'=> 'Student ID No','class' => 'form-control']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label for="fullName" class="col-sm-2 col-form-label">Fullname</label>
+                    <label for="fullName" class="col-sm-2 col-form-label">Fullname (EN)</label>
                     <div class="col-sm-10">
-                        {{ Form::text('student_name', null, ['placeholder'=> 'Name','class' => 'form-control '])}}
+                        {{ Form::text('student_name', null, ['placeholder'=> 'Student Name English','class' => 'form-control '])}}
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <label for="fullName" class="col-sm-2 col-form-label">Fullname (AR)</label>
+                    <div class="col-sm-10">
+                        {{ Form::text('student_name_ar', null, ['placeholder'=> 'Student Name Arabic','class' => 'form-control '])}}
                     </div>
                 </div>
                 <div class="row mt-2">
                     <label for="email" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                        {{ Form::text('email', null, ['placeholder' =>'Email','class' => 'form-control ']) }}
+                        {{ Form::text('email', null, ['placeholder' =>'Email Address','class' => 'form-control ']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
                     <label for="mobile" class="col-sm-2 col-form-label">Mobile</label>
                     <div class="col-sm-10">
-                        {{ Form::text('mobile_no', null, ['placeholder' =>'User Name','class' => 'form-control']) }}
+                        {{ Form::text('mobile_no', null, ['placeholder' =>'Mobile No','class' => 'form-control']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
                     <label for="civilId" class="col-sm-2 col-form-label">Civil ID</label>
                     <div class="col-sm-10">
-                        {{ Form::text('civilno',null, ['class'=>'form-control']) }}
+                        {{ Form::text('civilno',null, ['class'=>'form-control','placeholder'=>'Civil No']) }}
                     </div>
                 </div>
                 <div class="row mt-2">

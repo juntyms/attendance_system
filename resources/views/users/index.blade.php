@@ -46,6 +46,7 @@
                     </td>
                     <td>
                         <a href="{{ route('users.addrole',$user->id) }}" class="btn btn-info btn-sm"> Privileges / Roles </a>
+                        <a href="{{ route('users.edit',$user->id) }}" class="btn btn-warning btn-sm"> Edit</a>
                     </td>
                 </tr>
                 @endforeach

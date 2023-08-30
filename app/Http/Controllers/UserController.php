@@ -12,11 +12,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Spatie\Permission\Models\Role;
 
-
-
 class UserController extends Controller
 {
-
     public function index()
     {
         $users = User::all();
@@ -35,7 +32,7 @@ class UserController extends Controller
 
         User::create($request->all());
 
-        toast('User Created Successfully!','success');
+        toast('User Created Successfully!', 'success');
 
         return redirect()->route('users.index');
     }
@@ -46,6 +43,8 @@ class UserController extends Controller
 
         $user->removeRole($role);
 
+        toast('User Role revoked!', 'error');
+
         return redirect()->route('users.index');
 
     }
@@ -54,11 +53,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($userId);
 
-        $roles = Role::pluck('name','id');
+        $roles = Role::pluck('name', 'id');
 
         return view('users.addrole')
-            ->with('user',$user)
-            ->with('roles',$roles);
+            ->with('user', $user)
+            ->with('roles', $roles);
     }
 
     public function saverole(Request $request, $userId)
@@ -69,8 +68,29 @@ class UserController extends Controller
 
         $user->assignRole($role->name);
 
+        toast('Role Successfully Added!', 'success');
+
         return redirect()->route('users.index');
     }
 
+    public function edit($userId)
+    {
+        $user = User::findOrFail($userId);
+
+        return view('users.edit')->with('user', $user);
+    }
+
+    public function update(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        $request['password'] = bcrypt($request->password);
+
+        $user->update($request->all());
+
+        toast('User Updated Successfully!', 'success');
+
+        return redirect()->route('users.index');
+    }
 
 }
