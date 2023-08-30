@@ -15,6 +15,8 @@ class AdminSeed extends Seeder
      */
     public function run()
     {
+        \DB::table('users')->delete();
+
         $user = User::create([
             'username' => 'admin',
             'email' => 'administrator@attendance.com',

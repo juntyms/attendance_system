@@ -37,7 +37,7 @@ class FetchFingerprints
                         // Check if Student exists on the table
                         if ($student_fp) {
                             // Update Record
-                            $student_fp->update(['fingerid' => $student_from_device["Row"]["Template"]]);
+                            $student_fp->update(['template' => $student_from_device["Row"]["Template"]]);
                         } else {
                             // Create new entry
                             Fingerprint::create([

@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\AdminSeed;
 use Illuminate\Database\Seeder;
-use Database\Seeders\BuildingSeed;
-use Database\Seeders\DepartmentSeed;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,5 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DeviceTypesTableSeeder::class);
         $this->call(RoomsTableSeeder::class);
         $this->call(ReportScheduleTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
+        $this->call(CoordinatorsTableSeeder::class);
     }
 }

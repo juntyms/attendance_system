@@ -14,6 +14,7 @@
                     <th class="">Email</th>
                     <th class="">Name</th>
                     <th class="">Role</th>
+                    <th class="">Assignment</th>
                     <th class="">Permission</th>
                     <th class="">Actions</th>
                 </tr>
@@ -32,6 +33,9 @@
                             @endif
                             @endforeach
                         </ul>
+                    </td>
+                    <td>
+                        {{ $user->coordinator->building->name ?? "" }}
                     </td>
                     <td>
                         <ul>
