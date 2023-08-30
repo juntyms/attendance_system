@@ -17,10 +17,10 @@ class BuildingSeed extends Seeder
     public function run()
     {
         DB::table('buildings')->delete();
-        Building::create(['name' => 'A']);
-        Building::create(['name' => 'B']);
-        Building::create(['name' => 'C']);
-        Building::create(['name' => 'D']);
+        Building::create(['name' => 'Building 1']);
+        Building::create(['name' => 'Building 2']);
+        Building::create(['name' => 'Building 3']);
+        Building::create(['name' => 'Building 4']);
 
     }
 }
