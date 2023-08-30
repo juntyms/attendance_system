@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(DeployFingerprints::class)->everyMinute();
 
         //! Fetch Attendance
-        $schedule->call(FetchAttendance::class)->everyMinute();
+        $schedule->call(FetchAttendance::class)->hourly();
     }
 
     /**
