@@ -7,13 +7,27 @@
         <div class="card-body">
             <h3 class="text-primary">Students List</h3>
             <a class="btn btn-info" href="{{route('student.add')}}"> <i class="icon-file-add"></i> New Student</a>
-
+            <a href="{{ route('students.upload') }}" class="btn btn-success"> Upload Excel</a>
+            <hr />
             <table class="table table-striped table-bordered table-hover mt-1" id="students_table">
+                <tfoot>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Student Name Ar</th>
+                        <th>Email</th>
+                        <th>Emergency No</th>
+                        <th>Mobile Number</th>
+                        <th>Building</th>
+                        <th>Room No</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
                 <thead class="bg-info">
                     <tr>
-                        <th class="text-white">No</th>
                         <th class="text-white">Student ID</th>
-                        <th class="text-white">Student Name</th>
+                        <th class="text-white">Student Name(EN)</th>
+                        <th class="text-white">Student Name(AR)</th>
                         <th class="text-white">Email</th>
                         <th class="text-white">Emergency No.</th>
                         <th class="text-white">Mobile Number</th>
@@ -23,12 +37,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $i=1 @endphp
+
                     @foreach ($students as $student)
                     <tr>
-                        <td>{{ $i++ }}</td>
                         <td>{{ $student->student_id}}</td>
                         <td>{{ $student->student_name }}</td>
+                        <td class="text-right">{{ $student->student_name_ar }}</td>
                         <td>{{ $student->email }}</td>
                         <td>
                             <ul>
@@ -54,18 +68,7 @@
                     </tr>
                     @endforeach
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>No</th>
-                        <th>Student ID</th>
-                        <th>Student Name</th>
-                        <th>Email</th>
-                        <th>Mobile Number</th>
-                        <th>Building</th>
-                        <th>Room No</th>
-                        <th>Action</th>
-                    </tr>
-                </tfoot>
+
             </table>
 
         </div>
@@ -73,7 +76,13 @@
 
 </div>
 @endsection
-
+@section('css')
+<style>
+    tfoot {
+        display: table-row-group;
+    }
+</style>
+@endsection
 @section('jscript')
 <script>
     new DataTable('#students_table', {

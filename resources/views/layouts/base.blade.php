@@ -57,6 +57,7 @@
     <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
     <script src="{{ asset('vendor/echarts.js') }}"></script>
     @yield('chartjsscript')
+    @yield('css')
 </head>
 
 <body>

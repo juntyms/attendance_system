@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Alert;
-use Exception;
-use App\Models\Room;
-use App\Models\Device;
-use App\Models\Status;
-use TADPHP\TADFactory;
-use App\Models\Student;
-use App\Models\Building;
+use App\Http\Requests\StudentRequest;
+use App\Imports\StudentImport;
 use App\Models\Attendance;
+use App\Models\Building;
 use App\Models\Department;
+use App\Models\Device;
 use App\Models\Nationality;
+use App\Models\Room;
+use App\Models\Status;
+use App\Models\Student;
 use App\Models\StudentRoom;
-use Rats\Zkteco\Lib\ZKTeco;
+use Auth;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StudentRequest;
+use Maatwebsite\Excel\Facades\Excel;
+use Rats\Zkteco\Lib\ZKTeco;
+use TADPHP\TADFactory;
 
 class StudentController extends Controller
 {
@@ -44,6 +46,7 @@ class StudentController extends Controller
                                     'students.id',
                                     'students.student_id',
                                     'students.student_name',
+                                    'students.student_name_ar',
                                     'students.email',
                                     'students.emergency_no',
                                     'students.emergency2_no',
@@ -80,6 +83,7 @@ class StudentController extends Controller
                                 'students.id',
                                 'students.student_id',
                                 'students.student_name',
+                                'students.student_name_ar',
                                 'students.email',
                                 'students.emergency_no',
                                 'students.emergency2_no',
@@ -273,6 +277,23 @@ class StudentController extends Controller
         toast('User Updated Successfully!', 'success');
 
         return redirect()->route('student.list');
+    }
+
+    public function upload()
+    {
+        return view('student.upload');
+    }
+
+    public function saveupload(Request $request)
+    {
+        Excel::import(new StudentImport(), $request->excelfile);
+
+
+        toast('File Uploaded Successfully!', 'success');
+
+        return redirect()->route('student.list');
+
+
     }
 
 }

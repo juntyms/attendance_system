@@ -53,6 +53,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/students/{id}/edit', [StudentController::class,'edit'])->name('student.edit');
     Route::post('/students/{id}/edit', [StudentController::class,'update'])->name('student.update');
     Route::get('/students/{student}/push', [StudentController::class,'push'])->name('student.push');
+    Route::get('/students/upload', [StudentController::class, 'upload'])->name('students.upload');
+    Route::post('/students/saveupload', [StudentController::class, 'saveupload'])->name('students.saveupload');
+
 
 
     Route::get('/students/allattendance', [StudentController::class,'allattendance'])->name('attendance.all');

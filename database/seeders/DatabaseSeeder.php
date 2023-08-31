@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ReportScheduleTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(CoordinatorsTableSeeder::class);
+        $this->call(ModelHasRolesTableSeeder::class);
     }
 }
