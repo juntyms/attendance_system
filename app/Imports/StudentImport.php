@@ -26,6 +26,7 @@ class StudentImport implements ToCollection, WithHeadingRow
                     'nationality_id' => $row['nationality'] ?? '1',
                     'status_id' => $row['status'] ?? '1',
                     'civilno' => $row['civilno'],
+                    'building_id' => $row['building'],
                     'date_of_joining' => $row['date_of_joining'] ?? Carbon::now(),
                     'emergency_contact_person' => $row['emergency_contact_person'] ?? "",
                     'emergency_no' => $row['emergency_no'] ?? "",

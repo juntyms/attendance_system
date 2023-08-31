@@ -10,12 +10,13 @@
                 <small>
                     <table class="table table-bordered">
                         <tr class="bg-success">
-                            <th class="text-white">studentno</th>
+                            <th class="text-white">student id</th>
                             <th class="text-white">student name</th>
                             <th class="text-white">student name ar</th>
                             <th class="text-white">mobileno</th>
                             <th class="text-white">status</th>
                             <th class="text-white">civilno</th>
+                            <th class="text-white">building</th>
                             <th class="text-white">date of joining</th>
                             <th class="text-white">emergency contact person</th>
                             <th class="text-white">emergency no</th>
@@ -23,6 +24,7 @@
                             <th class="text-white">emergency3 no</th>
                         </tr>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

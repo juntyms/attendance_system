@@ -27,10 +27,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-/*
-        $att = Attendance::select(DB::raw("count(id) as totalcount"), DB::raw("DATE_FORMAT(punchtime,'%Y') Year"))
-                ->groupBy('Year')
-                ->pluck('totalcount'); */
+        /*
+                $att = Attendance::select(DB::raw("count(id) as totalcount"), DB::raw("DATE_FORMAT(punchtime,'%Y') Year"))
+                        ->groupBy('Year')
+                        ->pluck('totalcount'); */
 
         /*
         $att = Attendance::select(DB::raw("DATE_FORMAT(punchtime,'%Y') Year"))
@@ -45,41 +45,39 @@ class HomeController extends Controller
                     ->groupBy('buildings.name')
                     ->get();
         */
-
+        $students = [];
         //Check user role
         if (Auth::user()->hasRole('Coordinator')) {
             //Check coordinator Building Assignment
-            $is_building = \DB::table('coordinators')->where('user_id',Auth::user()->id)->first();
+            $is_building = \DB::table('coordinators')->where('user_id', Auth::user()->id)->first();
 
             if($is_building) {
-                $building_rooms = \DB::table('rooms')->select('id')->where('building_id',$is_building->id)->pluck('id');
+                $building_rooms = \DB::table('rooms')->select('id')->where('building_id', $is_building->id)->pluck('id');
 
                 $students = DB::table('student_rooms')
-                                ->join('rooms','rooms.id','=','student_rooms.room_id')
-                                ->join('buildings','buildings.id','=','rooms.building_id')
-                                ->whereIn('student_rooms.room_id',$building_rooms)
-                                ->select(DB::raw("count(student_rooms.student_id) value"),'buildings.name')
+                                ->join('rooms', 'rooms.id', '=', 'student_rooms.room_id')
+                                ->join('buildings', 'buildings.id', '=', 'rooms.building_id')
+                                ->whereIn('student_rooms.room_id', $building_rooms)
+                                ->select(DB::raw("count(student_rooms.student_id) value"), 'buildings.name')
                                 ->groupBy('buildings.name')
                                 ->get();
 
 
-            } else {
-                $students = [];
             }
         }
 
         if (Auth::user()->hasRole('super-admin')) {
             $students = DB::table('student_rooms')
-                                ->join('rooms','rooms.id','=','student_rooms.room_id')
-                                ->join('buildings','buildings.id','=','rooms.building_id')
-                                ->select(DB::raw("count(student_id) value"),'buildings.name')
+                                ->join('rooms', 'rooms.id', '=', 'student_rooms.room_id')
+                                ->join('buildings', 'buildings.id', '=', 'rooms.building_id')
+                                ->select(DB::raw("count(student_id) value"), 'buildings.name')
                                 ->groupBy('buildings.name')
                                 ->get();
         }
 
-//dd($students);
+        //dd($students);
 
         return view('home')
-            ->with('students',$students);
+            ->with('students', $students);
     }
 }

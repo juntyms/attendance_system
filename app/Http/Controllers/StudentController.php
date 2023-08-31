@@ -24,79 +24,66 @@ use TADPHP\TADFactory;
 
 class StudentController extends Controller
 {
-    public const admin = 2;
-
     public function index(Request $request)
     {
         $students = [];
 
-        if (Auth::user()->coordinator) {
-
+        //if (Auth::user()->coordinator) {
+        if (Auth::user()->hasRole('Coordinator')) {
             $is_building = \DB::table('coordinators')->where('user_id', Auth::user()->id)->first();
 
             if($is_building) {
-                $building_rooms = \DB::table('rooms')->select('id')->where('building_id', $is_building->id)->pluck('id');
 
-                $students = DB::table('student_rooms')
-                                ->join('rooms', 'rooms.id', '=', 'student_rooms.room_id')
-                                ->join('buildings', 'buildings.id', '=', 'rooms.building_id')
-                                ->join('students', 'students.id', '=', 'student_rooms.student_id')
-                                ->whereIn('rooms.id', $building_rooms)
-                                ->select(
-                                    'students.id',
-                                    'students.student_id',
-                                    'students.student_name',
-                                    'students.student_name_ar',
-                                    'students.email',
-                                    'students.emergency_no',
-                                    'students.emergency2_no',
-                                    'students.emergency3_no',
-                                    'students.mobile_no',
-                                    'students.is_pushed',
-                                    'buildings.name as buildingname',
-                                    'rooms.name as roomname',
-                                    'student_rooms.id as studentroomid'
-                                )
-                                ->orderBy('students.id', 'DESC')
-                                ->get();
+                $students = DB::table('students')
+                    ->leftjoin('buildings', 'buildings.id', '=', 'students.building_id')
+                    ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'students.id')
+                    ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
+                    ->select(
+                        'students.id',
+                        'students.student_id',
+                        'students.student_name',
+                        'students.student_name_ar',
+                        'students.email',
+                        'students.emergency_no',
+                        'students.emergency2_no',
+                        'students.emergency3_no',
+                        'students.mobile_no',
+                        'students.is_pushed',
+                        'buildings.name as buildingname',
+                        'rooms.name as roomname',
+                        'student_rooms.id as studentroomid'
+                    )
+                    ->where('students.building_id', $is_building->building_id)
+                    ->orderBy('students.id', 'DESC')
+                    ->get();
+
             }
 
 
         } else {
-            if (Auth::user()->roles[0]->id == self::admin) {
-                /*
-                                $students = DB::table('student_rooms')
-                                                ->join('rooms','rooms.id','=','student_rooms.room_id')
-                                                ->join('buildings','buildings.id','=','rooms.building_id')
-                                                ->join('students','students.id','=','student_rooms.student_id')
-                                                ->select('students.id','students.student_id','students.student_name','students.email',
-                                                    'students.mobile_no','students.is_pushed',
-                                                    'buildings.name as buildingname','rooms.name as roomname','student_rooms.id as studentroomid')
-                                                ->orderBy('students.id','DESC')
-                                                ->get();
-                */
+            //if (Auth::user()->roles[0]->id === self::admin) {
+            if (Auth::user()->hasRole('super-admin')) {
                 $students = DB::table('students')
-                            ->leftjoin('buildings', 'buildings.id', '=', 'students.building_id')
-                            ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'students.id')
-                            ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
-                            ->select(
-                                'students.id',
-                                'students.student_id',
-                                'students.student_name',
-                                'students.student_name_ar',
-                                'students.email',
-                                'students.emergency_no',
-                                'students.emergency2_no',
-                                'students.emergency3_no',
-                                'students.mobile_no',
-                                'students.is_pushed',
-                                'buildings.name as buildingname',
-                                'rooms.name as roomname',
-                                'student_rooms.id as studentroomid'
-                            )
-                            ->orderBy('students.id', 'DESC')
-                            ->get();
-
+                    ->leftjoin('buildings', 'buildings.id', '=', 'students.building_id')
+                    ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'students.id')
+                    ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
+                    ->select(
+                        'students.id',
+                        'students.student_id',
+                        'students.student_name',
+                        'students.student_name_ar',
+                        'students.email',
+                        'students.emergency_no',
+                        'students.emergency2_no',
+                        'students.emergency3_no',
+                        'students.mobile_no',
+                        'students.is_pushed',
+                        'buildings.name as buildingname',
+                        'rooms.name as roomname',
+                        'student_rooms.id as studentroomid'
+                    )
+                    ->orderBy('students.id', 'DESC')
+                    ->get();
 
             }
         }
@@ -117,7 +104,7 @@ class StudentController extends Controller
 
         $room_occupancy = StudentRoom::where('room_id', $request->room_id)->count();
 
-        if($room->capacity > $room_occupancy) {
+        if($room_occupancy < $room->capacity) {
             //Save Student
             StudentRoom::create($request->all());
 

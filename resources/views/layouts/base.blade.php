@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/jquery-bar-rating/fontawesome-stars-o.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/jquery-bar-rating/fontawesome-stars.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendors/select2/select2.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('vendors/select2-bootstrap-theme/select2-bootstrap.min.css')}}">
     <!-- End plugin css for this page -->
     <link rel="stylesheet" href="{{ asset('datatables/datatables.min.css') }}">
     <!-- inject:css -->
@@ -82,6 +84,7 @@
     <script src="{{ asset('vendors/jquery-bar-rating/jquery.barrating.min.js') }}"></script>
     <!-- End plugin js for this page -->
     <script src="{{ asset('datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('vendors/select2/select2.min.js') }}"></script>
     <!-- Custom js for this page-->
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <!-- Chart -->

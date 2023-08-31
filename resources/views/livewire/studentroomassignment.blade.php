@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label for="room">Room</label>
-                    <select class="form-control" wire:model="choosenRoom" name="room_id">
+                    <select class="form-control" wire:model="choosenRoom" name="room_id" id="room_select2">
                         <option>Select Room</option>
                         @if(!is_null($choosenFloor))
                         @foreach($this->rooms as $room)
@@ -37,10 +37,10 @@
                 </div>
                 <div class="form-group">
                     <label for="student">Student</label>
-                    <select class="form-control" name="student_id">
+                    <select class="form-control" name="student_id" id="student_select2">
                         <option selected>Select Student</option>
                         @foreach($this->students as $student)
-                        <option value="{{ $student->id }}">{{ $student->student_name }}</option>
+                        <option value="{{ $student->id }}">{{ $student->student_name }} - {{ $student->student_id }}</option>
                         @endforeach
                     </select>
                 </div>

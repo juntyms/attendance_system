@@ -6,6 +6,7 @@ use App\Models\Room;
 use App\Models\Student;
 use Livewire\Component;
 use App\Models\Building;
+use Auth;
 
 class Studentroomassignment extends Component
 {
@@ -20,12 +21,17 @@ class Studentroomassignment extends Component
 
     public function mount()
     {
-        $this->buildings = Building::all();
+        if (Auth::user()->hasRole('Coordinator')) {
+            $this->buildings = Building::where('id', Auth::user()->coordinator->building_id)->get();
+        }
+
+        if (Auth::user()->hasRole('super-admin')) {
+            $this->buildings = Building::all();
+
+        }
         $this->floors = collect();
         $this->rooms = collect();
     }
-
-
 
     public function render()
     {
@@ -33,7 +39,7 @@ class Studentroomassignment extends Component
 
         if (!is_null($this->choosenBuilding)) {
             $this->floors = Room::select('floor')
-                ->where('building_id',$this->choosenBuilding)
+                ->where('building_id', $this->choosenBuilding)
                 ->groupBy('floor')
                 ->get();
         } else {
@@ -42,14 +48,11 @@ class Studentroomassignment extends Component
         }
 
         if (!is_null($this->choosenFloor)) {
-        //dd($this->choosenFloor);
-            $this->rooms = Room::where('floor',$this->choosenFloor)->get();
+            //dd($this->choosenFloor);
+            $this->rooms = Room::where('floor', $this->choosenFloor)
+                ->where('building_id', $this->choosenBuilding)
+                ->get();
         }
-
-
-
-
-
 
         return view('livewire.studentroomassignment');
     }
