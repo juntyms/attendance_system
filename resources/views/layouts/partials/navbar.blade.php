@@ -17,8 +17,9 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
                     <p class="mb-0 font-weight-normal float-left dropdown-header">Settings</p>
-                    <a class="dropdown-item preview-item">
-                        <i class="icon-head"></i> Profile
+                    <a class="dropdown-item preview-item" href="{{ route('profile.show') }}">
+                        <i class="icon-head"></i>
+                        Profile
                     </a>
                     <a class="dropdown-item preview-item">
                         <i class="icon-inbox"></i>

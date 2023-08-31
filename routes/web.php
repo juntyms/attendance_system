@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\FingerprintController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentLeaveController;
 
 /*
@@ -104,6 +105,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/rooms/{id}/edit', [RoomController::class, 'edit'])->name('rooms.edit');
     Route::post('/rooms/{id}/edit', [RoomController::class,'update'])->name('rooms.update');
     Route::get('/rooms/{id}/delete', [RoomController::class,'delete'])->name('rooms.delete');
+
+    Route::get('/profile/show', [ProfileController::class,'show'])->name('profile.show');
+    Route::post('/profile/show', [ProfileController::class,'update'])->name('profile.update');
+
 });
 
 
