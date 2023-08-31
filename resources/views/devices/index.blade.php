@@ -13,10 +13,9 @@
                 New Device
             </a>
 
-
             <div class="table-responsive">
                 <table class="table table-bordered mt-2">
-                    <tr class="bg-secondary">
+                    <tr class="bg-info text-white">
                         <th>SN</th>
                         <th>Primary Device</th>
                         <th>Device Type</th>

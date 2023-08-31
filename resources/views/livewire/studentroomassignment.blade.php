@@ -3,6 +3,8 @@
 
         <div class="card">
             <div class="card-body">
+                <h4> Room Assignment</h4>
+                <hr />
                 {{ Form::open(['route'=>'student.saveroomassignment']) }}
                 <div class="form-group">
                     <label for="building">Building</label>

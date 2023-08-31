@@ -8,7 +8,7 @@
             <hr />
             <a href="{{ route('buildings.create') }}" class="btn btn-outline-primary"> <i class="icon-file-add"></i> New</a>
             <table class="table table-bordered table-striped mt-2">
-                <tr>
+                <tr class="bg-info text-white">
                     <th>SN</th>
                     <th>Building Name</th>
                     <th>Assigned Coordinators</th>

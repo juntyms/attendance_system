@@ -4,7 +4,8 @@
 <div class="content-wrapper">
     <div class="card">
         <div class="card-body">
-            <h3>Student Attendance</h3>
+            <h4>Student Attendance</h4>
+            <hr />
             {{ Form::open(['route'=>['report.postinout']]) }}
             <div class="row">
                 <div class="col-md-2">
@@ -30,24 +31,26 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-check form-check-flat form-check-primary pr-2">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="ptype" value="1" checked>
-                        View
-                        <i class="input-helper"></i></label>
-                </div>
-                <div class="form-check form-check-flat form-check-primary pr-2">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="ptype" value="2">
-                        PDF
-                        <i class="input-helper"></i></label>
-                </div>
-                <div class="form-check form-check-flat form-check-primary">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="ptype" value="3">
-                        Excel
-                        <i class="input-helper"></i></label>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-check form-check-flat form-check-primary pr-2">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="ptype" value="1" checked>
+                            View
+                            <i class="input-helper"></i></label>
+                    </div>
+                    <div class="form-check form-check-flat form-check-primary pr-2">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="ptype" value="2">
+                            PDF
+                            <i class="input-helper"></i></label>
+                    </div>
+                    <div class="form-check form-check-flat form-check-primary">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="ptype" value="3">
+                            Excel
+                            <i class="input-helper"></i></label>
+                    </div>
                 </div>
             </div>
             <button class="btn btn-primary"> Show Attendance</button>

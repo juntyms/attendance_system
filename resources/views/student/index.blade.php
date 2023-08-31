@@ -5,11 +5,13 @@
 
     <div class="card">
         <div class="card-body">
-            <h3 class="text-primary">Students List</h3>
-            <a class="btn btn-info" href="{{route('student.add')}}"> <i class="icon-file-add"></i> New Student</a>
-            <a href="{{ route('students.upload') }}" class="btn btn-success"> Upload Excel</a>
+            <h4>Students List</h4>
             <hr />
-            <table class="table table-striped table-bordered table-hover mt-1" id="students_table">
+            <div class="mb-2">
+                <a class="btn btn-info" href="{{route('student.add')}}"> <i class="icon-file-add"></i> New Student</a>
+                <a href="{{ route('students.upload') }}" class="btn btn-success"> Upload Excel</a>
+            </div>
+            <table class="table table-striped table-bordered table-hover mt-2" id="students_table">
                 <tfoot>
                     <tr>
                         <th>Student ID</th>
@@ -76,6 +78,7 @@
 
 </div>
 @endsection
+
 @section('css')
 <style>
     tfoot {
@@ -83,6 +86,7 @@
     }
 </style>
 @endsection
+
 @section('jscript')
 <script>
     new DataTable('#students_table', {

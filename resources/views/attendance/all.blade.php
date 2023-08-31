@@ -11,7 +11,7 @@ All Attendance
         <div class="container py-5">
             <div class="row">
                 <center>
-                    <h3 class="text-primary font-italic">Students Attendance</h3>
+                    <h4 class="text-primary font-italic">Students Attendance</h4>
                 </center>
             </div>
             <div class="row">

@@ -3,12 +3,21 @@
 @section('main')
 <div class="content-wrapper">
     <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h4>Room List</h4>
-        </div>
         <div class="card-body">
+            <h4>Room List</h4>
+            <hr />
             <a href="{{ route('rooms.create') }}" class="btn btn-primary btn-sm mb-2">Add Room</a>
             <table class="table table-bordered table-hover" id="rooms">
+                <tfoot>
+                    <tr>
+                        <th>SN</th>
+                        <th>Building</th>
+                        <th>Floor Level</th>
+                        <th>Room Number</th>
+                        <th>Capacity</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </tfoot>
                 <thead>
                     <tr class="bg-info">
                         <th class="text-white">SN</th>
@@ -34,21 +43,21 @@
                     </tr>
                     @endforeach
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>SN</th>
-                        <th>Building</th>
-                        <th>Floor Level</th>
-                        <th>Room Number</th>
-                        <th>Capacity</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </tfoot>
+
             </table>
         </div>
     </div>
 </div>
 @endsection
+
+@section('css')
+<style>
+    tfoot {
+        display: table-row-group;
+    }
+</style>
+@endsection
+
 @section('jscript')
 <script>
     new DataTable('#rooms', {
