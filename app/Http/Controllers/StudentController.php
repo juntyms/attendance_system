@@ -150,6 +150,7 @@ class StudentController extends Controller
         $validated = $request->validate([
             'student_id' => 'required',
             'student_name' => 'required',
+            'student_name_ar' => 'required',
             'email' => 'required|email|unique:users,email',
             'mobile_no' => 'required',
             'nationality_id' => 'required',
@@ -157,7 +158,8 @@ class StudentController extends Controller
             'civilno' => 'required',
             'date_of_joining' => 'required',
             'emergency_contact_person' => 'required',
-            'emergency_no' => 'required'
+            'emergency_no' => 'required',
+            'emergency2_no' => 'required',
         ]);
 
         Student::create($validated);
