@@ -261,7 +261,24 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
 
-        $student->update($request->all());
+        //$student->update($request->all());
+
+        $validated = $request->validate([
+                    'student_id' => 'required',
+                    'student_name' => 'required',
+                    'student_name_ar' => 'required',
+                    'email' => 'required|email|unique:users,email',
+                    'mobile_no' => 'required',
+                    'nationality_id' => 'required',
+                    'status_id' => 'required',
+                    'civilno' => 'required',
+                    'date_of_joining' => 'required',
+                    'emergency_contact_person' => 'required',
+                    'emergency_no' => 'required',
+                    'emergency2_no' => 'required',
+                ]);
+
+        $student->update($validated);
 
         toast('User Updated Successfully!', 'success');
 

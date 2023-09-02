@@ -28,21 +28,21 @@ class Student extends Model
      * @param  string  $value
      * @return string
      */
-    // public function getDateOfJoiningAttribute($value)
-    // {
-    //     return Carbon::parse($value)->format('Y-m-d');
-    // }
+    public function getDateOfJoiningAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d');
+    }
 
-    // /**
-    //  * Get the user's date of birth for forms.
-    //  *
-    //  * @param  string  $value
-    //  * @return string
-    //  */
-    // public function formDateOfJoiningAttribute($value)
-    // {
-    //     return Carbon::parse($value)->format('Y-m-d');
-    // }
+    /**
+     * Get the user's date of birth for forms.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function formDateOfJoiningAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d');
+    }
 
     public function studentroom()
     {
