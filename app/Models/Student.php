@@ -30,7 +30,7 @@ class Student extends Model
      */
     public function getDateOfJoiningAttribute($value)
     {
-        return Carbon::parse($value)->format('m/d/Y');
+        return Carbon::parse($value)->format('Y-m-d');
     }
 
     /**
@@ -46,6 +46,6 @@ class Student extends Model
 
     public function studentroom()
     {
-        return $this->hasOne(StudentRoom::class,'student_id','id');
+        return $this->hasOne(StudentRoom::class, 'student_id', 'id');
     }
 }
