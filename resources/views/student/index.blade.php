@@ -21,7 +21,6 @@
                         <th>Email</th>
                         <th>Emergency No</th>
                         <th>Mobile Number</th>
-                        <th>Building</th>
                         <th>Room No</th>
                         <th>Action</th>
                     </tr>
