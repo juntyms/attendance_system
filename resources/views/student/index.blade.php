@@ -11,7 +11,8 @@
                 <a class="btn btn-info" href="{{route('student.add')}}"> <i class="icon-file-add"></i> New Student</a>
                 <a href="{{ route('students.upload') }}" class="btn btn-success"> Upload Excel</a>
             </div>
-            <table class="table table-striped table-bordered table-hover mt-2" id="students_table">
+
+            <table class="table table-striped table-bordered table-hover table-responsive mt-2" id="students_table">
                 <tfoot>
                     <tr>
                         <th>Student ID</th>
@@ -33,7 +34,6 @@
                         <th class="text-white">Email</th>
                         <th class="text-white">Emergency No.</th>
                         <th class="text-white">Mobile Number</th>
-                        <th class="text-white">Building</th>
                         <th class="text-white">Room No</th>
                         <th class="text-white text-center">Action</th>
                     </tr>
@@ -55,7 +55,6 @@
 
                         </td>
                         <td>{{ $student->mobile_no ?? ""}}</td>
-                        <td>{{ $student->buildingname ?? ""}}</td>
                         <td>{{ $student->roomname ?? "" }}</td>
                         <td class="text-center">
                             <a href="{{ route('student.edit',$student->id) }}" class="btn btn-sm btn-info text-center text-white btn-block">Edit</a>
