@@ -147,23 +147,30 @@ class StudentController extends Controller
     }
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'student_id' => 'required',
-            'student_name' => 'required',
-            'student_name_ar' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'mobile_no' => 'required',
-            'nationality_id' => 'required',
-            'status_id' => 'required',
-            'civilno' => 'required',
-            'date_of_joining' => 'required',
-            'emergency_contact_person' => 'required',
-            'emergency_no' => 'required',
-            'emergency2_no' => 'required',
-        ]);
+        $student = Student::where('student_id', $request->student_id)->first();
 
-        Student::create($validated);
-        toast('Student Created Successfully!', 'success');
+        if (empty($student)) {
+
+            $validated = $request->validate([
+                'student_id' => 'required',
+                'student_name' => 'required',
+                'student_name_ar' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'mobile_no' => 'required',
+                'nationality_id' => 'required',
+                'status_id' => 'required',
+                'civilno' => 'required',
+                'date_of_joining' => 'required',
+                'emergency_contact_person' => 'required',
+                'emergency_no' => 'required',
+                'emergency2_no' => 'required',
+            ]);
+
+            Student::create($validated);
+            toast('Student Created Successfully!', 'success');
+        } else {
+            toast('Student Already Exist!', 'error');
+        }
 
         return redirect()->route('student.list');
     }
