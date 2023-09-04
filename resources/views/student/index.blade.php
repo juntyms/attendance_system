@@ -9,7 +9,7 @@
             <hr />
             <div class="mb-2">
                 <a class="btn btn-info" href="{{route('student.add')}}"> <i class="icon-file-add"></i> New Student</a>
-                <a href="{{ route('students.upload') }}" class="btn btn-success"> Upload Excel</a>
+                <a href="{{ route('students.upload') }}" class="btn btn-success"> <i class="icon-upload"></i> Upload Excel</a>
             </div>
 
             <table class="table table-striped table-bordered table-hover table-responsive mt-2" id="students_table">
@@ -58,7 +58,7 @@
                         <td class="text-center">
                             <a href="{{ route('student.edit',$student->id) }}" class="btn btn-sm btn-info text-center text-white btn-block">Edit</a>
                             @if ($student->roomname)
-                            <a href="{{ route('student.deleteroomassignment',$student->studentroomid) }}" class="btn btn-sm btn-success text-white btn-block"> Delete Room</a>
+                            <a href="{{ route('student.deleteroomassignment',$student->studentroomid) }}" class="btn btn-sm btn-danger text-white btn-block"> Delete Room</a>
                             @endif`
                             @if ($student->is_pushed == 0)
                             <a href="{{ route('student.push',$student->id) }}" class="btn btn-sm btn-warning text-center text-white btn-block">Push</a>

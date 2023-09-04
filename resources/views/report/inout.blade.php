@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary"> Show Attendance</button>
+            <button class="btn btn-primary"> <i class="icon-watch"></i> Show Attendance</button>
             {{ Form::close() }}
         </div>
     </div>
