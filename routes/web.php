@@ -56,6 +56,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/students/{student}/push', [StudentController::class,'push'])->name('student.push');
     Route::get('/students/upload', [StudentController::class, 'upload'])->name('students.upload');
     Route::post('/students/saveupload', [StudentController::class, 'saveupload'])->name('students.saveupload');
+    Route::get('/students/uploadroomassignment', [StudentController::class,'uploadroomassignment'])->name('student.uploadroomassignment');
+    Route::post('/students/uploadroomassignment', [StudentController::class,'saveuploadroomassignment'])->name('student.saveuploadroomassignment');
 
 
 

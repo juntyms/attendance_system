@@ -45,7 +45,7 @@
             <div class="form-group">
                 {{ Form::file('excelfile') }}
             </div>
-            <button class="btn btn-primary"> Upload</button>
+            <button class="btn btn-primary"> <i class="icon-upload"></i> Upload</button>
             {!! Form::close() !!}
         </div>
     </div>

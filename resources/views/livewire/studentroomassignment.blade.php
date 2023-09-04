@@ -46,7 +46,8 @@
                         @endforeach
                     </select>
                 </div>
-                <button class="btn btn-primary"> Assign</button>
+                <button class="btn btn-primary"> <i class="icon-file-add"></i> Assign</button>
+                <a href="{{ route('student.uploadroomassignment') }}" class="btn btn-success"> <i class="icon-upload"></i> Upload</a>
                 {{ Form::close() }}
             </div>
         </div>

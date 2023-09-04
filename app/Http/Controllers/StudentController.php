@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Alert;
 use App\Http\Requests\StudentRequest;
+use App\Imports\RoomAssignmentImport;
 use App\Imports\StudentImport;
 use App\Models\Attendance;
 use App\Models\Building;
@@ -301,6 +302,19 @@ class StudentController extends Controller
     {
         Excel::import(new StudentImport(), $request->excelfile);
 
+        toast('File Uploaded Successfully!', 'success');
+
+        return redirect()->route('student.list');
+    }
+
+    public function uploadroomassignment()
+    {
+        return view('student.uploadroomassignment');
+    }
+
+    public function saveuploadroomassignment(Request $request)
+    {
+        Excel::import(new RoomAssignmentImport(), $request->excelfile);
 
         toast('File Uploaded Successfully!', 'success');
 
