@@ -9,3 +9,11 @@
 
 </div>
 @endsection
+
+@section('jscript')
+<script>
+    $("#student_id").keyup(function() {
+        $("#email").val($("#student_id").val() + "@du.edu.om");
+    });
+</script>
+@endsection

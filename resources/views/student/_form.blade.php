@@ -41,7 +41,7 @@
                 <div class="row mt-2">
                     <label for="studentId" class="col-sm-2 col-form-label">Student ID</label>
                     <div class="col-sm-10">
-                        {{ Form::text('student_id', null, ['placeholder'=> 'Student ID No','class' => 'form-control']) }}
+                        {{ Form::text('student_id', null, ['placeholder'=> 'Student ID No','class' => 'form-control','id'=>'student_id']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -59,7 +59,7 @@
                 <div class="row mt-2">
                     <label for="email" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                        {{ Form::text('email', null, ['placeholder' =>'Email Address','class' => 'form-control ']) }}
+                        {{ Form::text('email', null, ['placeholder' =>'Email Address','class' => 'form-control','id'=>'email']) }}
                     </div>
                 </div>
                 <div class="row mt-2">
