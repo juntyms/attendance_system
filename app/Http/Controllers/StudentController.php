@@ -210,6 +210,38 @@ class StudentController extends Controller
         return redirect()->route('student.list');
     }
 
+    public function deletefromdevice($userid)
+    {
+
+        $student = Student::findOrFail($userid);
+
+        $device = Device::where('is_master', 1)->first();
+
+        if ($device) {
+
+            $tad_factory = new TADFactory(['ip' => $device->ip]);
+
+            $tad = $tad_factory->get_instance();
+
+            if ($tad->is_alive()) {
+
+                $tad->delete_user(['pin' => $student->student_id]);
+
+                $student->update(['is_pushed' => 0]);
+
+                toast('Student removed from master device!', 'success');
+            } else {
+                toast('Device Not Found or No Active Master Device', 'error');
+            }
+
+        } else {
+            toast('No Master Device Found, Please Set Master Device', 'error');
+        }
+
+        return redirect()->route('student.list');
+
+    }
+
     public function allattendance()
     {
 

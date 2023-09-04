@@ -56,12 +56,15 @@
                         <td>{{ $student->mobile_no ?? ""}}</td>
                         <td>{{ $student->roomname ?? "" }}</td>
                         <td class="text-center">
-                            <a href="{{ route('student.edit',$student->id) }}" class="btn btn-sm btn-info text-center text-white btn-block">Edit</a>
+                            <a href="{{ route('student.edit',$student->id) }}" class="btn btn-sm btn-info text-center text-white btn-block"><i class="icon-file"></i> Edit</a>
                             @if ($student->roomname)
-                            <a href="{{ route('student.deleteroomassignment',$student->studentroomid) }}" class="btn btn-sm btn-danger text-white btn-block"> Delete Room</a>
+                            <a href="{{ route('student.deleteroomassignment',$student->studentroomid) }}" class="btn btn-sm btn-danger text-white btn-block"> <i class="icon-trash"></i> Delete Room</a>
                             @endif`
                             @if ($student->is_pushed == 0)
-                            <a href="{{ route('student.push',$student->id) }}" class="btn btn-sm btn-warning text-center text-white btn-block">Push</a>
+                            <a href="{{ route('student.push',$student->id) }}" class="btn btn-sm btn-warning text-center text-white btn-block"> <i class="icon-link"></i> Push</a>
+                            @else
+                            <a href="{{ route('student.deletefromdevice',$student->id) }}" class="btn btn-sm btn-danger text-center text-white btn-block"> <i class="icon-maximize"></i> Un Push</a>
+
                             @endif
                         </td>
 
