@@ -11,7 +11,8 @@ class FetchCoordinatorReport
 {
     public function __invoke()
     {
-        $startDay = Carbon::today()->subMonth()->startOfDay();
+        //$startDay = Carbon::today()->subMonth()->startOfDay();
+        $startDay = Carbon::today()->startOfDay();
         $endDay = Carbon::today()->endOfDay();
 
         $start_date = Carbon::instance(date_create($startDay))->format('Y-m-d');
