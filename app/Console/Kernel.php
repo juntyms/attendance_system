@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
 
         $myfrequency = (string) $myschedule->frequency_method;
 
-        $schedule->call(new FetchCoordinatorReport())->$myfrequency();
+        $schedule->call(new FetchCoordinatorReport())->dailyAt('22:05');
 
         //! Check device Status
         $schedule->call(DeviceStatus::class)->everyMinute();
