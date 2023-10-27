@@ -33,7 +33,7 @@ class FingerprintController extends Controller
 
                     //dd($zk->getAttendance());
                     $logs = $tad->get_att_log()->to_array();
-dd($logs);
+//dd($logs);
                     foreach($logs["Row"] as $attendance){
                         $check_attendance = Attendance::where('student_id',$attendance['PIN'])
                                                     ->where('punchtime',$attendance['DateTime'])

@@ -63,6 +63,9 @@
                             @if ($student->is_pushed == 0)
                             <a href="{{ route('student.push',$student->id) }}" class="btn btn-sm btn-warning text-center text-white btn-block"> <i class="icon-link"></i> Push</a>
                             @else
+
+                            <a href="{{ route('student.pushtodevice', $student->id) }}" class="btn btn-sm btn-warning text-center text-white btn-block"> <i class="icon-layout"></i> Push to Bldg </a>
+
                             <a href="{{ route('student.deletefromdevice',$student->id) }}" class="btn btn-sm btn-danger text-center text-white btn-block"> <i class="icon-maximize"></i> Un Push</a>
 
                             @endif

@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Rats\Zkteco\Lib\ZKTeco;
 use TADPHP\TADFactory;
+use App\Models\Fingerprint;
+
 
 class StudentController extends Controller
 {
@@ -88,7 +90,6 @@ class StudentController extends Controller
 
             }
         }
-
 
         return view('student.index', compact('students'));
     }
@@ -352,7 +353,56 @@ class StudentController extends Controller
 
         return redirect()->route('student.list');
 
+    }
 
+    public function push_student_to_device(Student $student)
+    {
+        $devices = Device::where('is_master','0')->pluck('name','id');
+
+        return view('student.pushtodevice')
+            ->with('devices',$devices)
+            ->with('student_id',$student->id);
+    }
+
+    public function post_push_student_to_device(Request $request, Student $student)
+    {
+
+        $fingerprint = Fingerprint::where('student_id',$student->student_id)->first();
+
+        if ($fingerprint) {
+
+            try {
+
+                $device = Device::findOrFail($request->device_id);
+
+                $tad_factory = new TADFactory(['ip' => $device->ip]);
+
+                $tad = $tad_factory->get_instance();
+
+                $user_template_data = [
+                                'pin' => $fingerprint->student_id,
+                                'name' => $student->student_name,
+                                'finger_id' => $fingerprint->fingerid, // First fingerprint has 0 as index.
+                                'size' => $fingerprint->size,    // Be careful, this is not string length of $template1_vx9 var.
+                                'valid' => $fingerprint->valid,
+                                'template' => $fingerprint->template
+                            ];
+
+                $tad->set_user_template($user_template_data);
+
+            } catch ( Throwable $e) {
+
+                report($e);
+
+
+            }
+
+        } else {
+
+            toast('Student not yet have fingerprint record, make sure you have push and registered', 'error');
+
+            return redirect()->route('student.list');
+        }
     }
 
 }
