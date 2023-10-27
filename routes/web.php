@@ -55,6 +55,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/students/{id}/edit', [StudentController::class,'update'])->name('student.update');
     Route::get('/students/{student}/push', [StudentController::class,'push'])->name('student.push');
     Route::get('/students/{student}/deletefromdevice', [StudentController::class,'deletefromdevice'])->name('student.deletefromdevice');
+    Route::get('/students/{student}/pushtodevice', [StudentController::class,'push_student_to_device'])->name('student.pushtodevice');
+    Route::post('/students/{student}/pushtodevice', [StudentController::class,'post_push_student_to_device'])->name('student.postpushtodevice');
+
     Route::get('/students/upload', [StudentController::class, 'upload'])->name('students.upload');
     Route::post('/students/saveupload', [StudentController::class, 'saveupload'])->name('students.saveupload');
     Route::get('/students/uploadroomassignment', [StudentController::class,'uploadroomassignment'])->name('student.uploadroomassignment');
