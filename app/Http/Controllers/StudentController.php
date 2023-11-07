@@ -379,6 +379,8 @@ class StudentController extends Controller
 
                 $tad = $tad_factory->get_instance();
 
+                $tad->delete_user(['pin' => $student->student_id]);
+
                 $user_template_data = [
                                 'pin' => $fingerprint->student_id,
                                 'name' => $student->student_name,
