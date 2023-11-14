@@ -21,13 +21,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-        $myschedule = \DB::table('report_schedules')->first();
-
-        $myfrequency = (string) $myschedule->frequency_method;
-
-        $schedule->call(new FetchCoordinatorReport())->dailyAt('22:05');
-
         //! Check device Status
         $schedule->call(DeviceStatus::class)->everyMinute();
 
@@ -39,6 +32,13 @@ class Kernel extends ConsoleKernel
 
         //! Fetch Attendance
         $schedule->call(FetchAttendance::class)->hourly();
+
+        // $schedule->command('inspire')->hourly();
+        $myschedule = \DB::table('report_schedules')->first();
+
+        $myfrequency = (string) $myschedule->frequency_method;
+
+        $schedule->call(new FetchCoordinatorReport())->dailyAt('22:05');
     }
 
     /**
