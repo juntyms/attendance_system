@@ -392,6 +392,10 @@ class StudentController extends Controller
 
                 $tad->set_user_template($user_template_data);
 
+                toast('Student pushed to building record', 'success');
+
+                return redirect()->route('student.list');
+
             } catch ( Throwable $e) {
 
                 report($e);
