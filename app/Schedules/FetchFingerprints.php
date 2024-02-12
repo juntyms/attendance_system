@@ -6,6 +6,7 @@ use App\Models\Device;
 use App\Models\Fingerprint;
 use App\Models\Student;
 use Illuminate\Support\Facades\Log;
+use Exception;
 use TADPHP\TADFactory;
 
 class FetchFingerprints
@@ -40,8 +41,8 @@ class FetchFingerprints
 
                         } catch (Throwable $e) {
 
-                            Log::info($e);
-                            Log::info($student->student->id);
+                            Log::error($e);
+                            Log::error($student->student->id);
 
                         }
                         // Check if Student exists on the table
