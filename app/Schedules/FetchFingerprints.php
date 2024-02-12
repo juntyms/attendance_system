@@ -42,7 +42,10 @@ class FetchFingerprints
                         } catch (Throwable $e) {
 
                             Log::error($e);
+
                             Log::error($student->student->id);
+
+                            continue;
 
                         }
                         // Check if Student exists on the table
