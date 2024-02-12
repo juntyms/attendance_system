@@ -3,8 +3,9 @@
 namespace App\Schedules;
 
 use App\Models\Device;
-use App\Models\Fingerprint;
 use TADPHP\TADFactory;
+use App\Models\Fingerprint;
+use Illuminate\Support\Facades\Log;
 
 class DeployFingerprints
 {
@@ -37,7 +38,7 @@ class DeployFingerprints
 
                         } catch (\Exception $e) {
 
-                            Log::error('Error setting user template for fingerprint: ' . $e->getMessage());
+                            Log::error($fingerprint->student_id . ' Error setting user template for fingerprint: ' . $e->getMessage());
 
                             continue;
                         }
