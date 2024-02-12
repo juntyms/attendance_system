@@ -5,6 +5,7 @@ namespace App\Schedules;
 use App\Models\Device;
 use App\Models\Fingerprint;
 use App\Models\Student;
+use Illuminate\Support\Facades\Log;
 use TADPHP\TADFactory;
 
 class FetchFingerprints
@@ -30,10 +31,19 @@ class FetchFingerprints
                     if (!empty($student_from_device)) {
                         // Query Student from the fingerprints table
                         //dd($student_from_device["Row"]["FingerID"]);
+
+                        try {
+
                         $student_fp = Fingerprint::where('student_id', $student->student_id)
                                             ->where('fingerid', $student_from_device["Row"]["FingerID"])
                                             ->first();
 
+                        } catch (Throwable $e) {
+
+                            Log::info($e);
+                            Log::info($student->student->id);
+
+                        }
                         // Check if Student exists on the table
                         if ($student_fp) {
                             // Update Record
