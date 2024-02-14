@@ -40,7 +40,7 @@ class DeployFingerprints
 
                         } catch (\Exception $e) {
 
-                            Log::error($fingerprint->student_id . ' Error setting user template for fingerprint: ' . $e->getMessage());
+                            Log::error($fingerprint->student_id . ' Deployment Error setting user template for fingerprint: ' . $e->getMessage());
 
                             continue;
                         }

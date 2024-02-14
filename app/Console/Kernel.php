@@ -25,10 +25,10 @@ class Kernel extends ConsoleKernel
         $schedule->call(DeviceStatus::class)->everyMinute();
 
         //! Fetch Record From Master Device
-        $schedule->call(FetchFingerprints::class)->everyTenMinutes();
+        $schedule->call(FetchFingerprints::class)->everyFiveMinutes();
 
         //! Send Fingerprint to other devices
-        $schedule->call(DeployFingerprints::class)->everyTenMinutes();
+        $schedule->call(DeployFingerprints::class)->everyFiveMinutes();
 
         //! Fetch Attendance
         $schedule->call(FetchAttendance::class)->hourly();
