@@ -92,10 +92,14 @@ class FingerprintController extends Controller
 
     public function fetchfp()
     {
+        // $fingerprint = Fingerprint::where('student_id','202311034')->first();
+
+        // dd($fingerprint->student->student_name);
+
         //$device = Device::where('is_master',1)->first();
 
        // if ($device) {
-            $tad_factory = new TADFactory(['ip'=>'192.168.100.25']);
+            $tad_factory = new TADFactory(['ip'=>'192.168.100.22']);
             $tad = $tad_factory->get_instance();
 
             if ($tad->is_alive())
@@ -105,7 +109,16 @@ class FingerprintController extends Controller
 
                 $student = Student::where('student_id','202311188')->first();
 
-                $student_from_device = $tad->get_user_template(['pin' => $student->student_id])->to_array();
+
+                //getting user info
+
+                $student_device_info = $tad->get_user_template(['pin' => '2222'])->to_array();
+
+                dd(count($student_device_info));
+
+
+
+                //$student_from_device = $tad->get_user_template(['pin' => $student->student_id])->to_array();
 
                 //dd($student_from_device);
                 //echo count($student_from_devices);
@@ -118,49 +131,49 @@ class FingerprintController extends Controller
                 //     //echo($value[0]["FingerID"]);
                 // }
 
-                $array_cnt = count($student_from_device);
+                // $array_cnt = count($student_from_device);
 
-                //dd($array_cnt);
+                // //dd($array_cnt);
 
-                $multi = false;
+                // $multi = false;
 
-                foreach($student_from_device["Row"] as $array_check) {
-                    if(is_array($array_check)) {
-                        $multi = true;
-                    }
-                }
+                // foreach($student_from_device["Row"] as $array_check) {
+                //     if(is_array($array_check)) {
+                //         $multi = true;
+                //     }
+                // }
 
-                dd($multi);
+                // dd($multi);
 
-                if ($array_cnt > 1) {
+                // if ($array_cnt > 1) {
 
-                    foreach($student_from_device as $key => $value) {
-                        for($i=0; $i < $array_cnt; $i++) {
-                            //echo $value[$i]["FingerID"];
-                            echo $value[$i]["FingerID"] . '<br />'                        ;
+                //     foreach($student_from_device as $key => $value) {
+                //         for($i=0; $i < $array_cnt; $i++) {
+                //             //echo $value[$i]["FingerID"];
+                //             echo $value[$i]["FingerID"] . '<br />'                        ;
 
-                            $student_fp = Fingerprint::where('student_id', $student->student_id)
-                                    ->where('fingerid', $value[$i]["FingerID"])
-                                    ->first();
+                //             $student_fp = Fingerprint::where('student_id', $student->student_id)
+                //                     ->where('fingerid', $value[$i]["FingerID"])
+                //                     ->first();
 
-                            if ($student_fp) {
-                                // Update Record
-                                //$student_fp->update(['template' => $value[$i]["Template"]]);
+                //             if ($student_fp) {
+                //                 // Update Record
+                //                 //$student_fp->update(['template' => $value[$i]["Template"]]);
 
-                            } else {
-                                // Create new entry
-                                // Fingerprint::create([
-                                //     'student_id' => $student->student_id,
-                                //     'fingerid' => $value[$i]["FingerID"],
-                                //     'size' => $value[$i]["Size"],
-                                //     'valid' => $value[$i]["Valid"],
-                                //     'template' => $value[$i]["Template"]
-                                // ]);
-                            }
-                        }
-                    }
+                //             } else {
+                //                 // Create new entry
+                //                 // Fingerprint::create([
+                //                 //     'student_id' => $student->student_id,
+                //                 //     'fingerid' => $value[$i]["FingerID"],
+                //                 //     'size' => $value[$i]["Size"],
+                //                 //     'valid' => $value[$i]["Valid"],
+                //                 //     'template' => $value[$i]["Template"]
+                //                 // ]);
+                //             }
+                //         }
+                //     }
 
-                }
+                // }
 
 
                 //Loop through the students table

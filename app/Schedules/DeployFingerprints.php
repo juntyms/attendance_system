@@ -5,6 +5,8 @@ namespace App\Schedules;
 use App\Models\Device;
 use TADPHP\TADFactory;
 use App\Models\Fingerprint;
+use Illuminate\Support\Facades\Log;
+
 
 
 class DeployFingerprints
@@ -21,7 +23,7 @@ class DeployFingerprints
                 $tad = $tad_factory->get_instance();
 
                 if ($tad->is_alive()) {
-                        $fingerprints = Fingerprint::all();
+                        $fingerprints = Fingerprint::orderByDesc('id')->get();
 
                         foreach($fingerprints as $fingerprint) {
                             $user_template_data = [
@@ -46,7 +48,7 @@ class DeployFingerprints
                 }
             } catch (\Exception $outerException) {
                 // Handle the exception from the outer loop (log, report, etc.)
-                Log::error('Error in outer loop: ' . $outerException->getMessage());
+                Log::error('Error in Device: ' . $outerException->getMessage());
 
             }
         }
