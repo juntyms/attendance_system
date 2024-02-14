@@ -5,7 +5,7 @@ namespace App\Schedules;
 use App\Models\Device;
 use TADPHP\TADFactory;
 use App\Models\Fingerprint;
-use Illuminate\Support\Facades\Log;
+
 
 class DeployFingerprints
 {
