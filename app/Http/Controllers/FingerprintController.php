@@ -10,6 +10,7 @@ use App\Models\Attendance;
 use App\Models\Fingerprint;
 use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FingerprintController extends Controller
 {
@@ -27,27 +28,34 @@ class FingerprintController extends Controller
 
                 if ($tad->is_alive())
                 {
-                    //$zk = new ZKTeco($device->ip);
 
-                    //$zk->connect();
-
-                    //dd($zk->getAttendance());
                     $logs = $tad->get_att_log()->to_array();
 //dd($logs);
-                    foreach($logs["Row"] as $attendance){
-                        $check_attendance = Attendance::where('student_id',$attendance['PIN'])
-                                                    ->where('punchtime',$attendance['DateTime'])
-                                                    ->where('device_id', $device->id)
-                                                    ->first();
+                    foreach($logs["Row"] as $attendance) {
 
-                        if (empty($check_attendance)) {
-                            Attendance::create([
-                                    'student_id'=>$attendance['PIN'],
-                                    'state_id' => $attendance['Status'],
-                                    'punchtime'=> $attendance['DateTime'],
-                                    'type'=> $attendance['WorkCode'],
-                                    'device_id'=> $device->id
-                                ]);
+                        try {
+
+                            $check_attendance = Attendance::where('student_id',$attendance['PIN'])
+                                                        ->where('punchtime',$attendance['DateTime'])
+                                                        ->where('device_id', $device->id)
+                                                        ->first();
+
+                            if (empty($check_attendance)) {
+
+                                Attendance::create([
+                                        'student_id'=>$attendance['PIN'],
+                                        'state_id' => $attendance['Status'],
+                                        'punchtime'=> $attendance['DateTime'],
+                                        'type'=> $attendance['WorkCode'],
+                                        'device_id'=> $device->id
+                                    ]);
+
+                            }
+
+                        } catch (\Exception $e) {
+
+                            Log::error('Student ID : ' .$e->getMessage());
+
                         }
                     }
                 }

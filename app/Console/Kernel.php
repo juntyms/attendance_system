@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
     {
         //! Check device Status
         $schedule->call(DeviceStatus::class)->everyMinute();
+        //$schedule->call(FetchAttendance::class)->everyMinute();
 
         //! Fetch Record From Master Device
         $schedule->call(FetchFingerprints::class)->everyFiveMinutes();
@@ -32,6 +33,7 @@ class Kernel extends ConsoleKernel
 
         //! Fetch Attendance
         $schedule->call(FetchAttendance::class)->hourly();
+
 
         // $schedule->command('inspire')->hourly();
         $myschedule = \DB::table('report_schedules')->first();
