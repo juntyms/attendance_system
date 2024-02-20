@@ -18,6 +18,10 @@ class DeviceStatus
 
             if ($tad->is_alive()) {
                 $device->update(['status' => 'Active']);
+
+                // Push server date to device
+                
+
             } else {
                 $device->update(['status' => 'In-Active']);
             }
