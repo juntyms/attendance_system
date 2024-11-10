@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/fetchattendance', [FingerprintController::class,'fetchattendance'])->name('fetchattendance');
     Route::get('/fetchstudents', [FingerprintController::class,'fetchstudents'])->name('fetchstudents');
     Route::get('/fetchfp', [FingerprintController::class,'fetchfp']);
+    Route::get('/setdate', [FingerprintController::class,'setdate']);
 
     Route::get('/users', [UserController::class,'index'])->name('users.index');
     Route::get('/users/create', [UserController::class,'create'])->name('users.create');

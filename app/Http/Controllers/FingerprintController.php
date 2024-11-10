@@ -98,6 +98,17 @@ class FingerprintController extends Controller
             }
     }
 
+    public function setdate()
+    {
+        $zk = new ZKTeco('192.168.100.25');
+
+        if ($zk->connect()) {
+
+            $zk->setTime(now()->format('Y-m-d H:m:s'));
+
+        }
+    }
+
     public function fetchfp()
     {
         // $fingerprint = Fingerprint::where('student_id','202311034')->first();
@@ -107,22 +118,26 @@ class FingerprintController extends Controller
         //$device = Device::where('is_master',1)->first();
 
        // if ($device) {
-            $tad_factory = new TADFactory(['ip'=>'192.168.100.22']);
+            $tad_factory = new TADFactory(['ip'=>'192.168.100.25']);
             $tad = $tad_factory->get_instance();
 
             if ($tad->is_alive())
             {
+                //echo(now()->format('Y-m-d H:m:s'));
+                $response = $tad->set_date();
+
+                dd($response);
                 //Get the Students List
                 //$students = Student::where('status_id',1)->get();
 
-                $student = Student::where('student_id','202311188')->first();
+             //   $student = Student::where('student_id','202311188')->first();
 
 
                 //getting user info
 
-                $student_device_info = $tad->get_user_template(['pin' => '2222'])->to_array();
+                // $student_device_info = $tad->get_user_template(['pin' => '2222'])->to_array();
 
-                dd(count($student_device_info));
+                // dd(count($student_device_info));
 
 
 

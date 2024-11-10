@@ -13,6 +13,11 @@ class Device extends Model
 
     public function devicetype()
     {
-        return $this->hasOne(DeviceType::class,'id','device_type_id');
+        return $this->hasOne(DeviceType::class, 'id', 'device_type_id');
+    }
+
+    public function building()
+    {
+        return $this->hasOne(Building::class, 'id', 'building_id');
     }
 }

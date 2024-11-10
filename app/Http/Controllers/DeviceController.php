@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Device;
 use TADPHP\TADFactory;
 use App\Models\Attendance;
+use App\Models\Building;
 use App\Models\DeviceType;
 use Rats\Zkteco\Lib\ZKTeco;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class DeviceController extends Controller
     {
         $devices = Device::get();
 
-        return view('devices.index')->with('devices',$devices);
+        return view('devices.index')->with('devices', $devices);
     }
 
     /**
@@ -30,9 +31,13 @@ class DeviceController extends Controller
      */
     public function create()
     {
-        $device_types = DeviceType::pluck('name','id');
+        $device_types = DeviceType::pluck('name', 'id');
 
-        return view('devices.create')->with('device_types',$device_types);
+        $buildings = Building::pluck('name', 'id');
+
+        return view('devices.create')
+            ->with('device_types', $device_types)
+            ->with('buildings', $buildings);
     }
 
     /**
@@ -53,7 +58,7 @@ class DeviceController extends Controller
         //* Connect to device and get record
         $zk = new ZKTeco($request->ip);
 
-        if ($zk->connect()){
+        if ($zk->connect()) {
 
             $dev = [
                 'ip' => $request->ip,
@@ -64,13 +69,14 @@ class DeviceController extends Controller
                 'serialnumber' => $zk->serialNumber(),
                 'is_master' => $is_master,
                 'device_type_id' => $request->device_type_id,
-                'status' => 'Active'
+                'status' => 'Active',
+                'building_id' => $request->building_id
             ];
 
             Device::create($dev);
-            toast('Device Added','success');
+            toast('Device Added', 'success');
         } else {
-            toast('Unable to Connect to Device','error');
+            toast('Unable to Connect to Device', 'error');
         }
 
 
@@ -88,11 +94,14 @@ class DeviceController extends Controller
     {
         $device = Device::findOrFail($id);
 
-        $device_types = DeviceType::pluck('name','id');
+        $device_types = DeviceType::pluck('name', 'id');
+
+        $buildings = Building::pluck('name', 'id');
 
         return view('devices.edit')
-            ->with('device',$device)
-            ->with('device_types',$device_types);
+            ->with('device', $device)
+            ->with('device_types', $device_types)
+            ->with('buildings', $buildings);
     }
 
     /**
@@ -114,21 +123,20 @@ class DeviceController extends Controller
 
         $device->update($request->all());
 
-        toast('Device Updated','success');
+        toast('Device Updated', 'success');
 
         return redirect()->route('devices.index');
-
     }
 
 
     public function resetdevice()
     {
-/*
+        /*
         $zk = new ZKTeco('192.168.1.201');
         $zk->clearAdmin();
 */
 
-        $tad_factory = new TADFactory(['ip'=>'192.168.6.209']);
+        $tad_factory = new TADFactory(['ip' => '192.168.6.209']);
 
         $tad = $tad_factory->get_instance();
         echo '<pre>';
@@ -140,9 +148,9 @@ class DeviceController extends Controller
         //$tad->delete_template(['pin'=>1]);
 
         // Getting attendance logs from all users.
-//        $logs = $tad->get_user_template()->to_array();
+        //        $logs = $tad->get_user_template()->to_array();
 
-//        dd($logs);
+        //        dd($logs);
 
         //$tad = (new TADFactory(['ip'=>'192.168.1.201']))->get_instance();
 
@@ -162,47 +170,44 @@ class DeviceController extends Controller
     {
         $device = Device::findOrFail($id);
 
-        $tad_factory = new TADFactory(['ip'=>$device->ip]);
+        $tad_factory = new TADFactory(['ip' => $device->ip]);
 
         $tad = $tad_factory->get_instance();
 
-        if ($tad->is_alive())
-        {
+        if ($tad->is_alive()) {
 
             $att_logs = $tad->get_att_log()->to_array(); // Getting attendance log from all users.
 
             //dd(reset($att_logs));
-            foreach($att_logs['Row'] as $x => $attendance) {
-                $db_attendance = Attendance::where('punchtime',$attendance['DateTime'])->where('device_id',$device->id)->first();
-                    if ($db_attendance) { //Record Already Found Update Record
-                        $db_attendance->update(
-                            [
+            foreach ($att_logs['Row'] as $x => $attendance) {
+                $db_attendance = Attendance::where('punchtime', $attendance['DateTime'])->where('device_id', $device->id)->first();
+                if ($db_attendance) { //Record Already Found Update Record
+                    $db_attendance->update(
+                        [
 
-                                'student_id'=>$attendance['PIN'],
-                                'state_id'=>$attendance['Status'],
-                                'punchtime'=>$attendance['DateTime'],
-                                'type'=>$attendance['WorkCode'],
-                                'device_id'=>$device->id
-                            ]
-                        );
-                    } else { // No Record Found add Record
-                        Attendance::create(
-                            [
-                                'student_id'=>$attendance['PIN'],
-                                'state_id'=>$attendance['Status'],
-                                'punchtime'=>$attendance['DateTime'],
-                                'type'=>$attendance['WorkCode'],
-                                'device_id'=>$device->id
-                            ]
-                        );
-                    }
+                            'student_id' => $attendance['PIN'],
+                            'state_id' => $attendance['Status'],
+                            'punchtime' => $attendance['DateTime'],
+                            'type' => $attendance['WorkCode'],
+                            'device_id' => $device->id
+                        ]
+                    );
+                } else { // No Record Found add Record
+                    Attendance::create(
+                        [
+                            'student_id' => $attendance['PIN'],
+                            'state_id' => $attendance['Status'],
+                            'punchtime' => $attendance['DateTime'],
+                            'type' => $attendance['WorkCode'],
+                            'device_id' => $device->id
+                        ]
+                    );
+                }
             }
-
         }
-        toast('Attendance Downloaded Successfully!','success');
+        toast('Attendance Downloaded Successfully!', 'success');
 
         return redirect()->route('devices.index');
-
     }
 
     public function fetch1($id)
@@ -210,56 +215,49 @@ class DeviceController extends Controller
         //$last_student_record=Attendance::max('uid');
         $device = Device::findOrFail($id);
 
-        try
-        {
+        try {
             $zk = new ZKTeco($device->ip);
 
             //$last_student_record=Attendance::max('uid');
 
-            if ($zk->connect())
-            {
+            if ($zk->connect()) {
 
                 $attendances = $zk->getAttendance();
 
                 dd($attendances);
-                foreach($attendances as $attendance)
-                {
-                    $db_attendance = Attendance::where('uid',$attendance['uid'])->where('device_id',$device->id)->first();
+                foreach ($attendances as $attendance) {
+                    $db_attendance = Attendance::where('uid', $attendance['uid'])->where('device_id', $device->id)->first();
 
                     if ($db_attendance) { //Record Already Found Update Record
                         $db_attendance->update(
                             [
-                                'uid'=>$attendance['uid'],
-                                'student_id'=>$attendance['id'],
-                                'state_id'=>$attendance['state'],
-                                'punchtime'=>$attendance['timestamp'],
-                                'type'=>$attendance['type'],
-                                'device_id'=>$device->id
+                                'uid' => $attendance['uid'],
+                                'student_id' => $attendance['id'],
+                                'state_id' => $attendance['state'],
+                                'punchtime' => $attendance['timestamp'],
+                                'type' => $attendance['type'],
+                                'device_id' => $device->id
                             ]
                         );
                     } else { // No Record Found add Record
                         Attendance::create(
                             [
-                                'uid'=>$attendance['uid'],
-                                'student_id'=>$attendance['id'],
-                                'state_id'=>$attendance['state'],
-                                'punchtime'=>$attendance['timestamp'],
-                                'type'=>$attendance['type'],
-                                'device_id'=>$device->id
+                                'uid' => $attendance['uid'],
+                                'student_id' => $attendance['id'],
+                                'state_id' => $attendance['state'],
+                                'punchtime' => $attendance['timestamp'],
+                                'type' => $attendance['type'],
+                                'device_id' => $device->id
                             ]
                         );
                     }
-
-
                 }
             }
-        }
-        catch(Exception $e){
-            toast('Unable to Connect to Device','error');
+        } catch (Exception $e) {
+            toast('Unable to Connect to Device', 'error');
             return redirect()->route('devices.index');
-
         }
-        toast('Attendance Downloaded Successfully!','success');
+        toast('Attendance Downloaded Successfully!', 'success');
         return redirect()->route('devices.index');
     }
 }

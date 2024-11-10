@@ -22,7 +22,6 @@ class DeviceStatus
                 // Push server date to device to sync server and device
 
 
-
             } else {
                 $device->update(['status' => 'In-Active']);
             }
