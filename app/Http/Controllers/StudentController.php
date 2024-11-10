@@ -35,7 +35,7 @@ class StudentController extends Controller
         if (Auth::user()->hasRole('Coordinator')) {
             $is_building = \DB::table('coordinators')->where('user_id', Auth::user()->id)->first();
 
-            if($is_building) {
+            if ($is_building) {
 
                 $students = DB::table('students')
                     ->leftjoin('buildings', 'buildings.id', '=', 'students.building_id')
@@ -59,10 +59,7 @@ class StudentController extends Controller
                     ->where('students.building_id', $is_building->building_id)
                     ->orderBy('students.id', 'DESC')
                     ->get();
-
             }
-
-
         } else {
             //if (Auth::user()->roles[0]->id === self::admin) {
             if (Auth::user()->hasRole('super-admin')) {
@@ -87,7 +84,6 @@ class StudentController extends Controller
                     )
                     ->orderBy('students.id', 'DESC')
                     ->get();
-
             }
         }
 
@@ -106,7 +102,7 @@ class StudentController extends Controller
 
         $room_occupancy = StudentRoom::where('room_id', $request->room_id)->count();
 
-        if($room_occupancy < $room->capacity) {
+        if ($room_occupancy < $room->capacity) {
             //Save Student
             StudentRoom::create($request->all());
 
@@ -166,6 +162,7 @@ class StudentController extends Controller
                 'emergency_contact_person' => 'required',
                 'emergency_no' => 'required',
                 'emergency2_no' => 'required',
+                'building_id' => 'required',
             ]);
 
             Student::create($validated);
@@ -193,7 +190,7 @@ class StudentController extends Controller
                 $template1_data = [
                     'pin' => $student->student_id,
                     'name' => $student->student_name,
-                    ];
+                ];
 
                 $tad->set_user_info($template1_data);
 
@@ -203,7 +200,6 @@ class StudentController extends Controller
             } else {
                 toast('Device Not Found or No Active Master Device', 'error');
             }
-
         } else {
             toast('No Master Device Found, Please Set Master Device', 'error');
         }
@@ -234,13 +230,11 @@ class StudentController extends Controller
             } else {
                 toast('Device Not Found or No Active Master Device', 'error');
             }
-
         } else {
             toast('No Master Device Found, Please Set Master Device', 'error');
         }
 
         return redirect()->route('student.list');
-
     }
 
     public function allattendance()
@@ -265,8 +259,8 @@ class StudentController extends Controller
                 $attendances = $zk->getAttendance();
 
                 //dd($attendances);
-                foreach($attendances as $attendance) {
-                    if($attendance['uid'] > $last) {
+                foreach ($attendances as $attendance) {
+                    if ($attendance['uid'] > $last) {
                         Attendance::create([
                             'uid' => $attendance['uid'],
                             'student_id' => $attendance['id'],
@@ -277,13 +271,11 @@ class StudentController extends Controller
                     }
                 }
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('attendance.all');
-
         }
 
         return redirect()->route('attendance.all');
-
     }
 
     public function edit($id)
@@ -305,19 +297,20 @@ class StudentController extends Controller
         //$student->update($request->all());
 
         $validated = $request->validate([
-                    'student_id' => 'required',
-                    'student_name' => 'required',
-                    'student_name_ar' => 'required',
-                    'email' => 'required|email|unique:users,email',
-                    'mobile_no' => 'required',
-                    'nationality_id' => 'required',
-                    'status_id' => 'required',
-                    'civilno' => 'required',
-                    'date_of_joining' => 'required',
-                    'emergency_contact_person' => 'required',
-                    'emergency_no' => 'required',
-                    'emergency2_no' => 'required',
-                ]);
+            'student_id' => 'required',
+            'student_name' => 'required',
+            'student_name_ar' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'mobile_no' => 'required',
+            'nationality_id' => 'required',
+            'status_id' => 'required',
+            'civilno' => 'required',
+            'date_of_joining' => 'required',
+            'emergency_contact_person' => 'required',
+            'emergency_no' => 'required',
+            'emergency2_no' => 'required',
+            'building_id' => 'required',
+        ]);
 
         $student->update($validated);
 
@@ -352,22 +345,21 @@ class StudentController extends Controller
         toast('File Uploaded Successfully!', 'success');
 
         return redirect()->route('student.list');
-
     }
 
     public function push_student_to_device(Student $student)
     {
-        $devices = Device::where('is_master','0')->pluck('name','id');
+        $devices = Device::where('is_master', '0')->pluck('name', 'id');
 
         return view('student.pushtodevice')
-            ->with('devices',$devices)
-            ->with('student_id',$student->id);
+            ->with('devices', $devices)
+            ->with('student_id', $student->id);
     }
 
     public function post_push_student_to_device(Request $request, Student $student)
     {
 
-        $fingerprint = Fingerprint::where('student_id',$student->student_id)->first();
+        $fingerprint = Fingerprint::where('student_id', $student->student_id)->first();
 
         if ($fingerprint) {
 
@@ -382,27 +374,23 @@ class StudentController extends Controller
                 $tad->delete_user(['pin' => $student->student_id]);
 
                 $user_template_data = [
-                                'pin' => $fingerprint->student_id,
-                                'name' => $student->student_name,
-                                'finger_id' => $fingerprint->fingerid, // First fingerprint has 0 as index.
-                                'size' => $fingerprint->size,    // Be careful, this is not string length of $template1_vx9 var.
-                                'valid' => $fingerprint->valid,
-                                'template' => $fingerprint->template
-                            ];
+                    'pin' => $fingerprint->student_id,
+                    'name' => $student->student_name,
+                    'finger_id' => $fingerprint->fingerid, // First fingerprint has 0 as index.
+                    'size' => $fingerprint->size,    // Be careful, this is not string length of $template1_vx9 var.
+                    'valid' => $fingerprint->valid,
+                    'template' => $fingerprint->template
+                ];
 
                 $tad->set_user_template($user_template_data);
 
                 toast('Student pushed to building record', 'success');
 
                 return redirect()->route('student.list');
-
-            } catch ( Throwable $e) {
+            } catch (Throwable $e) {
 
                 report($e);
-
-
             }
-
         } else {
 
             toast('Student not yet have fingerprint record, make sure you have push and registered', 'error');
@@ -411,4 +399,23 @@ class StudentController extends Controller
         }
     }
 
+    public function generatelocation()
+    {
+
+        $students = Student::all();
+
+        foreach ($students as $student) {
+
+            $attendance = Attendance::where('student_id', $student->student_id)->latest()->first();
+
+            if ($attendance) {
+
+                if (optional($attendance->device)->building_id) {
+                    $student->update(['building_id' => $attendance->device->building_id]);
+                }
+            }
+        }
+
+        return redirect()->route('student.list');
+    }
 }
