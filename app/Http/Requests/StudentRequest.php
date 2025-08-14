@@ -26,14 +26,17 @@ class StudentRequest extends FormRequest
         return [
             'student_id' => 'required',
             'student_name' => 'required',
-            'email' => 'required|email',
+            'student_name_ar' => 'required',
+            'email' => 'required|email|unique:users,email',
             'mobile_no' => 'required',
             'nationality_id' => 'required',
             'status_id' => 'required',
             'civilno' => 'required',
             'date_of_joining' => 'required',
             'emergency_contact_person' => 'required',
-            'emergency_no' => 'required'
+            'emergency_no' => 'required',
+            'emergency2_no' => 'required',
+            'building_id' => 'required',
         ];
     }
 }

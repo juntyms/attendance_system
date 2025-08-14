@@ -140,38 +140,25 @@ class StudentController extends Controller
         $buildings = Building::pluck('name', 'id');
         $nationalities = Nationality::pluck('name', 'id');
         $status = Status::pluck('name', 'id');
+        $rooms = Room::pluck('name', 'id');
 
-        return view('student.create', compact('depts', 'buildings', 'nationalities', 'status'));
+        return view('student.create', compact('depts', 'buildings', 'nationalities', 'status', 'rooms'));
     }
-    public function store(Request $request)
+    public function store(StudentRequest $request)
     {
         $student = Student::where('student_id', $request->student_id)->first();
 
         if (empty($student)) {
 
-            $validated = $request->validate([
-                'student_id' => 'required',
-                'student_name' => 'required',
-                'student_name_ar' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'mobile_no' => 'required',
-                'nationality_id' => 'required',
-                'status_id' => 'required',
-                'civilno' => 'required',
-                'date_of_joining' => 'required',
-                'emergency_contact_person' => 'required',
-                'emergency_no' => 'required',
-                'emergency2_no' => 'required',
-                'building_id' => 'required',
-            ]);
+            $student = Student::create($request->all());
 
-            Student::create($validated);
             toast('Student Created Successfully!', 'success');
         } else {
             toast('Student Already Exist!', 'error');
         }
 
-        return redirect()->route('student.list');
+        //return redirect()->route('student.list');
+        return redirect()->route('student.edit', $student->id);
     }
 
     public function push($id)
@@ -287,32 +274,16 @@ class StudentController extends Controller
 
         $student = Student::findOrFail($id);
 
-        return view('student.edit', compact('student', 'depts', 'buildings', 'nationalities', 'status'));
+        $rooms = Room::pluck('name', 'id');
+
+        return view('student.edit', compact('student', 'depts', 'buildings', 'nationalities', 'status', 'rooms'));
     }
 
     public function update(StudentRequest $request, $id)
     {
         $student = Student::findOrFail($id);
 
-        //$student->update($request->all());
-
-        $validated = $request->validate([
-            'student_id' => 'required',
-            'student_name' => 'required',
-            'student_name_ar' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'mobile_no' => 'required',
-            'nationality_id' => 'required',
-            'status_id' => 'required',
-            'civilno' => 'required',
-            'date_of_joining' => 'required',
-            'emergency_contact_person' => 'required',
-            'emergency_no' => 'required',
-            'emergency2_no' => 'required',
-            'building_id' => 'required',
-        ]);
-
-        $student->update($validated);
+        $student->update($request->all());
 
         toast('User Updated Successfully!', 'success');
 

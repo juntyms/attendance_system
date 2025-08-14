@@ -80,6 +80,11 @@
                     <div class="col-sm-3">
                         {{ Form::select('building_id', $buildings, null, ['class' => 'form-control', 'placeholder' => 'Select Building']) }}
                     </div>
+
+                    <label for="room" class="col-sm-2 col-form-label">Room Assignment</label>
+                    <div class="col-sm-3">
+                        {{ Form::select('room_id', $rooms, null, ['class' => 'form-control', 'placeholder' => 'Select Room', 'id' => 'room_select2']) }}
+                    </div>
                 </div>
                 <div class="row mt-2">
                     <label for="nationality" class="col-sm-2 col-form-label">Nationality</label>
