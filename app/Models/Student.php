@@ -13,7 +13,8 @@ class Student extends Model
     use HasFactory;
     use FormAccessible;
 
-    protected $guarded = [];
+    //    protected $guarded = [];
+    protected $fillable = ['emergency2_no', 'emergency3_no','student_id','student_name','student_name_ar','email','mobile_no','civilno','building_id','room_id','nationality_id','date_of_joining','status_id','emergency_contact_person','emergency_no'];
 
     public function department()
     {
