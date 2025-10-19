@@ -68,14 +68,22 @@ class ReportController extends Controller
                         SELECT dt FROM date_ranges";
 
         $attendance_ins = \DB::table('attendances')
-            ->select('device_id', 'student_id', 'type', 'punchtime as pin', \DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as datein"))
+            ->select(
+                'device_id',
+                'student_id',
+                'type',
+                \DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as datein"),
+                \DB::raw("MIN(punchtime) as pin")
+            )
             ->whereBetween('punchtime', [$startDay, $endDay])
-            ->where('type', 0);
+            ->where('type', 0)
+            ->groupBy('device_id', 'student_id', 'type', \DB::raw("DATE_FORMAT(punchtime, '%Y-%m-%d')"));
 
+        /*
         $attendance_outs = \DB::table('attendances')
             ->select('student_id', 'type', 'punchtime as pout', \DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as dateout"))
             ->whereBetween('punchtime', [$startDay, $endDay])
-            ->where('type', 1);
+            ->where('type', 1); */
 
         $device_locations = \DB::table('devices')
             ->leftjoin('buildings', 'buildings.id', '=', 'devices.building_id')
@@ -99,10 +107,7 @@ class ReportController extends Controller
                         $join->on('punchin.student_id', '=', 'studs.student_id')
                             ->on('dt', '=', 'punchin.datein');
                     })
-                    ->leftJoinSub($attendance_outs, 'punchout', function ($join) {
-                        $join->on('punchout.student_id', '=', 'studs.student_id')
-                            ->on('dt', '=', 'punchout.dateout');
-                    })
+
                     ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'studs.id')
                     ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
                     ->leftjoin('buildings', 'buildings.id', '=', 'studs.building_id')
@@ -116,9 +121,9 @@ class ReportController extends Controller
                         'studs.mobile_no',
                         'date_ranges.dt',
                         'punchin.pin',
-                        'punchout.pout',
+
                         'punchin.datein',
-                        'punchout.dateout'
+
                     )
                     ->where('studs.building_id', '=', Auth::user()->coordinator->building_id)
                     ->whereNotNull('punchin.datein')
@@ -138,10 +143,7 @@ class ReportController extends Controller
                             $join->on('punchin.student_id', '=', 'studs.student_id')
                                 ->on('dt', '=', 'punchin.datein');
                         })
-                        ->leftJoinSub($attendance_outs, 'punchout', function ($join) {
-                            $join->on('punchout.student_id', '=', 'studs.student_id')
-                                ->on('dt', '=', 'punchout.dateout');
-                        })
+
                         ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'studs.id')
                         ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
                         ->leftjoin('buildings', 'buildings.id', '=', 'studs.building_id')
@@ -155,9 +157,9 @@ class ReportController extends Controller
                             'studs.mobile_no',
                             'date_ranges.dt',
                             'punchin.pin',
-                            'punchout.pout',
+
                             'punchin.datein',
-                            'punchout.dateout'
+
                         )
                         ->whereNotNull('punchin.datein')
                         ->orderBy('buildingname')
@@ -182,10 +184,7 @@ class ReportController extends Controller
                         $join->on('punchin.student_id', '=', 'studs.student_id')
                             ->on('dt', '=', 'punchin.datein');
                     })
-                    ->leftJoinSub($attendance_outs, 'punchout', function ($join) {
-                        $join->on('punchout.student_id', '=', 'studs.student_id')
-                            ->on('dt', '=', 'punchout.dateout');
-                    })
+
                     ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'studs.id')
                     ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
                     ->leftjoin('buildings', 'buildings.id', '=', 'studs.building_id')
@@ -199,9 +198,9 @@ class ReportController extends Controller
                         'studs.mobile_no',
                         'date_ranges.dt',
                         'punchin.pin',
-                        'punchout.pout',
+
                         'punchin.datein',
-                        'punchout.dateout'
+
                     )
                     ->whereNull('punchin.datein')
                     ->where('studs.building_id', '=', Auth::user()->coordinator->building_id)
@@ -219,10 +218,7 @@ class ReportController extends Controller
                             $join->on('punchin.student_id', '=', 'studs.student_id')
                                 ->on('dt', '=', 'punchin.datein');
                         })
-                        ->leftJoinSub($attendance_outs, 'punchout', function ($join) {
-                            $join->on('punchout.student_id', '=', 'studs.student_id')
-                                ->on('dt', '=', 'punchout.dateout');
-                        })
+
                         ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'studs.id')
                         ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
                         ->leftjoin('buildings', 'buildings.id', '=', 'studs.building_id')
@@ -236,9 +232,9 @@ class ReportController extends Controller
                             'studs.mobile_no',
                             'date_ranges.dt',
                             'punchin.pin',
-                            'punchout.pout',
+
                             'punchin.datein',
-                            'punchout.dateout'
+
                         )
                         ->whereNull('punchin.datein')
                         ->orderBy('date_ranges.dt')

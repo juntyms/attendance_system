@@ -13,7 +13,7 @@
             <th>Mobile</th>
             <th>Date</th>
             <th>Check In</th>
-            <th>Check Out</th>
+
 
         </tr>
     </thead>
@@ -30,7 +30,6 @@
                 <td>{{ $attendance->mobile_no }}</td>
                 <td>{{ $attendance->dt }}</td>
                 <td>{{ $attendance->pin ? \Carbon\Carbon::parse($attendance->pin)->format('H:i:s A') : '' }}</td>
-                <td>{{ $attendance->pout ? \Carbon\Carbon::parse($attendance->pout)->format('H:i:s A') : '' }}</td>
             </tr>
         @endforeach
     </tbody>
