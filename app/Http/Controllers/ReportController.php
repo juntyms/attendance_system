@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+
 use Carbon\Carbon;
 use App\Exports\LateExport;
 use App\Models\Coordinator;
@@ -12,7 +12,10 @@ use Illuminate\Http\Request;
 use App\Models\ReportSchedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\AttendanceExport;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 class ReportController extends Controller
 {
@@ -57,7 +60,7 @@ class ReportController extends Controller
         $startDay = Carbon::parse($start_date)->startOfDay();
         $endDay = Carbon::parse($end_date)->endOfDay();
 
-        $students = \DB::table('students')
+        $students = DB::table('students')
             ->select('id', 'student_id', 'student_name', 'email', 'building_id', 'room_id', 'mobile_no');
 
 
@@ -67,17 +70,17 @@ class ReportController extends Controller
                         WHERE dt + INTERVAL 1 DAY <= '" . $end_date . "')
                         SELECT dt FROM date_ranges";
 
-        $attendance_ins = \DB::table('attendances')
+        $attendance_ins = DB::table('attendances')
             ->select(
                 'device_id',
                 'student_id',
                 'type',
-                \DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as datein"),
-                \DB::raw("MIN(punchtime) as pin")
+                DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as datein"),
+                DB::raw("MIN(punchtime) as pin")
             )
             ->whereBetween('punchtime', [$startDay, $endDay])
             ->where('type', 0)
-            ->groupBy('device_id', 'student_id', 'type', \DB::raw("DATE_FORMAT(punchtime, '%Y-%m-%d')"));
+            ->groupBy('device_id', 'student_id', 'type', DB::raw("DATE_FORMAT(punchtime, '%Y-%m-%d')"));
 
         /*
         $attendance_outs = \DB::table('attendances')
@@ -98,7 +101,7 @@ class ReportController extends Controller
 
             if (Auth::user()->coordinator) {
 
-                $attendances = \DB::table('date_ranges')
+                $attendances = DB::table('date_ranges')
                     ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
                     ->joinSub($students, 'studs', function ($join) {
                         $join->on('studs.id', '=', 'studs.id');
@@ -134,7 +137,7 @@ class ReportController extends Controller
 
                 if (Auth::user()->hasRole('super-admin')) {
 
-                    $attendances = \DB::table('date_ranges')
+                    $attendances = DB::table('date_ranges')
                         ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
                         ->joinSub($students, 'studs', function ($join) {
                             $join->on('studs.id', '=', 'studs.id');
@@ -175,7 +178,7 @@ class ReportController extends Controller
 
             if (Auth::user()->coordinator) {
 
-                $attendances = \DB::table('date_ranges')
+                $attendances = DB::table('date_ranges')
                     ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
                     ->joinSub($students, 'studs', function ($join) {
                         $join->on('studs.id', '=', 'studs.id');
@@ -209,7 +212,7 @@ class ReportController extends Controller
                     ->get();
             } else {
                 if (Auth::user()->hasRole('super-admin')) {
-                    $attendances = \DB::table('date_ranges')
+                    $attendances = DB::table('date_ranges')
                         ->withRecursiveExpression('date_ranges', $date_range, ['dt'])
                         ->joinSub($students, 'studs', function ($join) {
                             $join->on('studs.id', '=', 'studs.id');
@@ -247,7 +250,7 @@ class ReportController extends Controller
         if ($request->report_type == Self::late) {
             $report_type = "Late";
 
-            $student_leaves = StudentLeave::select('student_id', \DB::RAW("DATE_FORMAT(leave_date,'%Y-%m-%d') as leavedate"))
+            $student_leaves = StudentLeave::select('student_id', DB::RAW("DATE_FORMAT(leave_date,'%Y-%m-%d') as leavedate"))
                 ->whereBetween('leave_date', [$startDay, $endDay])
                 ->whereNull('return_date')
                 ->get();
@@ -305,7 +308,7 @@ class ReportController extends Controller
 
     public function reporttest()
     {
-        $coordinators = \DB::table('coordinators')
+        $coordinators = DB::table('coordinators')
             ->join('users', 'users.id', '=', 'coordinators.user_id')
             ->select('users.email')
             ->pluck('users.email');
