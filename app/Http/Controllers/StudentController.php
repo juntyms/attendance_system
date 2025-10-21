@@ -40,7 +40,7 @@ class StudentController extends Controller
                 $students = DB::table('students')
                     ->leftjoin('buildings', 'buildings.id', '=', 'students.building_id')
                     ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'students.id')
-                    ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
+                    ->leftjoin('rooms', 'rooms.id', '=', 'students.room_id')
                     ->select(
                         'students.id',
                         'students.student_id',
@@ -54,7 +54,7 @@ class StudentController extends Controller
                         'students.is_pushed',
                         'buildings.name as buildingname',
                         'rooms.name as roomname',
-                        'student_rooms.id as studentroomid'
+                        'students.room_id as studentroomid'
                     )
                     ->where('students.building_id', $is_building->building_id)
                     ->orderBy('students.id', 'DESC')
@@ -66,7 +66,7 @@ class StudentController extends Controller
                 $students = DB::table('students')
                     ->leftjoin('buildings', 'buildings.id', '=', 'students.building_id')
                     ->leftjoin('student_rooms', 'student_rooms.student_id', '=', 'students.id')
-                    ->leftjoin('rooms', 'rooms.id', '=', 'student_rooms.room_id')
+                    ->leftjoin('rooms', 'rooms.id', '=', 'students.room_id')
                     ->select(
                         'students.id',
                         'students.student_id',
@@ -80,7 +80,7 @@ class StudentController extends Controller
                         'students.is_pushed',
                         'buildings.name as buildingname',
                         'rooms.name as roomname',
-                        'student_rooms.id as studentroomid'
+                        'students.room_id as studentroomid'
                     )
                     ->orderBy('students.id', 'DESC')
                     ->get();
