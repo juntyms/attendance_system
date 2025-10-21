@@ -100,9 +100,7 @@ class StudentController extends Controller
         // Check room capacity
         $room = Room::findOrFail($request->room_id);
 
-        $room_occupancy = StudentRoom::where('room_id', $request->room_id)->count();
-
-        if ($room_occupancy < $room->capacity) {
+        if ($room) {
             //Save Student
             StudentRoom::create($request->all());
 
@@ -111,8 +109,6 @@ class StudentController extends Controller
             $student->update(['building_id' => $room->building_id]);
 
             Alert::success('Room Assignment', 'Student Assigned');
-        } else {
-            Alert::error('Error', 'Room Capacity Full');
         }
 
 

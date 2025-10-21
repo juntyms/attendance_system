@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 
 use Carbon\Carbon;
+use App\Models\Building;
 use App\Exports\LateExport;
 use App\Models\Coordinator;
 use App\Models\StudentLeave;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use App\Models\ReportSchedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\AttendanceExport;
@@ -47,7 +48,9 @@ class ReportController extends Controller
 
     public function inout()
     {
-        return view('report.inout');
+        $buildings = Building::select('name', 'id')->get();
+
+        return view('report.inout')->with('buildings', $buildings);
     }
 
     public function postinout(Request $request)
@@ -110,8 +113,6 @@ class ReportController extends Controller
                         $join->on('punchin.student_id', '=', 'studs.student_id')
                             ->on('dt', '=', 'punchin.datein');
                     })
-
-
                     ->leftjoin('rooms', 'rooms.id', '=', 'studs.room_id')
                     ->leftjoin('buildings', 'buildings.id', '=', 'rooms.building_id')
                     ->select(
@@ -124,15 +125,13 @@ class ReportController extends Controller
                         'studs.mobile_no',
                         'date_ranges.dt',
                         'punchin.pin',
-
                         'punchin.datein',
-
                     )
                     ->where('rooms.building_id', '=', Auth::user()->coordinator->building_id)
                     ->whereNotNull('punchin.datein')
-		    ->orderby('buildingname')
-		    ->orderBy('roomname')
-		    ->orderBy('date_ranges.dt')
+                    ->orderby('buildingname')
+                    ->orderBy('roomname')
+                    ->orderBy('date_ranges.dt')
                     ->orderBy('studs.student_name')
                     ->get();
             } else {
@@ -148,8 +147,6 @@ class ReportController extends Controller
                             $join->on('punchin.student_id', '=', 'studs.student_id')
                                 ->on('dt', '=', 'punchin.datein');
                         })
-
-
                         ->leftjoin('rooms', 'rooms.id', '=', 'studs.room_id')
                         ->leftjoin('buildings', 'buildings.id', '=', 'rooms.building_id')
                         ->select(
@@ -162,19 +159,22 @@ class ReportController extends Controller
                             'studs.mobile_no',
                             'date_ranges.dt',
                             'punchin.pin',
-
-                            'punchin.datein',
-
+                            'punchin.datein'
                         )
+                        ->when($request->filled('building'), function ($query) use ($request) {
+                            $query->where('studs.building_id', $request->building);
+                        })
                         ->whereNotNull('punchin.datein')
-			->orderBy('buildingname')
-			->orderBy('roomname')
+                        ->orderBy('buildingname')
+                        ->orderBy('roomname')
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
                         ->get();
                 }
             }
         }
+
+
 
         if ($request->report_type == Self::absent) {
             $report_type = "Absences";
@@ -190,8 +190,6 @@ class ReportController extends Controller
                         $join->on('punchin.student_id', '=', 'studs.student_id')
                             ->on('dt', '=', 'punchin.datein');
                     })
-
-
                     ->leftjoin('rooms', 'rooms.id', '=', 'studs.room_id')
                     ->leftjoin('buildings', 'buildings.id', '=', 'rooms.building_id')
                     ->select(
@@ -204,15 +202,13 @@ class ReportController extends Controller
                         'studs.mobile_no',
                         'date_ranges.dt',
                         'punchin.pin',
-
                         'punchin.datein',
-
                     )
                     ->whereNull('punchin.datein')
                     ->where('rooms.building_id', '=', Auth::user()->coordinator->building_id)
-		    ->orderBy('buildingname')
-	    	    ->orderBy('roomname')
-		    ->orderBy('date_ranges.dt')
+                    ->orderBy('buildingname')
+                    ->orderBy('roomname')
+                    ->orderBy('date_ranges.dt')
                     ->orderBy('studs.student_name')
                     ->get();
             } else {
@@ -226,10 +222,8 @@ class ReportController extends Controller
                             $join->on('punchin.student_id', '=', 'studs.student_id')
                                 ->on('dt', '=', 'punchin.datein');
                         })
-
-
                         ->leftjoin('rooms', 'rooms.id', '=', 'studs.room_id')
-                        ->leftjoin('buildings', 'buildings.id', '=', 'rooms.building_id')
+                        ->leftjoin('buildings', 'buildings.id', '=', 'studs.building_id')
                         ->select(
                             'buildings.name as buildingname',
                             'rooms.name as roomname',
@@ -240,13 +234,14 @@ class ReportController extends Controller
                             'studs.mobile_no',
                             'date_ranges.dt',
                             'punchin.pin',
-
                             'punchin.datein',
-
                         )
-			->whereNull('punchin.datein')
-			->orderBy('buildingname')
-		        ->orderBy('roomname')
+                        ->whereNull('punchin.datein')
+                        ->when($request->filled('building'), function ($query) use ($request) {
+                            $query->where('studs.building_id', $request->building);
+                        })
+                        ->orderBy('buildingname')
+                        ->orderBy('roomname')
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
                         ->get();

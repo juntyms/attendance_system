@@ -13,8 +13,6 @@
             <th>Mobile</th>
             <th>Date</th>
             <th>Check In</th>
-
-
         </tr>
     </thead>
     <tbody>
@@ -22,13 +20,13 @@
         @foreach ($attendances as $attendance)
             <tr>
                 <td>{{ $sn++ }}</td>
-                <td>{{ $attendance->buildingname }}</td>
-                <td>{{ $attendance->roomname }}</td>
+                <td>{{ $attendance->buildingname ?? '' }}</td>
+                <td>{{ $attendance->roomname ?? '' }}</td>
                 <td><a href="{{ route('student.edit', $attendance->id) }}">{{ $attendance->student_id }}</a></td>
-                <td>{{ $attendance->student_name }}</td>
-                <td>{{ $attendance->email }}</td>
-                <td>{{ $attendance->mobile_no }}</td>
-                <td>{{ $attendance->dt }}</td>
+                <td>{{ $attendance->student_name ?? '' }}</td>
+                <td>{{ $attendance->email ?? '' }}</td>
+                <td>{{ $attendance->mobile_no ?? '' }}</td>
+                <td>{{ $attendance->dt ?? '' }}</td>
                 <td>{{ $attendance->pin ? \Carbon\Carbon::parse($attendance->pin)->format('H:i:s A') : '' }}</td>
             </tr>
         @endforeach
