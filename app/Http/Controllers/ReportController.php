@@ -64,7 +64,7 @@ class ReportController extends Controller
         $endDay = Carbon::parse($end_date)->endOfDay();
 
         $students = DB::table('students')
-            ->select('id', 'student_id', 'student_name', 'email', 'building_id', 'room_id', 'mobile_no');
+            ->select('id', 'student_id', 'student_name', 'email', 'building_id', 'room_id', 'mobile_no', 'status_id');
 
 
         $date_range = "WITH RECURSIVE date_ranges AS (
@@ -129,6 +129,7 @@ class ReportController extends Controller
                     )
                     ->where('rooms.building_id', '=', Auth::user()->coordinator->building_id)
                     ->whereNotNull('punchin.datein')
+                    ->where('studs.status_id', 1)
                     ->orderby('buildingname')
                     ->orderBy('roomname')
                     ->orderBy('date_ranges.dt')
@@ -165,6 +166,7 @@ class ReportController extends Controller
                             $query->where('studs.building_id', $request->building);
                         })
                         ->whereNotNull('punchin.datein')
+                        ->where('studs.status_id', 1)
                         ->orderBy('buildingname')
                         ->orderBy('roomname')
                         ->orderBy('date_ranges.dt')
@@ -206,6 +208,7 @@ class ReportController extends Controller
                     )
                     ->whereNull('punchin.datein')
                     ->where('rooms.building_id', '=', Auth::user()->coordinator->building_id)
+                    ->where('studs.status_id', 1)
                     ->orderBy('buildingname')
                     ->orderBy('roomname')
                     ->orderBy('date_ranges.dt')
@@ -240,6 +243,7 @@ class ReportController extends Controller
                         ->when($request->filled('building'), function ($query) use ($request) {
                             $query->where('studs.building_id', $request->building);
                         })
+                        ->where('studs.status_id', 1)
                         ->orderBy('buildingname')
                         ->orderBy('roomname')
                         ->orderBy('date_ranges.dt')

@@ -54,7 +54,8 @@ class StudentController extends Controller
                         'students.is_pushed',
                         'buildings.name as buildingname',
                         'rooms.name as roomname',
-                        'students.room_id as studentroomid'
+                        'students.room_id as studentroomid',
+                        'students.status_id'
                     )
                     ->where('students.building_id', $is_building->building_id)
                     ->orderBy('students.id', 'DESC')
@@ -80,7 +81,8 @@ class StudentController extends Controller
                         'students.is_pushed',
                         'buildings.name as buildingname',
                         'rooms.name as roomname',
-                        'students.room_id as studentroomid'
+                        'students.room_id as studentroomid',
+                        'students.status_id'
                     )
                     ->orderBy('students.id', 'DESC')
                     ->get();

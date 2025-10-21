@@ -41,7 +41,7 @@
                     <tbody>
 
                         @foreach ($students as $student)
-                            <tr>
+                            <tr @if ($student->status_id != 1) class="table-danger" @endif>
                                 <td><a href="{{ route('student.edit', $student->id) }}">{{ $student->student_id }}</a></td>
                                 <td>{{ $student->student_name }}</td>
                                 <td class="text-right">{{ $student->student_name_ar }}</td>
