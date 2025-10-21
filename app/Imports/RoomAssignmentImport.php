@@ -33,7 +33,7 @@ class RoomAssignmentImport implements ToCollection, WithHeadingRow
                     ]
                 );
 
-                $student->update(['building_id' => $room->building_id]);
+                $student->update(['building_id' => $room->building_id, 'room_id'=> $room->id]);
             }
 
         }
