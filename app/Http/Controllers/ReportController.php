@@ -130,7 +130,9 @@ class ReportController extends Controller
                     )
                     ->where('rooms.building_id', '=', Auth::user()->coordinator->building_id)
                     ->whereNotNull('punchin.datein')
-                    ->orderBy('date_ranges.dt')
+		    ->orderby('buildingname')
+		    ->orderBy('roomname')
+		    ->orderBy('date_ranges.dt')
                     ->orderBy('studs.student_name')
                     ->get();
             } else {
@@ -165,7 +167,8 @@ class ReportController extends Controller
 
                         )
                         ->whereNotNull('punchin.datein')
-                        ->orderBy('buildingname')
+			->orderBy('buildingname')
+			->orderBy('roomname')
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
                         ->get();
@@ -207,7 +210,9 @@ class ReportController extends Controller
                     )
                     ->whereNull('punchin.datein')
                     ->where('rooms.building_id', '=', Auth::user()->coordinator->building_id)
-                    ->orderBy('date_ranges.dt')
+		    ->orderBy('buildingname')
+	    	    ->orderBy('roomname')
+		    ->orderBy('date_ranges.dt')
                     ->orderBy('studs.student_name')
                     ->get();
             } else {
@@ -239,7 +244,9 @@ class ReportController extends Controller
                             'punchin.datein',
 
                         )
-                        ->whereNull('punchin.datein')
+			->whereNull('punchin.datein')
+			->orderBy('buildingname')
+		        ->orderBy('roomname')
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
                         ->get();
