@@ -17,9 +17,8 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('studentleave.index') }}">Student Leave</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('student.list') }}"> Student List </a></li>
-                    {{-- <li class="nav-item"><a class="nav-link" href="{{ route('student.roomassignment') }}"> Room
+                    <li class="nav-item"><a class="nav-link" href="{{ route('student.roomassignment') }}"> Room
                             Assignment </a></li>
---}}
                 </ul>
             </div>
         </li>
