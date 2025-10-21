@@ -28,10 +28,10 @@ class StudentImport implements ToCollection, WithHeadingRow
                     'civilno' => $row['civilno'] ?? "",
                     'building_id' => $row['building'] ?? null,
                     'date_of_joining' => $row['date_of_joining'] ?? Carbon::now(),
-                    'emergency_contact_person' => $row['emergency_contact_person'] ?? "",
-                    'emergency_no' => $row['emergency_no'] ?? "",
-                    'emergency2_no' => $row['emergency2_no'] ?? "",
-                    'emergency3_no' => $row['emergency3_no'] ?? ""
+                    'emergency_contact_person' => $row['emergency_contact_person'] ?? "0",
+                    'emergency_no' => $row['emergency_no'] ?? "0",
+                    'emergency2_no' => $row['emergency2_no'] ?? "0",
+                    'emergency3_no' => $row['emergency3_no'] ?? "0"
                 ]
             );
         }
