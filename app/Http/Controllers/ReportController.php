@@ -163,7 +163,7 @@ class ReportController extends Controller
                             'punchin.datein'
                         )
                         ->when($request->filled('building'), function ($query) use ($request) {
-                            $query->where('studs.building_id', $request->building);
+                            $query->where('rooms.building_id', $request->building);
                         })
                         ->whereNotNull('punchin.datein')
                         ->where('studs.status_id', 1)
@@ -171,7 +171,7 @@ class ReportController extends Controller
                         ->orderBy('roomname')
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
-                        ->get();
+			->get();	
                 }
             }
         }
@@ -241,7 +241,7 @@ class ReportController extends Controller
                         )
                         ->whereNull('punchin.datein')
                         ->when($request->filled('building'), function ($query) use ($request) {
-                            $query->where('studs.building_id', $request->building);
+                            $query->where('rooms.building_id', $request->building);
                         })
                         ->where('studs.status_id', 1)
                         ->orderBy('buildingname')
