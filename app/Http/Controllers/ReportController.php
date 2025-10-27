@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\ReportSchedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\AttendanceExport;
+use App\Models\Device;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -49,8 +50,17 @@ class ReportController extends Controller
     public function inout()
     {
         $buildings = Building::select('name', 'id')->get();
+        $device = [];
 
-        return view('report.inout')->with('buildings', $buildings);
+        if (Auth::user()->coordinator) {
+            $coordinator = Coordinator::where('user_id', Auth::user()->id)->first();
+
+            $device = Device::where('building_id', $coordinator->building_id)->first();
+        }
+
+        return view('report.inout')
+            ->with('buildings', $buildings)
+            ->with('device', $device);
     }
 
     public function postinout(Request $request)
@@ -171,7 +181,7 @@ class ReportController extends Controller
                         ->orderBy('roomname')
                         ->orderBy('date_ranges.dt')
                         ->orderBy('studs.student_name')
-			->get();	
+                        ->get();
                 }
             }
         }

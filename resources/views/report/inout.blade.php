@@ -5,6 +5,11 @@
         <div class="card">
             <div class="card-body">
                 <h4>Student Attendance</h4>
+                @if (Auth::user()->hasRole('Coordinator'))
+                    @if ($device)
+                        <a href="{{ route('devices.fetch', $device->id) }}"> Fetch Attendance</a>
+                    @endif
+                @endif
                 <hr />
                 {{ Form::open(['route' => ['report.postinout']]) }}
                 <div class="row">

@@ -207,7 +207,7 @@ class DeviceController extends Controller
         }
         toast('Attendance Downloaded Successfully!', 'success');
 
-        return redirect()->route('devices.index');
+        return redirect()->route('report.inout');
     }
 
     public function fetch1($id)
