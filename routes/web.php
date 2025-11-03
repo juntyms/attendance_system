@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/students/uploadroomassignment', [StudentController::class, 'saveuploadroomassignment'])->name('student.saveuploadroomassignment');
 
     Route::get('/students/generatelocation', [StudentController::class, 'generatelocation'])->name('student.generatelocation');
+    Route::get('/students/enactive', [StudentController::class, 'enactive'])->name('student.enactive');
 
 
 

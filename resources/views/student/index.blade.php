@@ -11,6 +11,7 @@
                     <a class="btn btn-info" href="{{ route('student.add') }}"> <i class="icon-file-add"></i> New Student</a>
                     <a href="{{ route('students.upload') }}" class="btn btn-success"> <i class="icon-upload"></i> Upload
                         Excel</a>
+                    <a href="{{ route('student.enactive') }}" class="btn btn-warning"> Deactivate All</a>
                 </div>
 
                 <table class="table table-striped table-bordered table-hover table-responsive mt-2" id="students_table">

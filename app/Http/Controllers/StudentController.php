@@ -387,4 +387,13 @@ class StudentController extends Controller
 
         return redirect()->route('student.list');
     }
+
+    public function enactive()
+    {
+        \DB::table('students')->update(['status_id' => 2]);
+
+        toast('All Students Deactivated', 'success');
+
+        return redirect()->route('student.list');
+    }
 }
