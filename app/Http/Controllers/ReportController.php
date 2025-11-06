@@ -87,13 +87,12 @@ class ReportController extends Controller
             ->select(
                 'device_id',
                 'student_id',
-                'type',
                 DB::RAW("DATE_FORMAT(punchtime,'%Y-%m-%d') as datein"),
                 DB::raw("MIN(punchtime) as pin")
             )
             ->whereBetween('punchtime', [$startDay, $endDay])
             ->where('type', 0)
-            ->groupBy('device_id', 'student_id', 'type', DB::raw("DATE_FORMAT(punchtime, '%Y-%m-%d')"));
+            ->groupBy('device_id', 'student_id',  DB::raw("DATE_FORMAT(punchtime, '%Y-%m-%d')"));
 
         /*
         $attendance_outs = \DB::table('attendances')
