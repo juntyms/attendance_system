@@ -6,6 +6,7 @@
             <th>Room</th>
             <th>Student ID</th>
             <th>Student Name</th>
+            <th>Student Name Arabic</th>
             <th>Email</th>
             <th>Mobile</th>
             <th>Date</th>
@@ -23,6 +24,7 @@
                 <td>{{ $attendance->roomname }}</td>
                 <td>{{ $attendance->student_id }}</td>
                 <td>{{ $attendance->student_name }}</td>
+                <td>{{ $attendance->student_name_ar }}</td>
                 <td>{{ $attendance->email }}</td>
                 <td>{{ $attendance->mobile_no }}</td>
                 <td>{{ $attendance->dt }}</td>

@@ -74,7 +74,7 @@ class ReportController extends Controller
         $endDay = Carbon::parse($end_date)->endOfDay();
 
         $students = DB::table('students')
-            ->select('id', 'student_id', 'student_name', 'email', 'building_id', 'room_id', 'mobile_no', 'status_id');
+            ->select('id', 'student_id', 'student_name', 'student_name_ar', 'email', 'building_id', 'room_id', 'mobile_no', 'status_id');
 
 
         $date_range = "WITH RECURSIVE date_ranges AS (
@@ -131,6 +131,7 @@ class ReportController extends Controller
                         'studs.id',
                         'studs.student_id',
                         'studs.student_name',
+                        'studs.student_name_ar',
                         'studs.email',
                         'studs.mobile_no',
                         'date_ranges.dt',
@@ -166,6 +167,7 @@ class ReportController extends Controller
                             'studs.id',
                             'studs.student_id',
                             'studs.student_name',
+                            'studs.student_name_ar',
                             'studs.email',
                             'studs.mobile_no',
                             'date_ranges.dt',
@@ -210,6 +212,7 @@ class ReportController extends Controller
                         'studs.id',
                         'studs.student_id',
                         'studs.student_name',
+                        'studs.student_name_ar',
                         'studs.email',
                         'studs.mobile_no',
                         'date_ranges.dt',
@@ -243,6 +246,7 @@ class ReportController extends Controller
                             'studs.id',
                             'studs.student_id',
                             'studs.student_name',
+                            'studs.student_name_ar',
                             'studs.email',
                             'studs.mobile_no',
                             'date_ranges.dt',
